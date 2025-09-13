@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronLeft, Heart, Wind, Sparkles } from 'lucide-react';
+import whiteCurtainVideo from '@/assets/white-curtain.mp4'; // added
 
 const onboardingSteps = [
   {
@@ -28,6 +29,18 @@ const Onboarding = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
 
+  // Video fallback handling (no structural / color changes)
+  const [videoError, setVideoError] = useState(false);
+  const [enableVideo, setEnableVideo] = useState(true);
+
+  useEffect(() => {
+    // Respect reduced motion
+    try {
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (mq.matches) setEnableVideo(false);
+    } catch {}
+  }, []);
+
   const handleNext = () => {
     if (currentStep < onboardingSteps.length - 1) {
       setCurrentStep(currentStep + 1);
@@ -37,22 +50,42 @@ const Onboarding = () => {
   };
 
   const handlePrev = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
+    if (currentStep > 0) setCurrentStep(currentStep - 1);
   };
 
   const currentContent = onboardingSteps[currentStep];
 
   return (
-    <div className={`page-shell ${currentContent.gradient} flex flex-col items-center justify-center p-6 text-center transition-all duration-500`}> {/* kept gradient per step */}
-      <div className="max-w-2xl mx-auto">
+    <div
+      className={`page-shell ${currentContent.gradient} flex flex-col items-center justify-center p-6 text-center transition-all duration-500 relative overflow-hidden`}
+    >
+      {/* Background video (falls back to existing gradient if error / disabled) */}
+      {enableVideo && !videoError && (
+        <video
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          onError={() => setVideoError(true)}
+        >
+          <source src={whiteCurtainVideo} type="video/mp4" />
+        </video>
+      )}
+
+      {/* Content wrapper kept identical (just elevated above video) */}
+      <div className="relative z-10 max-w-2xl mx-auto">
         <div className="mb-10">
           {currentContent.icon}
         </div>
 
-        <h2 className="display-section mb-6 text-primary-foreground">{currentContent.title}</h2>
-        <p className="page-subtitle mb-14 text-primary-foreground/90">{currentContent.description}</p>
+        <h2 className="display-section mb-6 text-primary-foreground">
+          {currentContent.title}
+        </h2>
+        <p className="page-subtitle mb-14 text-primary-foreground/90">
+          {currentContent.description}
+        </p>
 
         <div className="step-dots mb-10">
           {onboardingSteps.map((_, index) => (
@@ -73,13 +106,13 @@ const Onboarding = () => {
             Back
           </Button>
 
-            <Button
-              onClick={handleNext}
-              className={`wellness-button w-full sm:w-auto text-base px-8 py-5 ${currentStep === 0 ? 'sm:ml-auto' : 'sm:ml-6'}`}
-            >
-              {currentStep === onboardingSteps.length - 1 ? 'Start Session' : 'Next'}
-              <ChevronRight className="w-5 h-5 ml-2" />
-            </Button>
+          <Button
+            onClick={handleNext}
+            className={`wellness-button w-full sm:w-auto text-base px-8 py-5 ${currentStep === 0 ? 'sm:ml-auto' : 'sm:ml-6'}`}
+          >
+            {currentStep === onboardingSteps.length - 1 ? 'Start Session' : 'Next'}
+            <ChevronRight className="w-5 h-5 ml-2" />
+          </Button>
         </div>
       </div>
     </div>

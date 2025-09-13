@@ -27,7 +27,7 @@ const Splash = () => {
       </video>
 
       {/* Stronger readability overlay (warm subtle gradient + light blur) */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#FFF4E6E6] via-[#FADADDCC] to-[#EAD9F5CC]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#FFF4E680] via-[#FADADD80] to-[#EAD9F580]" />
 
       <div
         className={`relative max-w-xl w-full transition-all duration-1000 ${
@@ -53,10 +53,10 @@ const Splash = () => {
             </span>
           </span>
 
-          <span className="block mt-5 font-semibold tracking-wide text-foreground">
+          <span className="block mt-5 font-bold tracking-wide text-foreground">
             Here, your heart can breathe.
           </span>
-          <span className="block text-foreground/85">
+          <span className="block font-bold text-foreground/85">
             Your words are safe, and your feelings are just yours.
           </span>
         </p>
