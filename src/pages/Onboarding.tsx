@@ -2,25 +2,23 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronLeft, Heart, Wind, Sparkles } from 'lucide-react';
+import curtainVideo from '@/assets/white-curtain.mp4'; // NEW import
 
 const onboardingSteps = [
   {
     title: "Express Yourself",
     description: "Release your thoughts through writing, speaking, or drawing. This is your safe space.",
     icon: <Heart className="w-16 h-16 text-primary animate-gentle-pulse" />,
-    gradient: "bg-gradient-primary"
   },
   {
     title: "Release & Breathe",
     description: "Let go of stress with guided breathing exercises. Feel the tension melt away.",
     icon: <Wind className="w-16 h-16 text-calm animate-breathe" />,
-    gradient: "bg-gradient-calm"
   },
   {
     title: "Find Your Balance",
     description: "End with reflection, inspiration, or calming music to restore inner peace.",
     icon: <Sparkles className="w-16 h-16 text-healing animate-floating" />,
-    gradient: "bg-gradient-healing"
   }
 ];
 
@@ -37,34 +35,55 @@ const Onboarding = () => {
   };
 
   const handlePrev = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
+    if (currentStep > 0) setCurrentStep(currentStep - 1);
   };
 
   const currentContent = onboardingSteps[currentStep];
 
   return (
-    <div className={`min-h-screen ${currentContent.gradient} flex flex-col items-center justify-center p-6 text-center transition-all duration-500`}>
-      <div className="max-w-md mx-auto">
-        <div className="mb-8">
-          {currentContent.icon}
+    <div className="relative min-h-screen flex flex-col items-center justify-center px-6 py-10 text-center overflow-hidden">
+      {/* Video background */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+      >
+        <source src={curtainVideo} type="video/mp4" />
+      </video>
+
+      {/* Light greyish overlay */}
+      <div className="absolute inset-0 bg-white/35 backdrop-blur-[2px]" />
+
+      {/* Content */}
+      <div
+        className="relative z-10 w-full max-w-md mx-auto transition-all duration-500"
+        key={currentStep}
+      >
+        <div className="mb-10 flex justify-center">
+          <div className="p-6 rounded-3xl bg-white/55 shadow-lg backdrop-blur-sm">
+            {currentContent.icon}
+          </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-primary-foreground mb-4">
+        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-black mb-6">
           {currentContent.title}
         </h2>
 
-        <p className="text-lg text-primary-foreground/90 mb-12 leading-relaxed">
+        <p className="text-base sm:text-lg md:text-xl text-black/80 mb-10 leading-relaxed font-medium">
           {currentContent.description}
         </p>
 
-        <div className="flex justify-center items-center space-x-2 mb-8">
+        <div className="flex justify-center items-center space-x-3 mb-10">
           {onboardingSteps.map((_, index) => (
-            <div
+            <span
               key={index}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentStep ? 'bg-primary-foreground' : 'bg-primary-foreground/30'
+              className={`h-2 rounded-full transition-all duration-300 ${
+                index === currentStep
+                  ? 'w-8 bg-black/80'
+                  : 'w-2 bg-black/30'
               }`}
             />
           ))}
@@ -74,19 +93,19 @@ const Onboarding = () => {
           <Button
             variant="outline"
             onClick={handlePrev}
-            className={`${currentStep === 0 ? 'invisible' : 'visible'} bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20`}
+            className={`${currentStep === 0 ? 'invisible' : 'visible'} bg-white/60 border-black/20 text-black hover:bg-white/80`}
           >
             <ChevronLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
 
-          <Button 
-            onClick={handleNext}
-            className="wellness-button"
-          >
-            {currentStep === onboardingSteps.length - 1 ? 'Start Session' : 'Next'}
-            <ChevronRight className="w-4 h-4 ml-2" />
-          </Button>
+            <Button
+              onClick={handleNext}
+              className="rounded-full px-8 py-5 font-semibold tracking-wide bg-black text-white hover:bg-black/90"
+            >
+              {currentStep === onboardingSteps.length - 1 ? 'Start Session' : 'Next'}
+              <ChevronRight className="w-4 h-4 ml-2" />
+            </Button>
         </div>
       </div>
     </div>
