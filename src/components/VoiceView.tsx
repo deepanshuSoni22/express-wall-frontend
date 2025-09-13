@@ -384,7 +384,7 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
           progressClassName="bg-primary-foreground/30"
         >
           <span className="flex items-center justify-center">
-            <span className="mr-2">Hold to Continue</span>
+            <span className="mr-2">Hold to Release</span>
             <ArrowRight className="w-5 h-5" />
           </span>
         </HoldButton>

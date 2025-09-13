@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Paintbrush, Eraser, ArrowRight, RotateCcw, ChevronRight } from 'lucide-react';
+import { Paintbrush, Eraser, ArrowRight, RotateCcw, ChevronRight, ChevronDown } from 'lucide-react';
 import { useSession } from '@/contexts/SessionContext';
 import { HoldButton } from '@/components/ui/hold-button';
 
@@ -21,6 +21,7 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
   const [hasDrawn, setHasDrawn] = useState(false);
   const [isEraser, setIsEraser] = useState(false);
   const [brushSize, setBrushSize] = useState<number>(6);
+  const [showMobileHint, setShowMobileHint] = useState(true);
   const { updateSession } = useSession();
 
   // Compute responsive canvas size and scale for DPI
@@ -88,6 +89,18 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
       window.removeEventListener('orientationchange', onResize);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (hasDrawn) setShowMobileHint(false);
+  }, [hasDrawn]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY > 20) setShowMobileHint(false);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const getPos = (e: React.PointerEvent<HTMLCanvasElement>) => {
@@ -165,9 +178,9 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
   const brushSizes = [3, 6, 10, 16];
 
   return (
-    <div className="page-shell bg-gradient-healing p-4 sm:p-6 flex flex-col">
-      <div className="mx-auto w-full max-w-3xl flex-1 flex flex-col" ref={containerRef}>
-        <div className="text-center mb-10 sm:mb-12">
+    <div className="page-shell page-radial-soft flex flex-col min-h-screen">
+      <div className="mx-auto w-full max-w-3xl flex-1 flex flex-col p-4 sm:p-6" ref={containerRef}>
+        <div className="text-center mb-6 sm:mb-10">
           <div className="header-icon-sm mb-4">
             <Paintbrush className="w-9 h-9 text-primary-foreground" />
           </div>
@@ -259,14 +272,23 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
         </div>
 
         {/* Canvas Area */}
-        <div className="wellness-card mb-6 p-2 sm:p-3">
+        <div className="wellness-card mb-6 p-2 sm:p-3 relative">
+          {/* Mobile hint overlay (disappears after draw / scroll) */}
+          {showMobileHint && (
+            <div className="absolute inset-x-0 bottom-0 pointer-events-none flex justify-end pr-2 pb-2 sm:hidden z-20">
+              <div className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground/80 bg-background/70 backdrop-blur-sm rounded-full px-2 py-1 shadow-soft animate-pulse">
+                <ChevronDown className="w-3 h-3" />
+                Hold button below
+              </div>
+            </div>
+          )}
           <div className="relative rounded-xl overflow-hidden">
             <div className="pointer-events-none absolute inset-0 rounded-xl"
                  style={{ boxShadow: 'inset 0 0 60px rgba(0,0,0,0.03)' }} />
             <canvas
               ref={canvasRef}
               className="block w-full h-auto cursor-crosshair touch-none select-none rounded-xl bg-white"
-              onPointerDown={handlePointerDown}
+              onPointerDown={(e) => { handlePointerDown(e); setShowMobileHint(false); }}
               onPointerMove={handlePointerMove}
               onPointerUp={endStroke}
               onPointerLeave={endStroke}
@@ -276,13 +298,30 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
           </div>
         </div>
 
+        {/* Desktop (>= sm) button stays inline */}
+        <div className="hidden sm:block">
+          <HoldButton 
+            onComplete={handleContinue}
+            disabled={!hasDrawn}
+            progressClassName="bg-primary-foreground/30"
+          >
+            <span className="flex items-center justify-center">
+              <span className="mr-2">Hold to Release</span>
+              <ArrowRight className="w-5 h-5" />
+            </span>
+          </HoldButton>
+        </div>
+      </div>
+
+      {/* Mobile fixed action bar */}
+      <div className="sm:hidden action-bar-mobile">
         <HoldButton 
           onComplete={handleContinue}
           disabled={!hasDrawn}
           progressClassName="bg-primary-foreground/30"
         >
           <span className="flex items-center justify-center">
-            <span className="mr-2">Hold to Continue</span>
+            <span className="mr-2">Hold to Release</span>
             <ArrowRight className="w-5 h-5" />
           </span>
         </HoldButton>
