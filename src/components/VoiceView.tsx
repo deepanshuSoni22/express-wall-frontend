@@ -1,0 +1,394 @@
+import { useEffect, useRef, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Mic, Square, Play, Pause, ArrowRight, RefreshCw } from 'lucide-react';
+import { useSession } from '@/contexts/SessionContext';
+
+interface VoiceViewProps {
+  onContinue: () => void;
+}
+
+export const VoiceView = ({ onContinue }: VoiceViewProps) => {
+  const [isRecording, setIsRecording] = useState(false);
+  const [hasRecorded, setHasRecorded] = useState(false);
+  const [permissionDenied, setPermissionDenied] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [recordingDuration, setRecordingDuration] = useState(0);
+  const [vizLevel, setVizLevel] = useState(0); // 0..1 smoothed mic level
+
+  const { updateSession } = useSession();
+
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Audio visualization refs
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const rafRef = useRef<number | null>(null);
+
+  const STORAGE_KEY_AUDIO = 'expressWell_voiceRecording_tmp';
+  const STORAGE_KEY_DURATION = 'expressWell_voiceRecording_duration_tmp';
+
+  // Choose a supported mime type for recording
+  const getPreferredMimeType = () => {
+    const candidates = [
+      'audio/webm;codecs=opus',
+      'audio/webm',
+      'audio/ogg;codecs=opus',
+      'audio/mp4',
+    ];
+    for (const type of candidates) {
+      if ((window as any).MediaRecorder && MediaRecorder.isTypeSupported(type)) {
+        return type;
+      }
+    }
+    return '';
+  };
+
+  // On mount, set up audio element and restore any temporary recording (within session)
+  useEffect(() => {
+    audioRef.current = new Audio();
+    const onEnded = () => setIsPlaying(false);
+    audioRef.current.addEventListener('ended', onEnded);
+
+    // Restore from sessionStorage if present (e.g., re-render within same route)
+    const savedBase64 = sessionStorage.getItem(STORAGE_KEY_AUDIO);
+    if (savedBase64) {
+      const blob = base64ToBlob(savedBase64, 'audio/webm');
+      const url = URL.createObjectURL(blob);
+      setAudioUrl(url);
+      setHasRecorded(true);
+      const d = sessionStorage.getItem(STORAGE_KEY_DURATION);
+      if (d) setRecordingDuration(parseInt(d, 10));
+    }
+
+    // Cleanup on unmount: stop playback, revoke URLs, clear temporary storage
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.removeEventListener('ended', onEnded);
+      }
+      if (audioUrl) URL.revokeObjectURL(audioUrl);
+      if (timerRef.current) clearInterval(timerRef.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (audioCtxRef.current) {
+        try { audioCtxRef.current.close(); } catch {}
+        audioCtxRef.current = null;
+        analyserRef.current = null;
+      }
+      sessionStorage.removeItem(STORAGE_KEY_AUDIO);
+      sessionStorage.removeItem(STORAGE_KEY_DURATION);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const startViz = (stream: MediaStream) => {
+    try {
+      const Ctx = (window as any).AudioContext || (window as any).webkitAudioContext;
+      const ctx: AudioContext = new Ctx();
+      const source = ctx.createMediaStreamSource(stream);
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 1024;
+      analyser.smoothingTimeConstant = 0.85;
+      source.connect(analyser);
+
+      audioCtxRef.current = ctx;
+      analyserRef.current = analyser;
+
+      const timeData = new Uint8Array(analyser.fftSize);
+      const tick = () => {
+        if (!analyserRef.current) return;
+        analyserRef.current.getByteTimeDomainData(timeData);
+        let sum = 0;
+        for (let i = 0; i < timeData.length; i++) {
+          const v = (timeData[i] - 128) / 128; // -1..1
+          sum += v * v;
+        }
+        const rms = Math.sqrt(sum / timeData.length); // ~0..1
+        const level = Math.min(1, rms * 2.2); // amplify softly
+        setVizLevel((prev) => prev * 0.8 + level * 0.2);
+        rafRef.current = requestAnimationFrame(tick);
+      };
+      rafRef.current = requestAnimationFrame(tick);
+    } catch (e) {
+      // Visualization is optional; ignore errors
+      console.warn('Audio visualization init failed', e);
+    }
+  };
+
+  const stopViz = () => {
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    setVizLevel(0);
+    if (audioCtxRef.current) {
+      try { audioCtxRef.current.close(); } catch {}
+      audioCtxRef.current = null;
+      analyserRef.current = null;
+    }
+  };
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mimeType = getPreferredMimeType();
+      const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+      mediaRecorderRef.current = recorder;
+      audioChunksRef.current = [];
+
+      // Start reactive visualization
+      startViz(stream);
+
+      recorder.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) audioChunksRef.current.push(e.data);
+      };
+
+      recorder.onstop = async () => {
+        try {
+          const blob = new Blob(audioChunksRef.current, { type: mimeType || 'audio/webm' });
+          const url = URL.createObjectURL(blob);
+          setAudioUrl(url);
+          setHasRecorded(true);
+
+          // Persist temporarily for this session only
+          const base64 = await blobToBase64(blob);
+          const base64Data = base64.split(',')[1];
+          sessionStorage.setItem(STORAGE_KEY_AUDIO, base64Data);
+          sessionStorage.setItem(STORAGE_KEY_DURATION, String(recordingDuration));
+
+          // Stop all media tracks
+          stream.getTracks().forEach((t) => t.stop());
+
+          // Stop visualization
+          stopViz();
+
+          updateSession({ expressContent: 'Voice recording completed' });
+        } catch (err) {
+          console.error('Failed to finalize recording', err);
+        }
+      };
+
+      recorder.start();
+      setIsRecording(true);
+      setPermissionDenied(false);
+
+      // Start duration timer
+      let seconds = 0;
+      timerRef.current = setInterval(() => {
+        seconds += 1;
+        setRecordingDuration(seconds);
+      }, 1000);
+    } catch (err) {
+      console.error('Microphone access error:', err);
+      setPermissionDenied(true);
+      setIsRecording(false);
+      stopViz();
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  const handleRecord = () => {
+    if (isRecording) stopRecording();
+    else startRecording();
+  };
+
+  const handlePlayback = async () => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+      return;
+    }
+
+    if (audioUrl) {
+      audioRef.current.src = audioUrl;
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (err) {
+        console.error('Playback failed:', err);
+      }
+    } else {
+      const savedBase64 = sessionStorage.getItem(STORAGE_KEY_AUDIO);
+      if (!savedBase64) return;
+      const blob = base64ToBlob(savedBase64, 'audio/webm');
+      const url = URL.createObjectURL(blob);
+      setAudioUrl(url);
+      audioRef.current.src = url;
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (err) {
+        console.error('Playback failed:', err);
+      }
+    }
+  };
+
+  const handleRerecord = () => {
+    if (isRecording) stopRecording();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+    if (audioUrl) {
+      URL.revokeObjectURL(audioUrl);
+      setAudioUrl(null);
+    }
+    sessionStorage.removeItem(STORAGE_KEY_AUDIO);
+    sessionStorage.removeItem(STORAGE_KEY_DURATION);
+    setHasRecorded(false);
+    setRecordingDuration(0);
+  };
+
+  // Helpers
+  const blobToBase64 = (blob: Blob) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+
+  const base64ToBlob = (base64: string, mimeType: string) => {
+    const byteChars = atob(base64);
+    const byteNumbers = new Array(byteChars.length);
+    for (let i = 0; i < byteChars.length; i++) byteNumbers[i] = byteChars.charCodeAt(i);
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+  };
+
+  const formatTime = (s: number) => {
+    const mins = Math.floor(s / 60);
+    const secs = s % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  // Visual styles derived from mic level
+  const scale = 1 + (isRecording ? vizLevel * 0.18 : 0);
+  const ringScale = 1 + (isRecording ? vizLevel * 0.35 : 0);
+  const glowOpacity = isRecording ? 0.45 + vizLevel * 0.45 : 0.25;
+
+  return (
+    <div className="min-h-screen bg-gradient-secondary p-6 flex flex-col">
+      <div className="max-w-md mx-auto flex-1 flex flex-col text-center">
+        <div className="mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4 shadow-glow">
+            <Mic className="w-8 h-8 text-primary-foreground" />
+          </div>
+          <h2 className="text-2xl font-bold text-foreground mb-2">Voice Wall</h2>
+          <p className="text-muted-foreground">Speak your truth. Your voice matters here.</p>
+        </div>
+
+        {permissionDenied ? (
+          <div className="wellness-card mb-8">
+            <p className="text-destructive mb-2">Microphone access was denied</p>
+            <p className="text-muted-foreground text-sm">Please allow microphone access in browser settings.</p>
+          </div>
+        ) : (
+          <div className="flex-1 flex items-center justify-center mb-8">
+            <div className="w-40 h-40 relative flex items-center justify-center">
+              {/* Soft radial glow */}
+              <div
+                className="absolute inset-0 rounded-full blur-2xl"
+                style={{
+                  background: 'radial-gradient(60% 60% at 50% 50%, rgba(255,180,160,0.9), rgba(180,160,255,0.2))',
+                  opacity: glowOpacity,
+                  transition: 'opacity 180ms ease',
+                }}
+              />
+
+              {/* Reactive outer ring */}
+              <div
+                className="absolute inset-0 rounded-full border-2"
+                style={{
+                  borderColor: 'rgba(255,255,255,0.6)',
+                  transform: `scale(${ringScale})`,
+                  opacity: 0.35 + vizLevel * 0.5,
+                  transition: 'transform 120ms ease, opacity 180ms ease',
+                }}
+              />
+
+              {/* Secondary faint ring */}
+              <div
+                className="absolute inset-0 rounded-full border"
+                style={{
+                  borderColor: 'rgba(255,255,255,0.35)',
+                  transform: `scale(${1 + (isRecording ? 0.15 + vizLevel * 0.25 : 0)})`,
+                  opacity: 0.25 + vizLevel * 0.35,
+                  transition: 'transform 160ms ease, opacity 200ms ease',
+                }}
+              />
+
+              {/* Main mic button with conic sheen */}
+              <div
+                className={`breathing-circle transition-all duration-150 ${isRecording ? 'scale-105' : ''}`}
+                style={{
+                  transform: `scale(${scale})`,
+                  background: 'conic-gradient(from 180deg at 50% 50%, rgba(255,210,195,1), rgba(210,190,255,0.9), rgba(255,210,195,1))',
+                  boxShadow: `0 10px 40px rgba(255,150,130,${0.25 + vizLevel * 0.25}), 0 0 80px rgba(170,150,255,${0.15 + vizLevel * 0.25})`,
+                }}
+              >
+                <Button onClick={handleRecord} variant="ghost" size="lg" className="w-full h-full rounded-full hover:bg-transparent">
+                  {isRecording ? (
+                    <Square className="w-8 h-8 text-primary-foreground" />
+                  ) : (
+                    <Mic className="w-8 h-8 text-primary-foreground" />
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {isRecording && (
+          <div className="mb-8">
+            <p className="text-muted-foreground animate-gentle-pulse mb-2">Recording... Speak from your heart</p>
+            <p className="text-muted-foreground font-mono">{formatTime(recordingDuration)}</p>
+          </div>
+        )}
+
+        {hasRecorded && !isRecording && (
+          <div className="wellness-card mb-8">
+            <p className="text-healing mb-4">✓ Recording captured</p>
+            <p className="text-sm text-muted-foreground mb-4">Length: {formatTime(recordingDuration)}</p>
+            <div className="flex gap-3 justify-center">
+              <Button variant="outline" size="sm" onClick={handlePlayback}>
+                {isPlaying ? (
+                  <>
+                    <Pause className="w-4 h-4 mr-2" /> Pause
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-4 h-4 mr-2" /> Play
+                  </>
+                )}
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleRerecord}>
+                <RefreshCw className="w-4 h-4 mr-2" /> Re-record
+              </Button>
+            </div>
+          </div>
+        )}
+
+        <Button onClick={onContinue} className="wellness-button w-full" disabled={!hasRecorded}>
+          Continue to Release
+          <ArrowRight className="w-4 h-4 ml-2" />
+        </Button>
+      </div>
+    </div>
+  );
+};

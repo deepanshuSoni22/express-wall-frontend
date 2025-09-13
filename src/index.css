@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ExpressWall Design System - Soft, emotionally supportive wellness theme */
+
+@layer base {
+  :root {
+    /* Base colors - soft and calming */
+    --background: 28 100% 97%;
+    --foreground: 25 25% 25%;
+
+    /* Card surfaces - subtle warmth */
+    --card: 30 50% 98%;
+    --card-foreground: 25 25% 25%;
+
+    --popover: 30 50% 98%;
+    --popover-foreground: 25 25% 25%;
+
+    /* Primary - warm peach/coral gradient */
+    --primary: 15 85% 75%;
+    --primary-glow: 10 90% 85%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - soft lavender */
+    --secondary: 260 30% 85%;
+    --secondary-foreground: 25 25% 25%;
+
+    /* Muted - gentle cream */
+    --muted: 35 40% 92%;
+    --muted-foreground: 25 15% 55%;
+
+    /* Accent - soft mint */
+    --accent: 140 35% 85%;
+    --accent-foreground: 25 25% 25%;
+
+    /* Wellness support colors */
+    --healing: 120 40% 80%;
+    --calm: 200 35% 85%;
+    --warm: 25 60% 88%;
+    
+    --destructive: 0 75% 70%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders and inputs - barely there */
+    --border: 20 25% 88%;
+    --input: 20 25% 92%;
+    --ring: 15 85% 75%;
+
+    /* Gradients for emotional depth */
+    --gradient-primary: linear-gradient(135deg, hsl(15 85% 75%), hsl(25 80% 80%));
+    --gradient-secondary: linear-gradient(135deg, hsl(260 30% 85%), hsl(280 25% 88%));
+    --gradient-healing: linear-gradient(180deg, hsl(120 40% 80%), hsl(140 35% 85%));
+    --gradient-calm: linear-gradient(180deg, hsl(200 35% 85%), hsl(220 30% 88%));
+    --gradient-warm: linear-gradient(45deg, hsl(25 60% 88%), hsl(35 50% 90%));
+    
+    /* Breathing animation gradients */
+    --gradient-breathe-in: linear-gradient(135deg, hsl(200 50% 85%), hsl(220 45% 88%));
+    --gradient-breathe-out: linear-gradient(135deg, hsl(15 70% 85%), hsl(25 65% 88%));
+
+    /* Shadows for depth and comfort */
+    --shadow-soft: 0 4px 20px -8px hsl(15 50% 80% / 0.3);
+    --shadow-warm: 0 8px 30px -12px hsl(25 60% 70% / 0.4);
+    --shadow-glow: 0 0 40px hsl(15 85% 75% / 0.2);
+
+    /* Animations */
+    --transition-gentle: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-breathe: all 4s cubic-bezier(0.4, 0, 0.6, 1);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark mode - deeper, cozier tones */
+    --background: 25 15% 8%;
+    --foreground: 30 20% 92%;
+
+    --card: 25 20% 12%;
+    --card-foreground: 30 20% 92%;
+
+    --popover: 25 20% 12%;
+    --popover-foreground: 30 20% 92%;
+
+    --primary: 15 70% 65%;
+    --primary-glow: 10 75% 75%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 260 25% 25%;
+    --secondary-foreground: 30 20% 92%;
+
+    --muted: 25 15% 18%;
+    --muted-foreground: 30 10% 65%;
+
+    --accent: 140 25% 25%;
+    --accent-foreground: 30 20% 92%;
+
+    --healing: 120 30% 30%;
+    --calm: 200 25% 25%;
+    --warm: 25 40% 20%;
+    
+    --destructive: 0 65% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 25 15% 20%;
+    --input: 25 15% 18%;
+    --ring: 15 70% 65%;
+
+    /* Dark mode gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(15 70% 65%), hsl(25 65% 70%));
+    --gradient-secondary: linear-gradient(135deg, hsl(260 25% 25%), hsl(280 20% 28%));
+    --gradient-healing: linear-gradient(180deg, hsl(120 30% 30%), hsl(140 25% 25%));
+    --gradient-calm: linear-gradient(180deg, hsl(200 25% 25%), hsl(220 20% 22%));
+    --gradient-warm: linear-gradient(45deg, hsl(25 40% 20%), hsl(35 30% 22%));
+    
+    --gradient-breathe-in: linear-gradient(135deg, hsl(200 40% 25%), hsl(220 35% 28%));
+    --gradient-breathe-out: linear-gradient(135deg, hsl(15 60% 25%), hsl(25 55% 28%));
+
+    --shadow-soft: 0 4px 20px -8px hsl(0 0% 0% / 0.4);
+    --shadow-warm: 0 8px 30px -12px hsl(0 0% 0% / 0.5);
+    --shadow-glow: 0 0 40px hsl(15 70% 65% / 0.15);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  /* Global wellness app styles */
+  .breathe-animation {
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  .breathe-in {
+    animation: breathe-in 4s ease-in-out infinite;
+  }
+
+  .breathe-out {
+    animation: breathe-out 4s ease-in-out infinite;
+  }
+
+  .gentle-pulse {
+    animation: gentle-pulse 3s ease-in-out infinite;
+  }
+
+  .floating {
+    animation: floating 6s ease-in-out infinite;
+  }
+}
+
+@layer components {
+  /* Component patterns for wellness UI */
+  .wellness-card {
+    @apply bg-card rounded-3xl p-6 shadow-[var(--shadow-soft)] border border-border/50;
+  }
+
+  .wellness-button {
+    @apply bg-[var(--gradient-primary)] text-primary-foreground px-8 py-4 rounded-full font-medium shadow-[var(--shadow-warm)] transition-[var(--transition-gentle)] hover:shadow-[var(--shadow-glow)] hover:scale-105;
+  }
+
+  .breathing-circle {
+    @apply w-32 h-32 rounded-full bg-[var(--gradient-calm)] shadow-[var(--shadow-glow)] flex items-center justify-center;
+  }
+
+  .express-option {
+    @apply wellness-card hover:shadow-[var(--shadow-warm)] transition-[var(--transition-gentle)] cursor-pointer hover:scale-102 active:scale-98;
+  }
+
+  .balance-choice {
+    @apply bg-[var(--gradient-healing)] rounded-2xl p-4 text-center shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-warm)] transition-[var(--transition-gentle)] cursor-pointer;
+  }
+}
+
+@layer utilities {
+  /* Custom keyframes for wellness animations */
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+
+  @keyframes breathe-in {
+    0%, 100% { transform: scale(1); background: var(--gradient-breathe-out); }
+    50% { transform: scale(1.2); background: var(--gradient-breathe-in); }
+  }
+
+  @keyframes breathe-out {
+    0%, 100% { transform: scale(1.2); background: var(--gradient-breathe-in); }
+    50% { transform: scale(1); background: var(--gradient-breathe-out); }
+  }
+
+  @keyframes gentle-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes floating {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+}
