@@ -34,9 +34,31 @@ const Splash = () => {
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
-        <h1 className="text-4xl font-extrabold text-foreground drop-shadow-sm mb-5 tracking-tight">
-          ExpressWall
-        </h1>
+        {/* Logo structure with The/Express/Wall as a cohesive unit */}
+        <div className="mb-5 flex justify-center">
+          <div className="relative w-64 h-32 md:w-80 md:h-36 mx-auto">
+            {/* First row - THE (left aligned) */}
+            <div className="absolute top-0 left-0">
+              <span className="text-3xl md:text-4xl font-extrabold text-foreground drop-shadow-sm tracking-tight">
+                THE
+              </span>
+            </div>
+            
+            {/* Second row - EXPRESS (center aligned) */}
+            <div className="absolute top-[25%] left-1/2 -translate-x-1/2">
+              <span className="text-5xl md:text-6xl font-extrabold text-primary drop-shadow-sm tracking-tight">
+                EXPRESS
+              </span>
+            </div>
+            
+            {/* Third row - WALL (right aligned) */}
+            <div className="absolute bottom-0 right-0">
+              <span className="text-4xl md:text-5xl font-extrabold text-foreground drop-shadow-sm tracking-tight italic" style={{ fontFamily: 'cursive' }}>
+                Wall
+              </span>
+            </div>
+          </div>
+        </div>
 
         <p className="text-lg font-medium text-foreground/90 mb-8 leading-relaxed space-y-1">
           <span className="inline-flex flex-wrap items-center justify-center gap-2">
