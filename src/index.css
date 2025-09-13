@@ -6,59 +6,58 @@
 
 @layer base {
   :root {
-    /* Dark wellness base (formerly light) */
-    --background: 220 18% 12%; /* deep desaturated navy */
-    --foreground: 210 20% 92%; /* soft near-white text */
+    /* Sunset Glow Palette */
+    --background: 34 100% 95%; /* #FFF4E6 */
+    --foreground: 0 0% 17%; /* #2B2B2B */
 
-    --card: 222 22% 16%;
-    --card-foreground: 210 20% 92%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 17%;
 
-    --popover: 222 22% 16%;
-    --popover-foreground: 210 20% 92%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 17%;
 
     /* Primary – calming teal */
-    --primary: 188 65% 48%;
-    --primary-glow: 188 75% 60%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 8 100% 77%; /* #FF9A8B */
+    --primary-glow: 8 100% 72%;
+    --primary-foreground: 0 0% 17%; /* dark text on soft coral */
 
     /* Secondary – tranquil indigo */
-    --secondary: 259 55% 50%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 277 59% 90%; /* #EAD9F5 */
+    --secondary-foreground: 0 0% 17%;
 
     /* Muted – subtle slate */
-    --muted: 220 16% 22%;
-    --muted-foreground: 215 15% 70%;
+    --muted: 354 76% 92%; /* #FADADD */
+    --muted-foreground: 0 0% 32%;
 
     /* Accent – soothing emerald */
-    --accent: 155 55% 40%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 275 47% 84%; /* #D9C2E9 */
+    --accent-foreground: 0 0% 17%;
 
     /* Support tones */
-    --healing: 165 50% 38%;
-    --calm: 200 50% 38%;
-    --warm: 28 65% 46%; /* soft amber warmth */
+    --healing: 275 47% 84%;
+    --calm: 354 76% 92%;
+    --warm: 8 100% 85%;
 
-    --destructive: 0 70% 50%;
+    --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 18% 26%;
-    --input: 220 18% 24%;
-    --ring: 188 65% 48%;
+    --border: 15 35% 90%;
+    --input: 15 35% 90%;
+    --ring: 8 100% 65%;
 
-    /* Gradients (deep + subtle energy) */
-    --gradient-primary: linear-gradient(135deg, hsl(188 65% 48%), hsl(200 70% 42%));
-    --gradient-secondary: linear-gradient(135deg, hsl(259 55% 50%), hsl(275 50% 46%));
-    --gradient-healing: linear-gradient(160deg, hsl(165 50% 38%), hsl(155 55% 40%));
-    --gradient-calm: linear-gradient(160deg, hsl(200 50% 38%), hsl(210 55% 34%));
-    --gradient-warm: linear-gradient(145deg, hsl(28 65% 46%), hsl(22 70% 40%));
+    /* Updated gradients using palette */
+    --gradient-primary: linear-gradient(135deg, #FFF4E6, #FADADD, #EAD9F5);
+    --gradient-secondary: linear-gradient(135deg, #EAD9F5, #FADADD);
+    --gradient-healing: linear-gradient(135deg, #D9C2E9, #EAD9F5);
+    --gradient-calm: linear-gradient(135deg, #FADADD, #FFF4E6);
+    --gradient-warm: linear-gradient(135deg, #FF9A8B, #FADADD 60%, #EAD9F5);
 
-    --gradient-breathe-in: linear-gradient(135deg, hsl(200 55% 40%), hsl(188 60% 46%));
-    --gradient-breathe-out: linear-gradient(135deg, hsl(188 60% 46%), hsl(200 55% 40%));
+    --gradient-breathe-in: linear-gradient(135deg, #FADADD, #EAD9F5);
+    --gradient-breathe-out: linear-gradient(135deg, #EAD9F5, #FADADD);
 
-    /* Refined shadows for dark UI */
-    --shadow-soft: 0 4px 18px -6px hsl(210 30% 8% / 0.6);
-    --shadow-warm: 0 8px 28px -10px hsl(210 40% 6% / 0.55);
-    --shadow-glow: 0 0 32px hsl(188 70% 48% / 0.25);
+    --shadow-soft: 0 4px 14px -2px rgba(0,0,0,0.08);
+    --shadow-warm: 0 8px 28px -4px rgba(0,0,0,0.10);
+    --shadow-glow: 0 0 0 4px rgba(255,154,139,0.18), 0 4px 34px -4px rgba(255,154,139,0.25);
 
     --transition-gentle: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-breathe: all 4s cubic-bezier(0.4, 0, 0.55, 1);
@@ -86,52 +85,40 @@
   @media (min-width: 640px) { html { font-size: 18px; } }
 
   .dark {
-    /* Ultra dark mode */
-    --background: 220 20% 8%;
-    --foreground: 210 15% 90%;
-
-    --card: 220 22% 12%;
-    --card-foreground: 210 15% 90%;
-
-    --popover: 220 22% 12%;
-    --popover-foreground: 210 15% 90%;
-
-    --primary: 188 70% 46%;
-    --primary-glow: 188 80% 56%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 259 60% 48%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 220 18% 18%;
-    --muted-foreground: 215 12% 65%;
-
-    --accent: 155 60% 38%;
-    --accent-foreground: 0 0% 100%;
-
-    --healing: 165 55% 32%;
-    --calm: 200 55% 30%;
-    --warm: 28 70% 38%;
-
-    --destructive: 0 65% 48%;
+    /* Dark variant mapped gently to same palette for consistency */
+    --background: 34 30% 10%;
+    --foreground: 34 35% 96%;
+    --card: 34 32% 14%;
+    --card-foreground: 34 35% 96%;
+    --popover: 34 32% 14%;
+    --popover-foreground: 34 35% 96%;
+    --primary: 8 100% 65%;
+    --primary-glow: 8 100% 60%;
+    --primary-foreground: 34 35% 96%;
+    --secondary: 277 45% 32%;
+    --secondary-foreground: 34 35% 96%;
+    --muted: 277 35% 26%;
+    --muted-foreground: 277 28% 78%;
+    --accent: 275 40% 42%;
+    --accent-foreground: 34 35% 96%;
+    --healing: 275 40% 42%;
+    --calm: 354 40% 36%;
+    --warm: 8 70% 46%;
+    --destructive: 0 70% 48%;
     --destructive-foreground: 0 0% 100%;
-
-    --border: 220 18% 22%;
-    --input: 220 18% 20%;
-    --ring: 188 70% 46%;
-
-    --gradient-primary: linear-gradient(135deg, hsl(188 70% 46%), hsl(200 65% 38%));
-    --gradient-secondary: linear-gradient(135deg, hsl(259 60% 48%), hsl(275 55% 40%));
-    --gradient-healing: linear-gradient(160deg, hsl(165 55% 32%), hsl(155 60% 38%));
-    --gradient-calm: linear-gradient(160deg, hsl(200 55% 30%), hsl(210 55% 26%));
-    --gradient-warm: linear-gradient(145deg, hsl(28 70% 38%), hsl(22 65% 34%));
-
-    --gradient-breathe-in: linear-gradient(135deg, hsl(200 55% 34%), hsl(188 65% 40%));
-    --gradient-breathe-out: linear-gradient(135deg, hsl(188 65% 40%), hsl(200 55% 34%));
-
-    --shadow-soft: 0 4px 20px -6px hsl(210 40% 4% / 0.65);
-    --shadow-warm: 0 10px 34px -12px hsl(210 45% 4% / 0.6);
-    --shadow-glow: 0 0 40px hsl(188 75% 46% / 0.25);
+    --border: 277 25% 30%;
+    --input: 277 25% 30%;
+    --ring: 8 100% 65%;
+    --gradient-primary: linear-gradient(135deg, #4e2f37, #5a3955, #46305d);
+    --gradient-secondary: linear-gradient(135deg, #46305d, #5a3955);
+    --gradient-healing: linear-gradient(135deg, #5a3955, #46305d);
+    --gradient-calm: linear-gradient(135deg, #5a3955, #4e2f37);
+    --gradient-warm: linear-gradient(135deg, #7a423b, #5a3955);
+    --gradient-breathe-in: linear-gradient(135deg, #5a3955, #7a423b);
+    --gradient-breathe-out: linear-gradient(135deg, #7a423b, #5a3955);
+    --shadow-soft: 0 4px 18px -4px rgba(0,0,0,0.45);
+    --shadow-warm: 0 10px 38px -8px rgba(0,0,0,0.55);
+    --shadow-glow: 0 0 0 3px rgba(255,154,139,0.25), 0 0 42px -4px rgba(255,154,139,0.35);
   }
 }
 
@@ -180,7 +167,7 @@
 
   /* Option grid & cards (used on Express / Release / Balance) */
   .option-grid { @apply grid grid-cols-1 sm:grid-cols-2 gap-5; }
-  .option-card { @apply relative rounded-3xl border border-border/70 bg-card/90 backdrop-blur-sm p-5 text-left shadow-soft hover:shadow-warm transition-gentle focus:outline-none focus:ring-2 focus:ring-primary/40; }
+  .option-card { @apply relative rounded-3xl border border-border bg-card/95 backdrop-blur-sm p-5 text-left shadow-soft hover:shadow-warm transition-gentle focus:outline-none focus:ring-2 focus:ring-primary/40; }
   .option-card-stripe { @apply absolute inset-x-0 top-0 h-1.5 rounded-t-3xl opacity-90; }
   .option-card-icon { @apply shrink-0 p-4 rounded-xl text-primary-foreground shadow-glow group-hover:scale-110 transition-transform; }
   .option-card-title { @apply font-semibold text-foreground text-lg mb-1; }
@@ -188,7 +175,7 @@
   .option-card-meta { @apply text-xs text-muted-foreground/70 mt-1; }
 
   /* Elevated emphasis block */
-  .elevated-panel { @apply rounded-3xl bg-card/95 backdrop-blur-sm border border-border/60 shadow-soft px-6 py-8; }
+  .elevated-panel { @apply rounded-3xl bg-card/95 backdrop-blur-sm border border-border shadow-soft px-6 py-8; }
 
   /* Component patterns for wellness UI */
   .wellness-card {
@@ -196,7 +183,7 @@
   }
 
   .wellness-button {
-    @apply bg-[var(--gradient-primary)] text-primary-foreground px-8 py-4 rounded-full font-medium shadow-[var(--shadow-warm)] transition-[var(--transition-gentle)] hover:shadow-[var(--shadow-glow)] hover:scale-105;
+    @apply bg-[var(--gradient-warm)] text-primary-foreground shadow-soft hover:shadow-glow;
   }
 
   .breathing-circle {
@@ -232,7 +219,7 @@
   .header-title { @apply display-section mb-4; }
   .header-subtitle { @apply page-subtitle; }
 
-  .app-splash-bg { background: radial-gradient(circle at 30% 25%, hsl(188 40% 22%) 0%, hsl(220 18% 14%) 55%, hsl(220 20% 10%) 100%); }
+  .app-splash-bg { background: transparent; }
   .page-simple-bg { background-color: hsl(220 18% 14%); }
 
   .action-bar-mobile {
@@ -268,5 +255,5 @@
     50% { transform: translateY(-10px); }
   }
 
-  .page-radial-soft { background: radial-gradient(circle at 50% 35%, hsl(210 25% 18%) 0%, hsl(220 20% 12%) 55%, hsl(220 22% 10%) 100%); }
+  .page-radial-soft { background: radial-gradient(circle at 50% 35%, #FFF4E6 0%, #FADADD 60%, #EAD9F5 120%); }
 }

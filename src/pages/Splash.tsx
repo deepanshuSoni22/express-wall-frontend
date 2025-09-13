@@ -1,56 +1,72 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import treesVideo from '@/assets/trees-bg.mp4';
 
 const Splash = () => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+  useEffect(() => { setIsVisible(true); }, []);
 
-  const handleStart = () => {
-    navigate('/onboarding');
-  };
+  const handleStart = () => navigate('/onboarding');
 
   return (
     <div className="min-h-screen app-splash-bg relative flex flex-col items-center justify-center p-6 text-center overflow-hidden">
-      <div className="absolute inset-0 bg-black/20 dark:bg-black/30 backdrop-blur-[2px]" />
+      {/* Video background */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+      >
+        <source src={treesVideo} type="video/mp4" />
+        Your browser does not support the background video.
+      </video>
+
+      {/* Stronger readability overlay (warm subtle gradient + light blur) */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#FFF4E6E6] via-[#FADADDCC] to-[#EAD9F5CC]" />
+
       <div
-        className={`relative transition-all duration-1000 ${
+        className={`relative max-w-xl w-full transition-all duration-1000 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
-      <h1 className="text-4xl font-bold text-white drop-shadow mb-4 animate-fade-in">
-        ExpressWall
-      </h1>
-      <p className="text-lg font-semibold text-white mb-8 max-w-md mx-auto leading-relaxed space-y-1">
-        <span>
-        <span className="font-bold bg-white/20/50 bg-white/20 px-2 py-0.5 rounded-md backdrop-blur-sm shadow-sm">
-          Express
-        </span>{' '}
-        |{' '}
-        <span className="font-bold bg-white/20 px-2 py-0.5 rounded-md backdrop-blur-sm shadow-sm">
-          Release
-        </span>{' '}
-        |{' '}
-        <span className="font-bold bg-white/20 px-2 py-0.5 rounded-md backdrop-blur-sm shadow-sm">
-          Balance
-        </span>
-        </span>
-        <span className="block mt-3 tracking-wide">
-        Here, your heart can breathe.
-        </span>
-        <span className="block">Your words are safe, and</span>
-        <span className="block">your feelings are just yours.</span>
-      </p>
-      <Button
-        onClick={handleStart}
-        className="wellness-button text-lg px-12 py-4 animate-slide-up"
-      >
-        Begin Your Session
-      </Button>
+        <h1 className="text-4xl font-extrabold text-foreground drop-shadow-sm mb-5 tracking-tight">
+          ExpressWall
+        </h1>
+
+        <p className="text-lg font-medium text-foreground/90 mb-8 leading-relaxed space-y-1">
+          <span className="inline-flex flex-wrap items-center justify-center gap-2">
+            <span className="px-3 py-1 rounded-full bg-primary/30 text-foreground text-sm font-semibold shadow-sm">
+              Express
+            </span>
+            <span className="text-foreground/40 font-semibold">/</span>
+            <span className="px-3 py-1 rounded-full bg-accent/40 text-foreground text-sm font-semibold shadow-sm">
+              Release
+            </span>
+            <span className="text-foreground/40 font-semibold">/</span>
+            <span className="px-3 py-1 rounded-full bg-muted text-foreground text-sm font-semibold shadow-sm">
+              Balance
+            </span>
+          </span>
+
+          <span className="block mt-5 font-semibold tracking-wide text-foreground">
+            Here, your heart can breathe.
+          </span>
+          <span className="block text-foreground/85">
+            Your words are safe, and your feelings are just yours.
+          </span>
+        </p>
+
+        <Button
+          onClick={handleStart}
+          className="wellness-button text-base md:text-lg px-10 py-4 font-semibold focus-visible:ring-2 focus-visible:ring-primary/50"
+        >
+          Begin Your Session
+        </Button>
       </div>
     </div>
   );
