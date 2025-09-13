@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Mic, Square, Play, Pause, ArrowRight, RefreshCw } from 'lucide-react';
 import { useSession } from '@/contexts/SessionContext';
+import { HoldButton } from '@/components/ui/hold-button';
 
 interface VoiceViewProps {
   onContinue: () => void;
@@ -283,25 +284,24 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
   const glowOpacity = isRecording ? 0.45 + vizLevel * 0.45 : 0.25;
 
   return (
-    <div className="min-h-screen bg-gradient-secondary p-6 flex flex-col">
-      <div className="max-w-md mx-auto flex-1 flex flex-col text-center">
-        <div className="mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4 shadow-glow">
-            <Mic className="w-8 h-8 text-primary-foreground" />
+    <div className="page-shell bg-gradient-secondary p-6 flex flex-col">
+      <div className="max-w-2xl w-full mx-auto flex-1 flex flex-col text-center">
+        <div className="mb-12">
+          <div className="header-icon-sm">
+            <Mic className="w-9 h-9 text-primary-foreground" />
           </div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">Voice Wall</h2>
-          <p className="text-muted-foreground">Speak your truth. Your voice matters here.</p>
+          <h2 className="header-title text-primary-foreground mb-3">Voice Wall</h2>
+          <p className="header-subtitle text-primary-foreground/90">Speak your truth. Your voice matters here.</p>
         </div>
 
         {permissionDenied ? (
-          <div className="wellness-card mb-8">
+          <div className="wellness-card mb-10">
             <p className="text-destructive mb-2">Microphone access was denied</p>
-            <p className="text-muted-foreground text-sm">Please allow microphone access in browser settings.</p>
+            <p className="text-sm text-muted-foreground">Please allow microphone access in browser settings.</p>
           </div>
         ) : (
-          <div className="flex-1 flex items-center justify-center mb-8">
-            <div className="w-40 h-40 relative flex items-center justify-center">
-              {/* Soft radial glow */}
+          <div className="flex-1 flex items-center justify-center mb-10">
+            <div className="w-44 h-44 relative flex items-center justify-center">
               <div
                 className="absolute inset-0 rounded-full blur-2xl"
                 style={{
@@ -310,8 +310,6 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
                   transition: 'opacity 180ms ease',
                 }}
               />
-
-              {/* Reactive outer ring */}
               <div
                 className="absolute inset-0 rounded-full border-2"
                 style={{
@@ -321,8 +319,6 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
                   transition: 'transform 120ms ease, opacity 180ms ease',
                 }}
               />
-
-              {/* Secondary faint ring */}
               <div
                 className="absolute inset-0 rounded-full border"
                 style={{
@@ -332,8 +328,6 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
                   transition: 'transform 160ms ease, opacity 200ms ease',
                 }}
               />
-
-              {/* Main mic button with conic sheen */}
               <div
                 className={`breathing-circle transition-all duration-150 ${isRecording ? 'scale-105' : ''}`}
                 style={{
@@ -355,18 +349,18 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
         )}
 
         {isRecording && (
-          <div className="mb-8">
-            <p className="text-muted-foreground animate-gentle-pulse mb-2">Recording... Speak from your heart</p>
-            <p className="text-muted-foreground font-mono">{formatTime(recordingDuration)}</p>
+          <div className="mb-10">
+            <p className="text-primary-foreground/80 animate-gentle-pulse mb-3">Recording... Speak from your heart</p>
+            <p className="text-primary-foreground/80 font-mono text-sm">{formatTime(recordingDuration)}</p>
           </div>
         )}
 
         {hasRecorded && !isRecording && (
-          <div className="wellness-card mb-8">
+          <div className="wellness-card mb-10">
             <p className="text-healing mb-4">✓ Recording captured</p>
-            <p className="text-sm text-muted-foreground mb-4">Length: {formatTime(recordingDuration)}</p>
-            <div className="flex gap-3 justify-center">
-              <Button variant="outline" size="sm" onClick={handlePlayback}>
+            <p className="text-sm text-muted-foreground mb-5">Length: {formatTime(recordingDuration)}</p>
+            <div className="flex flex-wrap gap-3 justify-center">
+              <Button variant="outline" size="sm" onClick={handlePlayback} className="px-5">
                 {isPlaying ? (
                   <>
                     <Pause className="w-4 h-4 mr-2" /> Pause
@@ -377,17 +371,23 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
                   </>
                 )}
               </Button>
-              <Button variant="outline" size="sm" onClick={handleRerecord}>
+              <Button variant="outline" size="sm" onClick={handleRerecord} className="px-5">
                 <RefreshCw className="w-4 h-4 mr-2" /> Re-record
               </Button>
             </div>
           </div>
         )}
 
-        <Button onClick={onContinue} className="wellness-button w-full" disabled={!hasRecorded}>
-          Continue to Release
-          <ArrowRight className="w-4 h-4 ml-2" />
-        </Button>
+        <HoldButton 
+          onComplete={onContinue}
+          disabled={!hasRecorded}
+          progressClassName="bg-primary-foreground/30"
+        >
+          <span className="flex items-center justify-center">
+            <span className="mr-2">Hold to Continue</span>
+            <ArrowRight className="w-5 h-5" />
+          </span>
+        </HoldButton>
       </div>
     </div>
   );

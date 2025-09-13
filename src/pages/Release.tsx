@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Wind, Heart, Zap, Brain, ArrowRight } from 'lucide-react';
 import { useSession } from '@/contexts/SessionContext';
 import { BreathingExercise } from '@/components/BreathingExercise';
@@ -42,8 +42,57 @@ const breathingTechniques = [
 
 const Release = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const fromExpress = (location.state as any)?.fromExpress;
+  const hasVisitedBefore = typeof window !== 'undefined' && sessionStorage.getItem('visitedRelease') === '1';
   const { updateSession } = useSession();
   const [selectedTechnique, setSelectedTechnique] = useState<typeof breathingTechniques[0] | null>(null);
+  const [showTransition, setShowTransition] = useState<boolean>(!!fromExpress && !hasVisitedBefore);
+
+  useEffect(() => {
+    if (!showTransition && fromExpress && !hasVisitedBefore) {
+      // Mark as visited after first splash completes
+      try { sessionStorage.setItem('visitedRelease', '1'); } catch {}
+    }
+  }, [showTransition, fromExpress, hasVisitedBefore]);
+
+  // Move timeout logic into effect (was causing side-effects in render + potential blank screen in StrictMode)
+  useEffect(() => {
+    if (!showTransition) return;
+    const t = setTimeout(() => setShowTransition(false), 2600);
+    // Hard fallback: force clear after 5s in case of lag
+    const fallback = setTimeout(() => setShowTransition(false), 5000);
+    return () => { clearTimeout(t); clearTimeout(fallback); };
+  }, [showTransition]);
+
+  // Early render transition screen
+  if (showTransition) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-calm relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-32 -left-24 w-[28rem] h-[28rem] rounded-full blur-3xl opacity-25 bg-gradient-healing animate-floating" />
+          <div className="absolute -bottom-40 -right-32 w-[30rem] h-[30rem] rounded-full blur-3xl opacity-20 bg-gradient-warm animate-floating" style={{ animationDelay: '1.2s' }} />
+        </div>
+        <div className="relative flex flex-col items-center text-center px-6 max-w-xl">
+          <div className="mb-10 w-44 h-44 relative">
+            <div className="absolute inset-0 rounded-full bg-gradient-healing opacity-20 animate-ping" />
+            <div className="absolute inset-0 rounded-full bg-gradient-primary opacity-30 animate-[breathe_4s_ease-in-out_infinite]" />
+            <div className="absolute inset-4 rounded-full bg-gradient-secondary opacity-40 animate-[breathe_5s_ease-in-out_infinite]" style={{ animationDelay: '0.8s' }} />
+            <div className="absolute inset-8 rounded-full bg-gradient-calm flex items-center justify-center shadow-glow">
+              <span className="text-primary-foreground font-medium tracking-wide">Breathe</span>
+            </div>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-bold text-primary-foreground mb-5 animate-fade-in">Release Awaits</h2>
+          <p className="text-primary-foreground/90 text-lg leading-relaxed mb-6 animate-fade-in" style={{ animationDelay: '120ms' }}>
+            You have expressed your thoughts. Now gently slow down and prepare to breathe.
+          </p>
+          <p className="text-sm text-primary-foreground/70 animate-fade-in" style={{ animationDelay: '240ms' }}>
+            Centering your breath helps your mind settle.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const handleTechniqueSelect = (technique: typeof breathingTechniques[0]) => {
     setSelectedTechnique(technique);
@@ -64,52 +113,35 @@ const Release = () => {
   }
 
   return (
-    <div className="min-h-screen relative bg-background overflow-hidden">
-      {/* Ambient decorative blobs */}
-      <div className="pointer-events-none absolute -top-24 -left-20 w-96 h-96 rounded-full blur-3xl opacity-25 bg-gradient-primary" />
-      <div className="pointer-events-none absolute -bottom-28 -right-24 w-[28rem] h-[28rem] rounded-full blur-3xl opacity-20 bg-gradient-healing" />
-
-      <div className="relative p-6 md:flex md:min-h-screen md:items-center">
+    <div className="page-shell page-radial-soft">
+      {/* Simplified background: removed ambient blobs for cleaner look */}
+      <div className="page-inner">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-10">
+          <div className="page-header mb-14">
             <img 
               src={breathingImage} 
               alt="Peaceful breathing" 
-              className="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-2xl mx-auto mb-6 shadow-soft ring-1 ring-border/50 animate-floating"
+              className="option-page-image animate-floating"
             />
-            <h2 className="text-3xl font-bold text-foreground mb-2">
-              Release & Breathe
-            </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Choose a technique to let go and find your calm
-            </p>
+            <h2 className="display-section mb-4">Release & Breathe</h2>
+            <p className="page-subtitle max-w-xl mx-auto">Choose a technique to let go and find your calm</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+          <div className="option-grid">
             {breathingTechniques.map((technique) => (
               <button
                 key={technique.id}
                 type="button"
                 onClick={() => handleTechniqueSelect(technique)}
-                className="group relative rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm p-4 text-left shadow-sm hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/40"
+                className="group option-card"
               >
-                {/* accent gradient stripe */}
-                <div className={`absolute inset-x-0 top-0 h-1.5 rounded-t-2xl ${technique.gradient} opacity-90`} />
-
-                <div className="flex items-center gap-4 pt-1.5">
-                  <div className={`shrink-0 p-3 rounded-xl ${technique.gradient} text-primary-foreground shadow-glow group-hover:scale-110 transition-transform`}>
-                    {technique.icon}
-                  </div>
+                <div className={`option-card-stripe ${technique.gradient}`} />
+                <div className="flex items-center gap-5 pt-1.5">
+                  <div className={`option-card-icon ${technique.gradient}`}>{technique.icon}</div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-foreground mb-1">
-                      {technique.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {technique.description}
-                    </p>
-                    <p className="text-xs text-muted-foreground/70 mt-1">
-                      {technique.pattern.inhale}s inhale • {technique.pattern.hold}s hold • {technique.pattern.exhale}s exhale
-                    </p>
+                    <h3 className="option-card-title">{technique.title}</h3>
+                    <p className="option-card-desc">{technique.description}</p>
+                    <p className="option-card-meta">{technique.pattern.inhale}s inhale • {technique.pattern.hold}s hold • {technique.pattern.exhale}s exhale</p>
                   </div>
                   <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
                 </div>

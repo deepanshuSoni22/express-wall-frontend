@@ -28,29 +28,27 @@ function RouteChangeLoader() {
   const firstRouteRef = useRef(true);
   const DURATION_MS = 1000;
 
+  const skipLoader = location.pathname === '/release' && (location.state as any)?.fromExpress;
+
+  // Initial mount handler
   useEffect(() => {
-    // Initial load: auto-hide after 1s
+    if (skipLoader) { setVisible(false); return; }
     timerRef.current = window.setTimeout(() => setVisible(false), DURATION_MS);
-    return () => {
-      if (timerRef.current) window.clearTimeout(timerRef.current);
-    };
+    return () => { if (timerRef.current) window.clearTimeout(timerRef.current); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Route change handler
   useEffect(() => {
-    // Skip first effect (already handled by initial load)
-    if (firstRouteRef.current) {
-      firstRouteRef.current = false;
-      return;
-    }
-    // On subsequent route changes, show overlay for 1s
+    if (firstRouteRef.current) { firstRouteRef.current = false; return; }
+    if (skipLoader) { setVisible(false); return; }
     setVisible(true);
     if (timerRef.current) window.clearTimeout(timerRef.current);
     timerRef.current = window.setTimeout(() => setVisible(false), DURATION_MS);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
-  if (!visible) return null;
+  if (skipLoader || !visible) return null;
 
   return (
     <div

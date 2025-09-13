@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Paintbrush, Eraser, ArrowRight, RotateCcw, ChevronRight } from 'lucide-react';
 import { useSession } from '@/contexts/SessionContext';
+import { HoldButton } from '@/components/ui/hold-button';
 
 interface DrawingViewProps {
   onContinue: () => void;
@@ -164,14 +165,14 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
   const brushSizes = [3, 6, 10, 16];
 
   return (
-    <div className="min-h-screen bg-gradient-healing p-4 sm:p-6 flex flex-col">
+    <div className="page-shell bg-gradient-healing p-4 sm:p-6 flex flex-col">
       <div className="mx-auto w-full max-w-3xl flex-1 flex flex-col" ref={containerRef}>
-        <div className="text-center mb-4 sm:mb-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-3 sm:mb-4 shadow-glow">
-            <Paintbrush className="w-8 h-8 text-primary-foreground" />
+        <div className="text-center mb-10 sm:mb-12">
+          <div className="header-icon-sm mb-4">
+            <Paintbrush className="w-9 h-9 text-primary-foreground" />
           </div>
-          <h2 className="text-2xl font-bold text-foreground mb-1">Drawing Wall</h2>
-          <p className="text-muted-foreground text-sm">Express with colors and shapes. No rules, just feeling.</p>
+          <h2 className="header-title text-primary-foreground mb-3">Drawing Wall</h2>
+          <p className="header-subtitle text-primary-foreground/90 text-sm sm:text-base">Express with colors and shapes. No rules, just feeling.</p>
         </div>
 
         {/* Toolbar */}
@@ -275,14 +276,16 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
           </div>
         </div>
 
-        <Button 
-          onClick={handleContinue}
-          className="wellness-button w-full"
+        <HoldButton 
+          onComplete={handleContinue}
           disabled={!hasDrawn}
+          progressClassName="bg-primary-foreground/30"
         >
-          Continue to Release
-          <ArrowRight className="w-4 h-4 ml-2" />
-        </Button>
+          <span className="flex items-center justify-center">
+            <span className="mr-2">Hold to Continue</span>
+            <ArrowRight className="w-5 h-5" />
+          </span>
+        </HoldButton>
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useSession } from '@/contexts/SessionContext';
 import { ArrowRight, BookOpen } from 'lucide-react';
+import { HoldButton } from '@/components/ui/hold-button';
 
 interface JournalViewProps {
   onContinue: () => void;
@@ -18,37 +18,35 @@ export const JournalView = ({ onContinue }: JournalViewProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-warm p-6 flex flex-col">
-      <div className="max-w-md mx-auto flex-1 flex flex-col">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4 shadow-glow">
-            <BookOpen className="w-8 h-8 text-primary-foreground" />
+    <div className="page-shell bg-gradient-warm flex flex-col p-6">
+      <div className="max-w-2xl w-full mx-auto flex-1 flex flex-col">
+        <div className="text-center mb-12">
+          <div className="header-icon-sm">
+            <BookOpen className="w-9 h-9 text-primary-foreground" />
           </div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">
-            Your Journal Wall
-          </h2>
-          <p className="text-muted-foreground">
-            Write freely. Let your thoughts flow without judgment.
-          </p>
+          <h2 className="header-title text-primary-foreground mb-3">Your Journal Wall</h2>
+          <p className="header-subtitle text-primary-foreground/90">Write freely. Let your thoughts flow without judgment.</p>
         </div>
 
-        <div className="flex-1 mb-8">
+        <div className="flex-1 mb-10">
           <Textarea
             placeholder="Dear wall, today I feel... What's in your heart right now?"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="min-h-[300px] bg-card border-border/50 rounded-2xl p-6 text-base leading-relaxed resize-none focus:ring-2 focus:ring-primary/50 transition-all"
+            className="min-h-[320px] bg-card border-border/50 rounded-3xl p-6 body-lg resize-none focus:ring-2 focus:ring-primary/50 transition-all shadow-soft"
           />
         </div>
 
-        <Button 
-          onClick={handleContinue}
-          className="wellness-button w-full"
+        <HoldButton 
+          onComplete={handleContinue}
           disabled={content.trim().length < 10}
+          progressClassName="bg-primary-foreground/30"
         >
-          Continue to Release
-          <ArrowRight className="w-4 h-4 ml-2" />
-        </Button>
+          <span className="flex items-center justify-center">
+            <span className="mr-2">Hold to Continue</span>
+            <ArrowRight className="w-5 h-5" />
+          </span>
+        </HoldButton>
       </div>
     </div>
   );

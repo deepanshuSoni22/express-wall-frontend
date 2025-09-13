@@ -152,35 +152,35 @@ export const MusicView = ({ onContinue }: MusicViewProps) => {
   const progress = duration ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-healing p-6 flex flex-col">
-      <div className="max-w-md mx-auto flex-1 flex flex-col text-center">
-        <div className="mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4 shadow-glow">
-            <Volume2 className="w-8 h-8 text-primary-foreground animate-gentle-pulse" />
+    <div className="page-shell bg-gradient-healing p-6 flex flex-col">
+      <div className="max-w-2xl w-full mx-auto flex-1 flex flex-col text-center">
+        <div className="mb-12">
+          <div className="header-icon-sm">
+            <Volume2 className="w-9 h-9 text-primary-foreground animate-gentle-pulse" />
           </div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">Calming Sounds</h2>
-          <p className="text-muted-foreground">Let soothing sounds wash over you</p>
+          <h2 className="header-title text-primary-foreground mb-3">Calming Sounds</h2>
+          <p className="header-subtitle text-primary-foreground/90">Let soothing sounds wash over you</p>
         </div>
 
-        <div className="space-y-3 mb-8">
+        <div className="space-y-4 mb-10 text-left">
           {calmingTracks.map((track) => {
             const dur = durations[track.id] ?? 0;
             return (
               <div
                 key={track.id}
                 onClick={() => selectTrack(track)}
-                className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                className={`p-5 rounded-3xl border transition-all cursor-pointer ${
                   selectedTrack.id === track.id
                     ? 'bg-card border-primary/30 shadow-soft'
-                    : 'bg-card/50 border-border/30 hover:bg-card'
+                    : 'bg-card/60 border-border/40 hover:bg-card'
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <div className="text-left">
-                    <div className="font-medium text-foreground">{track.title}</div>
+                    <div className="font-semibold text-foreground mb-0.5">{track.title}</div>
                     <div className="text-sm text-muted-foreground">{track.description}</div>
                   </div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs text-muted-foreground font-medium">
                     {dur ? formatTime(dur) : '—'}
                   </div>
                 </div>
@@ -189,14 +189,14 @@ export const MusicView = ({ onContinue }: MusicViewProps) => {
           })}
         </div>
 
-        <div className="wellness-card mb-8">
-          <div className="mb-4">
+        <div className="wellness-card mb-10">
+          <div className="mb-5 text-left">
             <h3 className="font-semibold text-foreground mb-2">{selectedTrack.title}</h3>
             <p className="text-sm text-muted-foreground">{selectedTrack.description}</p>
           </div>
 
-          <div className="mb-4">
-            <div className="w-full bg-border/30 rounded-full h-2 mb-2">
+          <div className="mb-6">
+            <div className="w-full bg-border/30 rounded-full h-2 mb-2 overflow-hidden">
               <div
                 className="bg-primary h-2 rounded-full transition-all duration-500"
                 style={{ width: `${progress}%` }}
@@ -208,15 +208,15 @@ export const MusicView = ({ onContinue }: MusicViewProps) => {
             </div>
           </div>
 
-          <Button onClick={togglePlay} className="wellness-button w-full">
+          <Button onClick={togglePlay} className="wellness-button w-full text-base py-5">
             {isPlaying ? (
               <>
-                <Pause className="w-4 h-4 mr-2" />
+                <Pause className="w-5 h-5 mr-2" />
                 Pause
               </>
             ) : (
               <>
-                <Play className="w-4 h-4 mr-2" />
+                <Play className="w-5 h-5 mr-2" />
                 Play
               </>
             )}
@@ -225,11 +225,11 @@ export const MusicView = ({ onContinue }: MusicViewProps) => {
 
         <Button
           onClick={onContinue}
-          className="wellness-button w-full"
+          className="wellness-button w-full text-base py-5"
           disabled={!hasListened}
         >
           Complete Session
-          <ArrowRight className="w-4 h-4 ml-2" />
+          <ArrowRight className="w-5 h-5 ml-2" />
         </Button>
       </div>
     </div>

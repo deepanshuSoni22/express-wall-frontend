@@ -45,48 +45,41 @@ const Onboarding = () => {
   const currentContent = onboardingSteps[currentStep];
 
   return (
-    <div className={`min-h-screen ${currentContent.gradient} flex flex-col items-center justify-center p-6 text-center transition-all duration-500`}>
-      <div className="max-w-md mx-auto">
-        <div className="mb-8">
+    <div className={`page-shell ${currentContent.gradient} flex flex-col items-center justify-center p-6 text-center transition-all duration-500`}> {/* kept gradient per step */}
+      <div className="max-w-2xl mx-auto">
+        <div className="mb-10">
           {currentContent.icon}
         </div>
 
-        <h2 className="text-3xl font-bold text-primary-foreground mb-4">
-          {currentContent.title}
-        </h2>
+        <h2 className="display-section mb-6 text-primary-foreground">{currentContent.title}</h2>
+        <p className="page-subtitle mb-14 text-primary-foreground/90">{currentContent.description}</p>
 
-        <p className="text-lg text-primary-foreground/90 mb-12 leading-relaxed">
-          {currentContent.description}
-        </p>
-
-        <div className="flex justify-center items-center space-x-2 mb-8">
+        <div className="step-dots mb-10">
           {onboardingSteps.map((_, index) => (
             <div
               key={index}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentStep ? 'bg-primary-foreground' : 'bg-primary-foreground/30'
-              }`}
+              className={`step-dot ${index === currentStep ? 'step-dot-active' : ''}`}
             />
           ))}
         </div>
 
-        <div className="flex justify-between items-center">
+        <div className="flex w-full flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6">
           <Button
             variant="outline"
             onClick={handlePrev}
-            className={`${currentStep === 0 ? 'invisible' : 'visible'} bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20`}
+            className={`${currentStep === 0 ? 'hidden' : ''} w-full sm:w-auto bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 text-base px-6 py-5`}
           >
-            <ChevronLeft className="w-4 h-4 mr-2" />
+            <ChevronLeft className="w-5 h-5 mr-2" />
             Back
           </Button>
 
-          <Button 
-            onClick={handleNext}
-            className="wellness-button"
-          >
-            {currentStep === onboardingSteps.length - 1 ? 'Start Session' : 'Next'}
-            <ChevronRight className="w-4 h-4 ml-2" />
-          </Button>
+            <Button
+              onClick={handleNext}
+              className={`wellness-button w-full sm:w-auto text-base px-8 py-5 ${currentStep === 0 ? 'sm:ml-auto' : 'sm:ml-6'}`}
+            >
+              {currentStep === onboardingSteps.length - 1 ? 'Start Session' : 'Next'}
+              <ChevronRight className="w-5 h-5 ml-2" />
+            </Button>
         </div>
       </div>
     </div>

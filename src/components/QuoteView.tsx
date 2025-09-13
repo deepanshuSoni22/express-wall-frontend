@@ -53,49 +53,45 @@ export const QuoteView = ({ onContinue }: QuoteViewProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-secondary p-6 flex flex-col">
-      <div className="max-w-md mx-auto flex-1 flex flex-col text-center">
+    <div className="page-shell bg-gradient-secondary p-6 flex flex-col">
+      <div className="max-w-2xl w-full mx-auto flex-1 flex flex-col text-center">
         <div className="mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4 shadow-glow">
-            <Heart className="w-8 h-8 text-primary-foreground animate-gentle-pulse" />
+          <div className="header-icon-sm">
+            <Heart className="w-9 h-9 text-primary-foreground animate-gentle-pulse" />
           </div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">
-            Words of Wisdom
-          </h2>
-          <p className="text-muted-foreground">
-            Let these words nourish your spirit
-          </p>
+          <h2 className="header-title text-primary-foreground mb-3">Words of Wisdom</h2>
+          <p className="header-subtitle text-primary-foreground/90">Let these words nourish your spirit</p>
         </div>
 
-        <div className={`flex-1 flex items-center justify-center mb-12 transition-all duration-500 ${
+        <div className={`flex-1 flex items-center justify-center mb-14 transition-all duration-500 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
         }`}>
-          <div className="wellness-card max-w-sm">
-            <div className="text-lg font-medium text-foreground leading-relaxed mb-4">
+          <div className="wellness-card max-w-lg mx-auto">
+            <div className="text-xl font-medium text-foreground leading-relaxed mb-5 italic">
               "{currentQuote.text}"
             </div>
-            <div className="text-muted-foreground font-medium">
+            <div className="text-muted-foreground font-medium tracking-wide">
               — {currentQuote.author}
             </div>
           </div>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-5">
           <Button 
             onClick={getNewQuote}
             variant="outline"
-            className="w-full bg-card/50 border-border/50 hover:bg-card"
+            className="w-full bg-card/50 border-border/50 hover:bg-card text-base py-5"
           >
-            <RefreshCw className="w-4 h-4 mr-2" />
+            <RefreshCw className="w-5 h-5 mr-2" />
             Another Quote
           </Button>
 
           <Button 
             onClick={onContinue}
-            className="wellness-button w-full"
+            className="wellness-button w-full text-base py-5"
           >
             Complete Session
-            <ArrowRight className="w-4 h-4 ml-2" />
+            <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
         </div>
       </div>
