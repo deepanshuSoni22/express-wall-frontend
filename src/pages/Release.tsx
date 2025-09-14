@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Wind, Heart, Zap, Brain, ArrowRight } from 'lucide-react';
 import { useSession } from '@/contexts/SessionContext';
 import { BreathingExercise } from '@/components/BreathingExercise';
+import { Button } from '@/components/ui/button';
 import breathingImage from '@/assets/breathing-calm.jpg';
 
 const breathingTechniques = [
@@ -43,29 +44,12 @@ const breathingTechniques = [
 const Release = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const fromExpress = (location.state as any)?.fromExpress;
-  const hasVisitedBefore = typeof window !== 'undefined' && sessionStorage.getItem('visitedRelease') === '1';
+  const fromExpress = (location.state as any)?.fromExpress === true;
+
   const { updateSession } = useSession();
   const [selectedTechnique, setSelectedTechnique] = useState<typeof breathingTechniques[0] | null>(null);
-  const [showTransition, setShowTransition] = useState<boolean>(!!fromExpress && !hasVisitedBefore);
+  const [showTransition, setShowTransition] = useState<boolean>(fromExpress);
 
-  useEffect(() => {
-    if (!showTransition && fromExpress && !hasVisitedBefore) {
-      // Mark as visited after first splash completes
-      try { sessionStorage.setItem('visitedRelease', '1'); } catch {}
-    }
-  }, [showTransition, fromExpress, hasVisitedBefore]);
-
-  // Move timeout logic into effect (was causing side-effects in render + potential blank screen in StrictMode)
-  useEffect(() => {
-    if (!showTransition) return;
-    const t = setTimeout(() => setShowTransition(false), 2600);
-    // Hard fallback: force clear after 5s in case of lag
-    const fallback = setTimeout(() => setShowTransition(false), 5000);
-    return () => { clearTimeout(t); clearTimeout(fallback); };
-  }, [showTransition]);
-
-  // Early render transition screen
   if (showTransition) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-calm relative overflow-hidden">
@@ -89,6 +73,12 @@ const Release = () => {
           <p className="text-sm text-primary-foreground/70 animate-fade-in" style={{ animationDelay: '240ms' }}>
             Centering your breath helps your mind settle.
           </p>
+          <Button
+            onClick={() => setShowTransition(false)}
+            className="mt-8 px-10 py-4 font-semibold wellness-button"
+          >
+            Begin Breathing
+          </Button>
         </div>
       </div>
     );
