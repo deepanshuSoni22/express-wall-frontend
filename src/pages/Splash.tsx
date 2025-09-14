@@ -38,7 +38,7 @@ const Splash = () => {
         <div className="mb-5 flex justify-center">
           <div className="relative w-64 h-32 md:w-80 md:h-36 mx-auto">
             {/* First row - THE (left aligned) */}
-            <div className="absolute top-0 left-0">
+            <div className="absolute top-0 left-6">
               <span className="text-3xl md:text-4xl font-extrabold text-foreground drop-shadow-sm tracking-tight">
                 THE
               </span>
@@ -53,7 +53,7 @@ const Splash = () => {
             
             {/* Third row - WALL (right aligned) */}
             <div className="absolute bottom-0 right-0">
-              <span className="text-4xl md:text-5xl font-extrabold text-foreground drop-shadow-sm tracking-tight italic" style={{ fontFamily: 'cursive' }}>
+              <span className="text-4xl md:text-5xl font-extrabold text-foreground drop-shadow-sm tracking-tight italic" style={{ fontFamily: 'Corinthia' }}>
                 Wall
               </span>
             </div>

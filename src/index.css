@@ -17,9 +17,9 @@
     --popover-foreground: 0 0% 17%;
 
     /* Primary – calming teal */
-    --primary: 8 100% 77%; /* #FF9A8B */
-    --primary-glow: 8 100% 72%;
-    --primary-foreground: 0 0% 17%; /* dark text on soft coral */
+    --primary: 178 75% 42%; /* #1AAEAC */
+    --primary-glow: 178 75% 37%;
+    --primary-foreground: 0 0% 100%; /* white text on teal */
 
     /* Secondary – tranquil indigo */
     --secondary: 277 59% 90%; /* #EAD9F5 */
