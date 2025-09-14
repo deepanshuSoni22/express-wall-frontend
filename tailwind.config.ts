@@ -14,7 +14,7 @@ export default {
       },
     },
     extend: {
-      fontFamily: { sans: ['Manrope', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+      fontFamily: { sans: ['Manrope', 'Corinthia', 'Bebas Neue', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
