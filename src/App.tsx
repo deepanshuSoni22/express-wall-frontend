@@ -14,6 +14,7 @@ import Release from "./pages/Release";
 import Balance from "./pages/Balance";
 import Ending from "./pages/Ending";
 import NotFound from "./pages/NotFound";
+import Home from "./pages/Home"; // added
 
 // Session Context
 import { SessionProvider } from "./contexts/SessionContext";
@@ -75,8 +76,9 @@ const App = () => (
           {/* Global 1s loader on mount and on every route change */}
           <RouteChangeLoader />
           <Routes>
-            <Route path="/" element={<Splash />} />
+            <Route path="/" element={<Home />} />
             <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/splash" element={<Splash />} />
             <Route path="/express" element={<Express />} />
             <Route path="/release" element={<Release />} />
             <Route path="/balance" element={<Balance />} />

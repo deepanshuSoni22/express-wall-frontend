@@ -9,7 +9,7 @@ const Splash = () => {
 
   useEffect(() => { setIsVisible(true); }, []);
 
-  const handleStart = () => navigate('/onboarding');
+  const handleStart = () => navigate('/express');
 
   return (
     <div className="min-h-screen app-splash-bg relative flex flex-col items-center justify-center p-6 text-center overflow-hidden">
@@ -87,7 +87,7 @@ const Splash = () => {
           onClick={handleStart}
           className="wellness-button text-base md:text-lg px-10 py-4 font-semibold focus-visible:ring-2 focus-visible:ring-primary/50"
         >
-          Begin Your Session
+          Enter The Express Wall
         </Button>
       </div>
     </div>

@@ -45,7 +45,8 @@ const Onboarding = () => {
     if (currentStep < onboardingSteps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      navigate('/express');
+      // Updated flow: go to Splash (logo) screen before Express
+      navigate('/splash');
     }
   };
 
