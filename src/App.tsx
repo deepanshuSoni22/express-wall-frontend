@@ -85,7 +85,7 @@ const App = () => (
             <Route path="/balance" element={<Balance />} />
             <Route path="/growth" element={<GrowthOnboarding />} />
             <Route path="/growth/courses" element={<CoursesPage />} />
-            <Route path="/growth/course/:courseId" element={<CourseDetailPage />} />
+            <Route path="/growth/:courseId" element={<CourseDetailPage />} />
             <Route path="/ending" element={<Ending />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
