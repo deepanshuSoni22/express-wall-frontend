@@ -32,10 +32,25 @@ const Splash = () => {
       <div
         className={`relative max-w-xl w-full transition-all duration-1000 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-        }`}
+        } flex flex-col items-center`}
       >
+        {/* Top keywords */}
+        <div className="inline-flex flex-wrap items-center justify-center gap-2 mb-8">
+          <span className="text-foreground text-lg font-bold shadow-sm uppercase">
+            Express
+          </span>
+          <span className="text-foreground font-semibold">|</span>
+          <span className="text-foreground text-lg font-bold shadow-sm uppercase">
+            Release
+          </span>
+          <span className="text-foreground font-semibold">|</span>
+            <span className="text-foreground text-lg font-bold shadow-sm uppercase">
+            Balance
+          </span>
+        </div>
+
         {/* Logo structure with The/Express/Wall as a cohesive unit */}
-        <div className="mb-5 flex justify-center">
+        <div className="mb-8 flex justify-center">
           <div className="relative w-64 h-32 md:w-80 md:h-36 mx-auto">
             {/* First row - THE (left aligned) */}
             <div className="absolute top-0 left-6">
@@ -60,26 +75,15 @@ const Splash = () => {
           </div>
         </div>
 
-        <p className="text-lg font-medium text-foreground/90 mb-8 leading-relaxed space-y-1">
-          <span className="inline-flex flex-wrap items-center justify-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-primary/30 text-foreground text-sm font-semibold shadow-sm">
-              Express
-            </span>
-            <span className="text-foreground/40 font-semibold">/</span>
-            <span className="px-3 py-1 rounded-full bg-accent/40 text-foreground text-sm font-semibold shadow-sm">
-              Release
-            </span>
-            <span className="text-foreground/40 font-semibold">/</span>
-            <span className="px-3 py-1 rounded-full bg-muted text-foreground text-sm font-semibold shadow-sm">
-              Balance
-            </span>
-          </span>
-
-          <span className="block mt-5 font-bold tracking-wide text-foreground">
+        <p className="text-lg font-medium text-foreground/90 mb-8 leading-relaxed">
+          <span className="block font-bold tracking-wide text-primary-foreground">
             Here, your heart can breathe.
           </span>
-          <span className="block font-bold text-foreground/85">
-            Your words are safe, and your feelings are just yours.
+          <span className="block font-bold text-primary-foreground">
+            Your words are safe,
+          </span>
+          <span className="block font-bold text-primary-foreground">
+            and your feelings are just yours.
           </span>
         </p>
 

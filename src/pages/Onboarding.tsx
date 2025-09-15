@@ -81,10 +81,10 @@ const Onboarding = () => {
           {currentContent.icon}
         </div>
 
-        <h2 className="display-section mb-6 text-primary-foreground">
+        <h2 className="display-section mb-6 text-primary-foreground-dark">
           {currentContent.title}
         </h2>
-        <p className="page-subtitle mb-14 text-primary-foreground/90">
+        <p className="page-subtitle mb-14 text-primary-foreground-dark/90">
           {currentContent.description}
         </p>
 

@@ -20,6 +20,7 @@
     --primary: 178 75% 42%; /* #1AAEAC */
     --primary-glow: 178 75% 37%;
     --primary-foreground: 0 0% 100%; /* white text on teal */
+    --primary-foreground-dark: 277 45% 22%; /* deep violet for readable text on light calm backgrounds */
 
     /* Secondary – tranquil indigo */
     --secondary: 277 59% 90%; /* #EAD9F5 */

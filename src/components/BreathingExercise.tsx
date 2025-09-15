@@ -365,7 +365,7 @@ export const BreathingExercise = ({ technique, onContinue }: BreathingExercisePr
           )}
         </div>
 
-        {cycleCount >= 3 && (
+        {cycleCount >= 1 && (
           <Button onClick={onContinue} className="wellness-button w-full text-base py-5">
             Continue to Balance
             <ArrowRight className="w-5 h-5 ml-2" />

@@ -63,15 +63,24 @@ const Release = () => {
             <div className="absolute inset-0 rounded-full bg-gradient-primary opacity-30 animate-[breathe_4s_ease-in-out_infinite]" />
             <div className="absolute inset-4 rounded-full bg-gradient-secondary opacity-40 animate-[breathe_5s_ease-in-out_infinite]" style={{ animationDelay: '0.8s' }} />
             <div className="absolute inset-8 rounded-full bg-gradient-calm flex items-center justify-center shadow-glow">
-              <span className="text-primary-foreground font-medium tracking-wide">Breathe</span>
+              <span className="text-primary-foreground-dark font-medium tracking-wide">Breathe</span>
             </div>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-primary-foreground mb-5 animate-fade-in">Release Awaits</h2>
-          <p className="text-primary-foreground/90 text-lg leading-relaxed mb-6 animate-fade-in" style={{ animationDelay: '120ms' }}>
-            You have expressed your thoughts. Now gently slow down and prepare to breathe.
+          <h2 className="text-3xl sm:text-4xl font-bold text-primary-foreground-dark mb-5 animate-fade-in">
+            Great – you’ve expressed your thoughts
+          </h2>
+          <p
+            className="text-primary-foreground-dark/90 text-lg leading-relaxed mb-6 animate-fade-in"
+            style={{ animationDelay: '120ms' }}
+          >
+            Now we’ll gently shift from expression to release. Slow your pace, feel your body,
+            and invite a softer rhythm into your breath.
           </p>
-          <p className="text-sm text-primary-foreground/70 animate-fade-in" style={{ animationDelay: '240ms' }}>
-            Centering your breath helps your mind settle.
+          <p
+            className="text-sm text-primary-foreground-dark/70 animate-fade-in"
+            style={{ animationDelay: '240ms' }}
+          >
+            When you’re ready, begin a guided pattern to calm your nervous system and let tension melt away.
           </p>
           <Button
             onClick={() => setShowTransition(false)}

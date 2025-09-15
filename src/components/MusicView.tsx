@@ -55,7 +55,7 @@ export const MusicView = ({ onContinue }: MusicViewProps) => {
     };
     const onTimeUpdate = () => {
       setCurrentTime(audio.currentTime);
-      if (audio.currentTime >= 30) setHasListened(true);
+      if (audio.currentTime >= 5) setHasListened(true);
     };
     const onEnded = () => {
       setIsPlaying(false);

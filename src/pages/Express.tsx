@@ -11,14 +11,14 @@ const expressOptions = [
   {
     id: 'write' as const,
     title: 'Write on Wall',
-    description: 'Journal your thoughts and feelings',
+    description: 'Write your thoughts and feelings',
     icon: <PenTool className="w-8 h-8" />,
     gradient: 'bg-gradient-primary'
   },
   {
     id: 'speak' as const,
     title: 'Speak on Wall',
-    description: 'Record your voice and emotions',
+    description: 'Speak your feelings and emotions out',
     icon: <Mic className="w-8 h-8" />,
     gradient: 'bg-gradient-secondary'
   },
@@ -66,7 +66,7 @@ const Express = () => {
               alt="Creative expression" 
               className="option-page-image"
             />
-            <h2 className="display-section mb-4">Express Yourself</h2>
+            <h2 className="display-section mb-4">Your Space, Your Story</h2>
             <p className="page-subtitle max-w-xl mx-auto">Choose the way that feels right today.</p>
           </div>
 

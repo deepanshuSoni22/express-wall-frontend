@@ -60,13 +60,13 @@ const Ending = () => {
         </h1>
         
         <div className="wellness-card bg-primary-foreground/10 border-primary-foreground/20 mb-8 max-w-md mx-auto">
-          <p className="text-primary-foreground/90 leading-relaxed">
+          <p className="text-primary-foreground-dark/90 leading-relaxed">
             {getSessionSummary()}
           </p>
         </div>
 
         <div className="space-y-3 max-w-sm mx-auto">
-          <p className="text-primary-foreground/80 text-sm mb-6">
+          <p className="text-primary-foreground-dark/80 text-sm mb-6">
             Remember: You are worthy of love, peace, and all the gentleness this world has to offer. 
             Come back whenever you need this space.
           </p>
