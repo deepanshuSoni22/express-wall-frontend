@@ -99,6 +99,7 @@ const Release = () => {
   };
 
   const handleContinue = () => {
+    window.scrollTo(0, 0); // Ensure scroll position reset
     navigate('/balance');
   };
 

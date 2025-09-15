@@ -13,7 +13,10 @@ const GrowthOnboarding = () => {
     try { const mq = window.matchMedia('(prefers-reduced-motion: reduce)'); if (mq.matches) setEnableVideo(false); } catch {}
   }, []);
 
-  const handleContinue = () => navigate('/growth/courses');
+  const handleContinue = () => {
+    window.scrollTo(0, 0); // Ensure scroll position reset
+    navigate('/growth/courses');
+  };
 
   return (
     <div className={`page-shell bg-gradient-healing flex flex-col items-center justify-center p-6 text-center relative overflow-hidden`}>
