@@ -17,6 +17,7 @@ import NotFound from "./pages/NotFound";
 import GrowthOnboarding from './pages/growth/GrowthOnboarding';
 import CoursesPage from './pages/growth/CoursesPage';
 import CourseDetailPage from './pages/growth/CourseDetailPage';
+import { ScrollToTop } from './components/ScrollToTop';
 
 // Session Context
 import { SessionProvider } from "./contexts/SessionContext";
@@ -75,6 +76,8 @@ const App = () => (
     <TooltipProvider>
       <SessionProvider>
         <BrowserRouter>
+          {/* Scroll restoration component */}
+          <ScrollToTop />
           {/* Global 1s loader on mount and on every route change */}
           <RouteChangeLoader />
           <Routes>
