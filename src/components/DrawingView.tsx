@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Paintbrush, Eraser, ArrowRight, RotateCcw, ChevronRight, ChevronDown } from 'lucide-react';
 import { useSession } from '@/contexts/SessionContext';
 import { HoldButton } from '@/components/ui/hold-button';
+import wallBg from '@/assets/wallBG.jpg';
 
 interface DrawingViewProps {
   onContinue: () => void;
@@ -178,14 +179,15 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
   const brushSizes = [3, 6, 10, 16];
 
   return (
-    <div className="page-shell page-radial-soft flex flex-col min-h-screen">
-      <div className="mx-auto w-full max-w-3xl flex-1 flex flex-col p-4 sm:p-6" ref={containerRef}>
+    <div className="page-shell relative overflow-hidden flex flex-col min-h-screen">
+      <img src={wallBg} alt="Calming wall background" className="absolute inset-0 w-full h-full object-cover" />
+      <div className="mx-auto w-full max-w-3xl flex-1 flex flex-col p-4 sm:p-6 relative" ref={containerRef}>
         <div className="text-center mb-6 sm:mb-10">
-          <div className="header-icon-sm mb-4">
-            <Paintbrush className="w-9 h-9 text-primary-foreground" />
+          <div className="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center shadow-soft bg-gradient-to-br from-indigo-300 via-indigo-200 to-indigo-100">
+            <Paintbrush className="w-9 h-9 text-white" />
           </div>
-          <h2 className="header-title text-primary-foreground mb-3">Drawing Wall</h2>
-          <p className="header-subtitle text-primary-foreground/90 text-sm sm:text-base">Express with colors and shapes. No rules, just feeling.</p>
+          <h2 className="header-title text-primary-foreground-dark mb-3">Drawing Wall</h2>
+          <p className="header-subtitle text-primary-foreground-dark/80 text-sm sm:text-base">Express with colors and shapes. No rules, just feeling.</p>
         </div>
 
         {/* Toolbar */}

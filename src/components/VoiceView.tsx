@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Mic, Square, Play, Pause, ArrowRight, RefreshCw } from 'lucide-react';
 import { useSession } from '@/contexts/SessionContext';
 import { HoldButton } from '@/components/ui/hold-button';
+import wallBg from '@/assets/wallBG.jpg';
 
 interface VoiceViewProps {
   onContinue: () => void;
@@ -284,14 +285,15 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
   const glowOpacity = isRecording ? 0.45 + vizLevel * 0.45 : 0.25;
 
   return (
-    <div className="page-shell bg-gradient-secondary p-6 flex flex-col">
-      <div className="max-w-2xl w-full mx-auto flex-1 flex flex-col text-center">
+    <div className="page-shell relative overflow-hidden p-6 flex flex-col">
+      <img src={wallBg} alt="Calming wall background" className="absolute inset-0 w-full h-full object-cover" />
+      <div className="max-w-2xl w-full mx-auto flex-1 flex flex-col text-center relative">
         <div className="mb-12">
-          <div className="header-icon-sm">
-            <Mic className="w-9 h-9 text-primary-foreground" />
+          <div className="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center shadow-soft bg-gradient-to-br from-sky-300 via-sky-200 to-sky-100">
+            <Mic className="w-9 h-9 text-white" />
           </div>
-          <h2 className="header-title text-primary-foreground mb-3">Voice Wall</h2>
-          <p className="header-subtitle text-primary-foreground/90">Speak your truth. Your voice matters here.</p>
+          <h2 className="header-title text-primary-foreground-dark mb-3">Voice Wall</h2>
+          <p className="header-subtitle text-primary-foreground-dark/80">Speak your truth. Your voice matters here.</p>
         </div>
 
         {permissionDenied ? (
@@ -332,8 +334,8 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
                 className={`breathing-circle transition-all duration-150 ${isRecording ? 'scale-105' : ''}`}
                 style={{
                   transform: `scale(${scale})`,
-                  background: 'conic-gradient(from 180deg at 50% 50%, rgba(255,210,195,1), rgba(210,190,255,0.9), rgba(255,210,195,1))',
-                  boxShadow: `0 10px 40px rgba(255,150,130,${0.25 + vizLevel * 0.25}), 0 0 80px rgba(170,150,255,${0.15 + vizLevel * 0.25})`,
+                  background: 'conic-gradient(from 180deg at 50% 50%, rgba(210,230,255,1), rgba(160,200,255,0.9), rgba(210,230,255,1))',
+                  boxShadow: `0 10px 40px rgba(120,170,255,${0.22 + vizLevel * 0.25}), 0 0 80px rgba(140,180,255,${0.12 + vizLevel * 0.25})`,
                 }}
               >
                 <Button onClick={handleRecord} variant="ghost" size="lg" className="w-full h-full rounded-full hover:bg-transparent">
@@ -350,8 +352,8 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
 
         {isRecording && (
           <div className="mb-10">
-            <p className="text-primary-foreground/80 animate-gentle-pulse mb-3">Recording... Speak from your heart</p>
-            <p className="text-primary-foreground/80 font-mono text-sm">{formatTime(recordingDuration)}</p>
+            <p className="text-primary-foreground-dark/80 animate-gentle-pulse mb-3">Recording... Speak from your heart</p>
+            <p className="text-primary-foreground-dark/80 font-mono text-sm">{formatTime(recordingDuration)}</p>
           </div>
         )}
 

@@ -9,7 +9,7 @@ const Splash = () => {
 
   useEffect(() => { setIsVisible(true); }, []);
 
-  const handleStart = () => navigate('/express');
+  const handleStart = () => navigate('/onboarding');
 
   return (
     <div className="min-h-screen app-splash-bg relative flex flex-col items-center justify-center p-6 text-center overflow-hidden">
@@ -53,7 +53,7 @@ const Splash = () => {
         <div className="mb-8 flex justify-center">
           <div className="relative w-64 h-32 md:w-80 md:h-36 mx-auto">
             {/* First row - THE (left aligned) */}
-            <div className="absolute top-0 left-6">
+            <div className="absolute top-0 left-3">
               <span className="text-3xl md:text-4xl font-extrabold text-foreground drop-shadow-sm tracking-tight">
                 THE
               </span>
@@ -61,8 +61,13 @@ const Splash = () => {
             
             {/* Second row - EXPRESS (center aligned) */}
             <div className="absolute top-[25%] left-1/2 -translate-x-1/2">
-              <span className="text-5xl md:text-6xl font-extrabold text-primary drop-shadow-sm tracking-tight">
-                EXPRESS
+              <span
+              className="text-5xl md:text-6xl font-extrabold text-primary tracking-wider"
+              style={{ 
+                textShadow: '0 2px 4px rgba(0,0,0,0.55), 0 6px 14px rgba(0,0,0,0.35)'
+              }}
+              >
+              EXPRESS
               </span>
             </div>
             
@@ -89,9 +94,9 @@ const Splash = () => {
 
         <Button
           onClick={handleStart}
-          className="wellness-button text-base md:text-lg px-10 py-4 font-semibold focus-visible:ring-2 focus-visible:ring-primary/50"
+          className="clean-button text-primary bg-white font-bold uppercase text-xl px-12 py-3 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
         >
-          Enter The Express Wall
+          Enter
         </Button>
       </div>
     </div>

@@ -7,21 +7,24 @@ import whiteCurtainVideo from '@/assets/white-curtain.mp4'; // added
 const onboardingSteps = [
   {
     title: "Welcome to The Express Wall",
-    description: "A safe space created for your emotions. Here, you don't need to hide what you feel. Express yourself freely without judgment.",
+    description: "A safe space created for your emotions.",
     icon: <Heart className="w-16 h-16 text-primary animate-gentle-pulse" />,
-    gradient: "bg-gradient-primary"
+    gradient: "bg-gradient-primary",
+    showTitle: true
+  },
+  {
+    title: "Here, you don’t need to hide what you feel.", // kept for semantics (not shown)
+    description: "Here, you don’t need to hide what you feel. The Express Wall is where you can let your emotions flow without judgment, while the Growth Zones offer guided modules to help you reflect, heal, and rebuild.",
+    icon: <Wind className="w-16 h-16 text-primary animate-breathe" />,
+    gradient: "bg-gradient-calm",
+    showTitle: false
   },
   {
     title: "Express. Release. Rebuild.",
-    description: "Write, speak, or draw to express your thoughts. Then release tension through guided breathing. This journey is about your healing and strength.",
-    icon: <Wind className="w-16 h-16 text-calm animate-breathe" />,
-    gradient: "bg-gradient-calm"
-  },
-  {
-    title: "Your Journey, Your Pace",
-    description: "Whether you're feeling overwhelmed or simply want to reconnect with yourself, this space will hold you gently while helping you move forward.",
+    description: "This app is about you – your journey, your healing, and your strength. Whether you are feeling overwhelmed, lost, or simply want to reconnect with yourself, this space is designed to hold you gently while helping you move forward.",
     icon: <Sparkles className="w-16 h-16 text-healing animate-floating" />,
-    gradient: "bg-gradient-healing"
+    gradient: "bg-gradient-healing",
+    showTitle: true
   }
 ];
 
@@ -45,8 +48,8 @@ const Onboarding = () => {
     if (currentStep < onboardingSteps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Updated flow: go to Splash (logo) screen before Express
-      navigate('/splash');
+      // Updated flow: go directly to Express
+      navigate('/express');
     }
   };
 
@@ -81,10 +84,12 @@ const Onboarding = () => {
           {currentContent.icon}
         </div>
 
-        <h2 className="display-section mb-6 text-primary-foreground-dark">
-          {currentContent.title}
-        </h2>
-        <p className="page-subtitle mb-14 text-primary-foreground-dark/90">
+        {currentContent.showTitle && (
+          <h2 className="display-section mb-6 text-primary-foreground-dark">
+            {currentContent.title}
+          </h2>
+        )}
+        <p className={`page-subtitle text-primary-foreground-dark ${currentContent.showTitle ? 'mb-14' : 'mb-16 mt-4'}`}>
           {currentContent.description}
         </p>
 
@@ -109,9 +114,9 @@ const Onboarding = () => {
 
           <Button
             onClick={handleNext}
-            className={`wellness-button w-full sm:w-auto text-base px-8 py-5 ${currentStep === 0 ? 'sm:ml-auto' : 'sm:ml-6'}`}
+            className={`clean-button w-full sm:w-auto text-base px-8 py-5 ${currentStep === 0 ? 'sm:ml-auto' : 'sm:ml-6'}`}
           >
-            {currentStep === onboardingSteps.length - 1 ? 'Start Session' : 'Next'}
+            {currentStep === onboardingSteps.length - 1 ? 'Continue' : 'Next'}
             <ChevronRight className="w-5 h-5 ml-2" />
           </Button>
         </div>
