@@ -14,6 +14,9 @@ import Release from "./pages/Release";
 import Balance from "./pages/Balance";
 import Ending from "./pages/Ending";
 import NotFound from "./pages/NotFound";
+import GrowthOnboarding from './pages/growth/GrowthOnboarding';
+import CoursesPage from './pages/growth/CoursesPage';
+import CourseDetailPage from './pages/growth/CourseDetailPage';
 
 // Session Context
 import { SessionProvider } from "./contexts/SessionContext";
@@ -80,6 +83,9 @@ const App = () => (
             <Route path="/express" element={<Express />} />
             <Route path="/release" element={<Release />} />
             <Route path="/balance" element={<Balance />} />
+            <Route path="/growth" element={<GrowthOnboarding />} />
+            <Route path="/growth/courses" element={<CoursesPage />} />
+            <Route path="/growth/course/:courseId" element={<CourseDetailPage />} />
             <Route path="/ending" element={<Ending />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

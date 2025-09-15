@@ -42,7 +42,7 @@ const Balance = () => {
   };
 
   const handleContinue = () => {
-    navigate('/ending');
+    navigate('/growth');
   };
 
   if (selectedOption) {
