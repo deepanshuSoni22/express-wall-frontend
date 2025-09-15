@@ -5,29 +5,29 @@ import { useSession } from '@/contexts/SessionContext';
 import { JournalView } from '@/components/JournalView';
 import { VoiceView } from '@/components/VoiceView';
 import { DrawingView } from '@/components/DrawingView';
-import expressImage from '@/assets/express-creative.jpg';
+import expressBgVideo from '@/assets/white-curtain.mp4'; // Updated to use the new video file
 
 const expressOptions = [
   {
     id: 'write' as const,
-    title: 'Write on Wall',
-    description: 'Write your thoughts and feelings',
+    title: 'Text Wall',
+    description: 'Pour your heart out with words',
     icon: <PenTool className="w-8 h-8" />,
-    gradient: 'bg-gradient-primary'
+    gradient: 'bg-gradient-to-br from-[#1AAEAC] to-[#1AAEAC]/70' // Teal gradient
   },
   {
     id: 'speak' as const,
-    title: 'Speak on Wall',
-    description: 'Speak your feelings and emotions out',
+    title: 'Voice Wall',
+    description: 'Let your voice carry the weight away', 
     icon: <Mic className="w-8 h-8" />,
-    gradient: 'bg-gradient-secondary'
+    gradient: 'bg-gradient-to-br from-[#1AAEAC] to-[#1AAEAC]/70' // Teal gradient
   },
   {
     id: 'draw' as const,
-    title: 'Draw on Wall',
-    description: 'Express through colors and shapes',
+    title: 'Doodle Wall',
+    description: 'Sketch what your heart cannot say',
     icon: <Paintbrush className="w-8 h-8" />,
-    gradient: 'bg-gradient-healing'
+    gradient: 'bg-gradient-to-br from-[#1AAEAC] to-[#1AAEAC]/70' // Teal gradient
   }
 ];
 
@@ -56,37 +56,57 @@ const Express = () => {
   }
 
   return (
-    <div className="page-shell page-radial-soft">
-      {/* Simplified background: decorative blobs removed for cleaner theme */}
-      <div className="page-inner">
+    <div className="page-shell relative overflow-hidden">
+      {/* Video background */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover object-bottom"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+      >
+        <source src={expressBgVideo} type="video/mp4" />
+        Your browser does not support the background video.
+      </video>
+
+      {/* Teal-tinted overlay for readability */}
+      {/* <div className="absolute inset-0 bg-gradient-to-br from-[#1AAEAC40] via-[#1AAEAC30] to-[#EAD9F520] backdrop-blur-sm" /> */}
+
+      <div className="page-inner relative z-10">
         <div className="mx-auto max-w-2xl">
           <div className="page-header mb-14">
-            <img 
-              src={expressImage} 
-              alt="Creative expression" 
-              className="option-page-image"
-            />
-            <h2 className="display-section mb-4">Your Space, Your Story</h2>
-            <p className="page-subtitle max-w-xl mx-auto">Choose the way that feels right today.</p>
+            {/* Updated heading & descriptive copy (layout preserved) */}
+            <h2 className="display-section mb-4 text-primary-foreground-dark">
+              <span className="block text-xl font-semibold tracking-tight mb-1">Your Space</span>
+              <span className="block text-4xl sm:text-5xl md:text-6xl font-extrabold leading-none">Your Story.</span>
+            </h2>
+            <p className="max-w-xl mx-auto font-semibold text-primary-foreground-dark">
+              What’s weighing on your heart today? Share it anonymously on your EXPRESS WALL. 
+            </p>
           </div>
 
-          {/* Options grid */}
+          {/* Section prompt before options */}
+          <p className="text-base sm:text-lg font-semibold text-primary-foreground-dark/90 mb-6 text-center">
+            How would you like to express? <span className="font-normal">Select one below.</span>
+          </p>
+
+          {/* Options grid with teal styling */}
           <div className="option-grid">
             {expressOptions.map((option) => (
               <button
                 key={option.id}
                 type="button"
                 onClick={() => handleOptionSelect(option.id)}
-                className="group option-card"
+                className="group option-card bg-blue-400 text-primary-foreground border-primary-foreground/20 hover:brightness-110 shadow-md"
               >
-                <div className={`option-card-stripe ${option.gradient}`} />
                 <div className="flex items-center gap-5 pt-1.5">
-                  <div className={`option-card-icon ${option.gradient}`}>{option.icon}</div>
+                  <div className={`option-card-icon bg-white/20 text-white`}>{option.icon}</div>
                   <div className="flex-1">
-                    <h3 className="option-card-title">{option.title}</h3>
-                    <p className="option-card-desc">{option.description}</p>
+                    <h3 className="option-card-title text-primary-foreground font-semibold">{option.title}</h3>
+                    <p className="option-card-desc text-primary-foreground/80">{option.description}</p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-5 h-5 text-primary-foreground group-hover:translate-x-1 transition-transform" />
                 </div>
               </button>
             ))}

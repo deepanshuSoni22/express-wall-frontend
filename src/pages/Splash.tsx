@@ -76,13 +76,13 @@ const Splash = () => {
         </div>
 
         <p className="text-lg font-medium text-foreground/90 mb-8 leading-relaxed">
-          <span className="block font-bold tracking-wide text-primary-foreground">
+          <span className="block font-bold tracking-wide text-primary-foreground uppercase">
             Here, your heart can breathe.
           </span>
-          <span className="block font-bold text-primary-foreground">
+          <span className="block font-bold text-primary-foreground uppercase">
             Your words are safe,
           </span>
-          <span className="block font-bold text-primary-foreground">
+          <span className="block font-bold text-primary-foreground uppercase">
             and your feelings are just yours.
           </span>
         </p>

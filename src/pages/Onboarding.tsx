@@ -6,20 +6,20 @@ import whiteCurtainVideo from '@/assets/white-curtain.mp4'; // added
 
 const onboardingSteps = [
   {
-    title: "Express Yourself",
-    description: "Release your thoughts through writing, speaking, or drawing. This is your safe space.",
+    title: "Welcome to The Express Wall",
+    description: "A safe space created for your emotions. Here, you don't need to hide what you feel. Express yourself freely without judgment.",
     icon: <Heart className="w-16 h-16 text-primary animate-gentle-pulse" />,
     gradient: "bg-gradient-primary"
   },
   {
-    title: "Release & Breathe",
-    description: "Let go of stress with guided breathing exercises. Feel the tension melt away.",
+    title: "Express. Release. Rebuild.",
+    description: "Write, speak, or draw to express your thoughts. Then release tension through guided breathing. This journey is about your healing and strength.",
     icon: <Wind className="w-16 h-16 text-calm animate-breathe" />,
     gradient: "bg-gradient-calm"
   },
   {
-    title: "Find Your Balance",
-    description: "End with reflection, inspiration, or calming music to restore inner peace.",
+    title: "Your Journey, Your Pace",
+    description: "Whether you're feeling overwhelmed or simply want to reconnect with yourself, this space will hold you gently while helping you move forward.",
     icon: <Sparkles className="w-16 h-16 text-healing animate-floating" />,
     gradient: "bg-gradient-healing"
   }
