@@ -77,12 +77,12 @@ const Balance = () => {
               <span className="block text-4xl sm:text-5xl md:text-6xl font-extrabold leading-none">Your Balance.</span>
             </h2>
             <p className="max-w-xl mx-auto font-semibold text-primary-foreground-dark">
-              You've expressed and released. Now restore your inner peace and ground yourself in this moment.
+              You've expressed and released. Now rebuild your inner peace and ground yourself in this moment.
             </p>
           </div>
 
           <p className="text-base sm:text-lg font-semibold text-primary-foreground-dark/90 mb-6 text-center">
-            How would you like to find balance? <span className="font-normal">Choose your path.</span>
+            How would you like to Rebuild yourself? <span className="font-normal">Choose your path.</span>
           </p>
 
           <div className="option-grid">

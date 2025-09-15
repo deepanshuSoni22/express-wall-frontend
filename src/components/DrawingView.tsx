@@ -64,8 +64,8 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
     ctx.scale(dpr, dpr);
 
     // Paint background and restore snapshot scaled to new size
-    ctx.fillStyle = '#FEFEFE';
-    ctx.fillRect(0, 0, width, height);
+    // Change from solid white to transparent
+    ctx.clearRect(0, 0, width, height);
 
     if (snapshot) {
       const img = new Image();
@@ -166,8 +166,7 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
     if (!ctx) return;
     const rect = canvas.getBoundingClientRect();
     ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = '#FEFEFE';
-    ctx.fillRect(0, 0, rect.width, rect.height);
+    ctx.clearRect(0, 0, rect.width, rect.height);
     setHasDrawn(false);
   };
 
@@ -187,7 +186,7 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
             <Paintbrush className="w-9 h-9 text-white" />
           </div>
           <h2 className="header-title text-primary-foreground-dark mb-3">Drawing Wall</h2>
-          <p className="header-subtitle text-primary-foreground-dark/80 text-sm sm:text-base">Express with colors and shapes. No rules, just feeling.</p>
+          <p className="header-subtitle text-primary-foreground-dark/80 text-sm sm:text-base">Sketch what your heart can't say</p>
         </div>
 
         {/* Toolbar */}
@@ -273,8 +272,8 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
           </div>
         </div>
 
-        {/* Canvas Area */}
-        <div className="wellness-card mb-6 p-2 sm:p-3 relative">
+        {/* Canvas Area - Updated with transparent background and dashed border */}
+        <div className="mb-6 relative">
           {/* Mobile hint overlay (disappears after draw / scroll) */}
           {showMobileHint && (
             <div className="absolute inset-x-0 bottom-0 pointer-events-none flex justify-end pr-2 pb-2 sm:hidden z-20">
@@ -284,12 +283,15 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
               </div>
             </div>
           )}
-          <div className="relative rounded-xl overflow-hidden">
+          <div 
+            className="relative rounded-xl overflow-hidden border-2 border-dashed border-gray-300/40"
+            style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+          >
             <div className="pointer-events-none absolute inset-0 rounded-xl"
-                 style={{ boxShadow: 'inset 0 0 60px rgba(0,0,0,0.03)' }} />
+                 style={{ boxShadow: 'inset 0 0 20px rgba(0,0,0,0.05)' }} />
             <canvas
               ref={canvasRef}
-              className="block w-full h-auto cursor-crosshair touch-none select-none rounded-xl bg-white"
+              className="block w-full h-auto cursor-crosshair touch-none select-none rounded-xl bg-transparent"
               onPointerDown={(e) => { handlePointerDown(e); setShowMobileHint(false); }}
               onPointerMove={handlePointerMove}
               onPointerUp={endStroke}

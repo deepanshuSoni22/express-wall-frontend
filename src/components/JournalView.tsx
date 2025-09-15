@@ -27,7 +27,7 @@ export const JournalView = ({ onContinue }: JournalViewProps) => {
             <BookOpen className="w-9 h-9 text-white" />
           </div>
           <h2 className="header-title text-primary-foreground-dark mb-3">Your Express Wall</h2>
-          <p className="header-subtitle text-primary-foreground-dark/80">Write freely. Let your thoughts flow without judgment.</p>
+          <p className="header-subtitle text-primary-foreground-dark/80">Pour your heart out into words</p>
         </div>
 
         <div className="flex-1 mb-10">

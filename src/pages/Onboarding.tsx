@@ -89,7 +89,7 @@ const Onboarding = () => {
             {currentContent.title}
           </h2>
         )}
-        <p className={`page-subtitle text-primary-foreground-dark ${currentContent.showTitle ? 'mb-14' : 'mb-16 mt-4'}`}>
+        <p className={`page-subtitle text-primary-foreground-dark ${currentContent.showTitle ? 'mb-14' : 'mb-16 mt-4 font-semibold'}`}>
           {currentContent.description}
         </p>
 

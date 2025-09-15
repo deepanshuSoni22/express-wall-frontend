@@ -293,7 +293,7 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
             <Mic className="w-9 h-9 text-white" />
           </div>
           <h2 className="header-title text-primary-foreground-dark mb-3">Voice Wall</h2>
-          <p className="header-subtitle text-primary-foreground-dark/80">Speak your truth. Your voice matters here.</p>
+          <p className="header-subtitle text-primary-foreground-dark/80">Let your voice carry the weight away.</p>
         </div>
 
         {permissionDenied ? (
