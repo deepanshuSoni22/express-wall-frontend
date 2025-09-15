@@ -20,7 +20,7 @@
     --primary: 178 75% 42%; /* #1AAEAC */
     --primary-glow: 178 75% 37%;
     --primary-foreground: 0 0% 100%; /* white text on teal */
-    --primary-foreground-dark: 277 45% 22%; /* deep violet for readable text on light calm backgrounds */
+    --primary-foreground-dark: 0 0% 17%; /* #2B2B2B - same as foreground for consistency */
 
     /* Secondary – tranquil indigo */
     --secondary: 277 59% 90%; /* #EAD9F5 */
@@ -233,6 +233,36 @@
   .parallax-layer:nth-child(1) { filter: blur(40px); }
   .parallax-layer:nth-child(2) { filter: blur(60px); }
   .parallax-layer:nth-child(3) { filter: blur(80px); }
+
+  /* Global video background page styling */
+  .page-with-video {
+    @apply page-shell relative overflow-hidden;
+  }
+  
+  .page-video-bg {
+    @apply absolute inset-0 w-full h-full object-cover;
+  }
+  
+  .page-video-overlay {
+    @apply absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-white/0 backdrop-blur-[0.5px];
+  }
+
+  /* Consistent option page styling */
+  .option-page-card {
+    @apply bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 backdrop-blur-sm text-gray-700 border-blue-200/50 hover:shadow-lg shadow-md transition-all duration-300;
+  }
+
+  .option-page-title {
+    @apply text-primary-foreground-dark;
+  }
+
+  .option-page-subtitle {
+    @apply font-semibold text-primary-foreground-dark;
+  }
+
+  .option-page-prompt {
+    @apply text-base sm:text-lg font-semibold text-primary-foreground-dark/90 text-center;
+  }
 }
 
 @layer utilities {
@@ -263,4 +293,9 @@
   }
 
   .page-radial-soft { background: radial-gradient(circle at 50% 35%, #FFF4E6 0%, #FADADD 60%, #EAD9F5 120%); }
+
+  /* Add utility for primary-foreground-dark */
+  .text-primary-foreground-dark {
+    color: hsl(var(--primary-foreground-dark));
+  }
 }

@@ -11,23 +11,23 @@ const expressOptions = [
   {
     id: 'write' as const,
     title: 'Text Wall',
-    description: 'Pour your heart out with words',
+    description: 'Pour your heart out into words',
     icon: <PenTool className="w-8 h-8" />,
-    gradient: 'bg-gradient-to-br from-[#1AAEAC] to-[#1AAEAC]/70' // Teal gradient
+    gradient: 'bg-gradient-to-br from-blue-300 via-blue-200 to-blue-100' // Darker blue gradient
   },
   {
     id: 'speak' as const,
     title: 'Voice Wall',
     description: 'Let your voice carry the weight away', 
     icon: <Mic className="w-8 h-8" />,
-    gradient: 'bg-gradient-to-br from-[#1AAEAC] to-[#1AAEAC]/70' // Teal gradient
+    gradient: 'bg-gradient-to-br from-sky-300 via-sky-200 to-sky-100' // Darker sky gradient
   },
   {
     id: 'draw' as const,
     title: 'Doodle Wall',
-    description: 'Sketch what your heart cannot say',
+    description: 'Sketch what your heart can’t say',
     icon: <Paintbrush className="w-8 h-8" />,
-    gradient: 'bg-gradient-to-br from-[#1AAEAC] to-[#1AAEAC]/70' // Teal gradient
+    gradient: 'bg-gradient-to-br from-indigo-300 via-indigo-200 to-indigo-100' // Darker indigo gradient
   }
 ];
 
@@ -59,7 +59,7 @@ const Express = () => {
     <div className="page-shell relative overflow-hidden">
       {/* Video background */}
       <video
-        className="absolute inset-0 w-full h-full object-cover object-bottom"
+        className="absolute inset-0 w-full h-full object-cover"
         autoPlay
         muted
         loop
@@ -91,22 +91,22 @@ const Express = () => {
             How would you like to express? <span className="font-normal">Select one below.</span>
           </p>
 
-          {/* Options grid with teal styling */}
+          {/* Options grid with soft blue gradients */}
           <div className="option-grid">
             {expressOptions.map((option) => (
               <button
                 key={option.id}
                 type="button"
                 onClick={() => handleOptionSelect(option.id)}
-                className="group option-card bg-blue-400 text-primary-foreground border-primary-foreground/20 hover:brightness-110 shadow-md"
+                className="group option-card bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 backdrop-blur-sm text-gray-700 border-blue-200/50 hover:shadow-lg shadow-md transition-all duration-300"
               >
                 <div className="flex items-center gap-5 pt-1.5">
-                  <div className={`option-card-icon bg-white/20 text-white`}>{option.icon}</div>
+                  <div className={`option-card-icon ${option.gradient} text-white shadow-sm`}>{option.icon}</div>
                   <div className="flex-1">
-                    <h3 className="option-card-title text-primary-foreground font-semibold">{option.title}</h3>
-                    <p className="option-card-desc text-primary-foreground/80">{option.description}</p>
+                    <h3 className="option-card-title text-gray-800 font-semibold">{option.title}</h3>
+                    <p className="option-card-desc text-gray-600">{option.description}</p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-primary-foreground group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-5 h-5 text-gray-500 group-hover:translate-x-1 group-hover:text-gray-700 transition-all" />
                 </div>
               </button>
             ))}
