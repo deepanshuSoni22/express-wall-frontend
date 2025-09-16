@@ -353,26 +353,25 @@
     opacity: .85;
   }
 
-  /* Mist overlay (balanced white diffusion so black & white text stay legible) */
-  .mist-overlay { @apply absolute inset-0 pointer-events-none overflow-hidden; }
-  .mist-layer {
-    position: absolute;
-    inset: -12%;
-    background:
-      radial-gradient(circle at 30% 35%, rgba(255,255,255,0.55), rgba(255,255,255,0) 60%),
-      radial-gradient(circle at 72% 60%, rgba(255,255,255,0.45), rgba(255,255,255,0) 68%),
-      radial-gradient(circle at 48% 78%, rgba(255,255,255,0.35), rgba(255,255,255,0) 62%);
-    filter: blur(42px);
-    opacity: .65;
+  /* Splash page specific font classes */
+  .splash-font {
+    font-family: 'Bebas Neue', sans-serif;
   }
-  .mist-film {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(to bottom, rgba(255,255,255,0.40), rgba(255,255,255,0.30) 40%, rgba(255,255,255,0.25) 70%, rgba(255,255,255,0.18)),
-      linear-gradient(to top, rgba(255,255,255,0.20), rgba(255,255,255,0) 55%);
-    backdrop-filter: blur(2.5px) brightness(0.96) saturate(110%);
-    mix-blend-mode: normal;
+  
+  .splash-keywords {
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  
+  .splash-logo-the {
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  
+  .splash-logo-express {
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  
+  .splash-logo-wall {
+    font-family: 'Corinthia', serif;
   }
 }
 
@@ -415,4 +414,8 @@
   .text-primary-foreground-dark {
     color: hsl(var(--primary-foreground-dark));
   }
+
+  /* Viewport-safe full height helpers for mobile */
+  .h-full-viewport { height: 100vh; height: 100svh; height: 100dvh; }
+  .min-h-full-viewport { min-height: 100vh; min-height: 100svh; min-height: 100dvh; }
 }
