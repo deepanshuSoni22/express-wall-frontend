@@ -30,10 +30,10 @@ const GrowthOnboarding = () => {
       )}
       <div className="relative z-10 max-w-3xl mx-auto">
         <div className="mb-10 flex items-center justify-center gap-4">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-300 via-purple-200 to-purple-100 flex items-center justify-center shadow-soft">
+          <div className="w-20 h-20 rounded-full bg-gradient-healing flex items-center justify-center shadow-soft">
             <Sparkles className="w-10 h-10 text-white animate-gentle-pulse" />
           </div>
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-300 via-emerald-200 to-emerald-100 hidden sm:flex items-center justify-center shadow-soft">
+          <div className="w-20 h-20 rounded-full bg-gradient-calm hidden sm:flex items-center justify-center shadow-soft">
             <Leaf className="w-10 h-10 text-white animate-floating" />
           </div>
         </div>

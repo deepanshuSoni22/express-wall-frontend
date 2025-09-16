@@ -27,7 +27,7 @@ const CourseDetailPage = () => {
   const restDescription = course.description.split('\n').slice(1).join('\n').trim();
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
+    <div className="min-h-screen flex flex-col bg-gradient-calm text-foreground">
       {/* Top bar */}
       <div className="flex items-center justify-between px-4 py-4 sm:px-8 bg-white border-b border-border shadow-soft">
         <button

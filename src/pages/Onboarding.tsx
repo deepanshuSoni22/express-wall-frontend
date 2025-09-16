@@ -8,14 +8,14 @@ const onboardingSteps = [
   {
     title: "Welcome to The Express Wall",
     description: "A safe space created for your emotions.",
-    icon: <Heart className="w-16 h-16 text-primary animate-gentle-pulse" />,
+    icon: <Heart className="w-16 h-16 text-warm animate-gentle-pulse" />,
     gradient: "bg-gradient-primary",
     showTitle: true
   },
   {
     title: "Here, you don’t need to hide what you feel.", // kept for semantics (not shown)
     description: "Here, you don’t need to hide what you feel. The Express Wall is where you can let your emotions flow without judgment, while the Growth Zones offer guided modules to help you reflect, heal, and rebuild.",
-    icon: <Wind className="w-16 h-16 text-primary animate-breathe" />,
+    icon: <Wind className="w-16 h-16 text-calm animate-breathe" />,
     gradient: "bg-gradient-calm",
     showTitle: false
   },

@@ -34,10 +34,10 @@
     --accent: 275 47% 84%; /* #D9C2E9 */
     --accent-foreground: 0 0% 17%;
 
-    /* Support tones */
-    --healing: 275 47% 84%;
-    --calm: 354 76% 92%;
-    --warm: 8 100% 85%;
+    /* Support tones - updated to bluish gradient family (#38bdf8, #60a5fa, #93c5fd) */
+    --healing: 212 96% 78%; /* #93c5fd */
+    --calm: 214 94% 67%;    /* #60a5fa */
+    --warm: 198 93% 60%;    /* #38bdf8 */
 
     --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 100%;
