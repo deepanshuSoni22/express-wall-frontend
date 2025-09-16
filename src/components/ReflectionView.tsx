@@ -21,7 +21,7 @@ export const ReflectionView = ({ onContinue }: ReflectionViewProps) => {
     <div className="page-shell bg-gradient-warm p-6 flex flex-col">
       <div className="max-w-2xl w-full mx-auto flex-1 flex flex-col">
         <div className="text-center mb-12">
-          <div className="header-icon-sm">
+          <div className="header-icon-sm bg-gradient-secondary">
             <Sparkles className="w-9 h-9 text-primary-foreground animate-floating" />
           </div>
           <h2 className="header-title text-primary-foreground mb-3">Reflection Space</h2>

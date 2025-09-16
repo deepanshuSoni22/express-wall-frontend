@@ -16,10 +16,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 17%;
 
-    /* Primary – calming teal */
-    --primary: 178 75% 42%; /* #1AAEAC */
+    /* Primary – using gradient now */
+    --primary: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);
     --primary-glow: 178 75% 37%;
-    --primary-foreground: 0 0% 100%; /* white text on teal */
+    --primary-foreground: #ffffff;
     --primary-foreground-dark: 0 0% 17%; /* #2B2B2B - same as foreground for consistency */
 
     /* Secondary – tranquil indigo */
@@ -47,8 +47,8 @@
     --ring: 8 100% 65%;
 
     /* Updated gradients using palette */
-    --gradient-primary: linear-gradient(135deg, #FFF4E6, #FADADD, #EAD9F5);
-    --gradient-secondary: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);
+    --gradient-primary: linear-gradient(135deg, #0ea5e5, #38bdf2, #7dd3fa);
+    --gradient-secondary: linear-gradient(135deg, #38bdf8, #60a5fa, #93c5fd);
     --gradient-healing: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);
     --gradient-calm: linear-gradient(135deg, #FADADD, #FFF4E6);
     --gradient-warm: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);
@@ -183,7 +183,7 @@
 
   /* Option grid & cards (used on Express / Release / Balance) */
   .option-grid { @apply grid grid-cols-1 sm:grid-cols-2 gap-5; }
-  .option-card { @apply relative rounded-3xl border border-border bg-card/95 backdrop-blur-sm p-5 text-left shadow-soft hover:shadow-warm transition-gentle focus:outline-none focus:ring-2 focus:ring-primary/40; }
+  .option-card { @apply relative rounded-3xl border border-border bg-card/95 backdrop-blur-sm p-5 text-left shadow-soft hover:shadow-warm transition-gentle focus:outline-none focus:ring-2 focus:ring-sky-300/40; }
   .option-card-stripe { @apply absolute inset-x-0 top-0 h-1.5 rounded-t-3xl opacity-90; }
   .option-card-icon { @apply shrink-0 p-4 rounded-xl text-primary-foreground shadow-glow group-hover:scale-110 transition-transform; }
   .option-card-title { @apply font-semibold text-foreground text-lg mb-1; }
@@ -303,6 +303,76 @@
   .clean-button:active {
     transform: translateY(1px);
   }
+
+  /* Fog / mist overlay */
+  .fog-overlay {
+    @apply absolute inset-0 pointer-events-none overflow-hidden;
+  }
+
+  .fog-layer {
+    position: absolute;
+    inset: -15%;
+    background:
+      radial-gradient(circle at 30% 40%, rgba(255 255 255 / 0.18), rgba(255 255 255 / 0) 60%),
+      radial-gradient(circle at 70% 65%, rgba(255 255 255 / 0.14), rgba(255 255 255 / 0) 70%),
+      radial-gradient(circle at 50% 80%, rgba(255 255 255 / 0.10), rgba(255 255 255 / 0) 65%);
+    filter: blur(28px) saturate(90%);
+    mix-blend-mode: normal;
+    animation: fogDrift 55s linear infinite;
+    opacity: .85;
+  }
+
+  .fog-dimmer {
+    @apply absolute inset-0 pointer-events-none;
+    background:
+      radial-gradient(circle at 50% 55%, rgba(0 0 0 / .22) 0%, rgba(0 0 0 / .30) 55%, rgba(0 0 0 / .46) 100%);
+    mix-blend-mode: multiply;
+  }
+
+  /* Balanced contrast veil: soft white lift center + darker bottom */
+  .contrast-mist {
+    @apply absolute inset-0 pointer-events-none;
+    background:
+      /* bottom dark fade for white tagline */
+      linear-gradient(to bottom, rgba(0 0 0 / 0) 0%, rgba(0 0 0 / .20) 55%, rgba(0 0 0 / .42) 100%),
+      /* subtle top dark to frame */
+      linear-gradient(to top, rgba(0 0 0 / .25), rgba(0 0 0 / 0) 40%),
+      /* white radial glow behind central logo */
+      radial-gradient(circle at 50% 38%, rgba(255 255 255 / .55) 0%, rgba(255 255 255 / .40) 32%, rgba(255 255 255 / .18) 55%, rgba(255 255 255 / 0) 70%);
+    mix-blend-mode: normal;
+    backdrop-filter: blur(2px) saturate(110%);
+  }
+
+  /* Optional subtle dark vignette to ground edges */
+  .fog-vignette {
+    @apply absolute inset-0 pointer-events-none;
+    background:
+      radial-gradient(circle at 50% 65%, rgba(0 0 0 / 0) 0%, rgba(0 0 0 / .04) 55%, rgba(0 0 0 / .18) 100%);
+    mix-blend-mode: multiply;
+    opacity: .85;
+  }
+
+  /* Mist overlay (balanced white diffusion so black & white text stay legible) */
+  .mist-overlay { @apply absolute inset-0 pointer-events-none overflow-hidden; }
+  .mist-layer {
+    position: absolute;
+    inset: -12%;
+    background:
+      radial-gradient(circle at 30% 35%, rgba(255,255,255,0.55), rgba(255,255,255,0) 60%),
+      radial-gradient(circle at 72% 60%, rgba(255,255,255,0.45), rgba(255,255,255,0) 68%),
+      radial-gradient(circle at 48% 78%, rgba(255,255,255,0.35), rgba(255,255,255,0) 62%);
+    filter: blur(42px);
+    opacity: .65;
+  }
+  .mist-film {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(255,255,255,0.40), rgba(255,255,255,0.30) 40%, rgba(255,255,255,0.25) 70%, rgba(255,255,255,0.18)),
+      linear-gradient(to top, rgba(255,255,255,0.20), rgba(255,255,255,0) 55%);
+    backdrop-filter: blur(2.5px) brightness(0.96) saturate(110%);
+    mix-blend-mode: normal;
+  }
 }
 
 @layer utilities {
@@ -330,6 +400,12 @@
   @keyframes floating {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
+  }
+
+  @keyframes fogDrift {
+    0%   { transform: translate3d(-6%, -4%, 0) scale(1); }
+    50%  { transform: translate3d(6%, 4%, 0) scale(1.05); }
+    100% { transform: translate3d(-6%, -4%, 0) scale(1); }
   }
 
   .page-radial-soft { background: radial-gradient(circle at 50% 35%, #FFF4E6 0%, #FADADD 60%, #EAD9F5 120%); }

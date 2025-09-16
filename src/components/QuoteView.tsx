@@ -53,10 +53,10 @@ export const QuoteView = ({ onContinue }: QuoteViewProps) => {
   };
 
   return (
-    <div className="page-shell bg-gradient-secondary p-6 flex flex-col">
+    <div className="page-shell bg-gradient-healing p-6 flex flex-col">
       <div className="max-w-2xl w-full mx-auto flex-1 flex flex-col text-center">
         <div className="mb-12">
-          <div className="header-icon-sm">
+          <div className="header-icon-sm bg-gradient-secondary">
             <Heart className="w-9 h-9 text-primary-foreground animate-gentle-pulse" />
           </div>
           <h2 className="header-title text-primary-foreground mb-3">Words of Wisdom</h2>

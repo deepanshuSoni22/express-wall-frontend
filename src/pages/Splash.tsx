@@ -13,21 +13,25 @@ const Splash = () => {
 
   return (
     <div className="h-screen w-full app-splash-bg relative overflow-hidden">
-      {/* Video background */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-      >
-        <source src={treesVideo} type="video/mp4" />
-        Your browser does not support the background video.
-      </video>
+      <div className="absolute inset-0">
+        <video
+          className="absolute inset-0 w-full h-full object-cover filter grayscale opacity-80"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        >
+          <source src={treesVideo} type="video/mp4" />
+          Your browser does not support the background video.
+        </video>
+      </div>
 
-      {/* Readability overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#FFF4E680] via-[#FADADD80] to-[#EAD9F580]" />
+      {/* Replaced previous contrast/fog/vignette/dimmer with unified mist overlay */}
+      <div className="mist-overlay">
+        <div className="mist-layer" />
+        <div className="mist-film" />
+      </div>
 
       {/* Content container with fixed height and spacing */}
       <div className={`relative h-full w-full flex flex-col px-6 transition-all duration-1000 ${
@@ -54,12 +58,13 @@ const Splash = () => {
             </div>
             <div className="absolute top-[25%] left-1/2 -translate-x-1/2">
               <span
-                className="text-5xl md:text-6xl font-extrabold text-primary tracking-wider"
-                style={{
-                  textShadow: '0 2px 4px rgba(0,0,0,0.55), 0 6px 14px rgba(0,0,0,0.35)'
-                }}
+              className="text-5xl md:text-6xl font-extrabold tracking-wider"
+              style={{
+                color: 'oklch(0.65 0.1 222)',
+                textShadow: '0 1px 3px rgba(0,0,0,0.15), 0 6px 14px rgba(0,0,0,0.1)',
+              }}
               >
-                EXPRESS
+              EXPRESS
               </span>
             </div>
             <div className="absolute bottom-0 right-0">
@@ -76,8 +81,8 @@ const Splash = () => {
         {/* Bottom content - fixed position at bottom with spacing */}
         <div className="pb-12 sm:pb-16 space-y-8 text-center">
           {/* Tagline */}
-          <p className="text-base sm:text-lg font-medium text-foreground/90 leading-relaxed space-y-1">
-            <span className="block font-bold tracking-wide text-primary-foreground uppercase">
+          <p className="text-base sm:text-lg tracking-wider font-medium text-foreground/90 leading-relaxed space-y-1">
+            <span className="block font-bold text-primary-foreground uppercase">
               Here, your heart can breathe.
             </span>
             <span className="block font-bold text-primary-foreground uppercase">
@@ -92,7 +97,7 @@ const Splash = () => {
           <div className="pt-2">
             <Button
               onClick={handleStart}
-              className="clean-button text-primary bg-white font-bold uppercase text-xl px-12 py-3 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
+              className="bg-gradient-secondary text-primary-foreground font-bold uppercase text-xl px-12 py-3 rounded-full shadow-md hover:shadow-lg hover:opacity-90 transition-all duration-300"
             >
               Enter
             </Button>

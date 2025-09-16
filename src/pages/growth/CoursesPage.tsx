@@ -2,36 +2,25 @@ import { useNavigate } from 'react-router-dom';
 import { growthCourses } from './courseData';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import growthBG from '@/assets/growthBG.png';
 
 const CoursesPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="page-shell relative overflow-hidden min-h-screen">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <img
-          src={growthBG}
-            alt="Growth background"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/30 to-black/50" />
-      </div>
-
-      <div className="relative z-10 p-6">
+    <div className="page-shell bg-gradient-healing p-6 flex flex-col transition-all duration-700">
+      <div className="relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-10">
-            <h1 className="display-section text-white text-3xl sm:text-5xl font-extrabold">Courses</h1>
+            <h1 className="display-section text-primary-foreground text-3xl sm:text-5xl font-extrabold">Courses</h1>
             <Button
               variant="outline"
               onClick={() => navigate('/growth')}
-              className="bg-white/20 border-white/30 text-white hover:bg-white/30 backdrop-blur-sm"
+              className="bg-primary-foreground/10 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/20 backdrop-blur-sm"
             >
               <ArrowLeft className="w-4 h-4 mr-2" /> Back
             </Button>
           </div>
-          <p className="page-subtitle text-white/90 max-w-2xl mb-12 font-medium">
+          <p className="page-subtitle text-primary-foreground/90 max-w-2xl mb-12 font-medium">
             Choose the modules that resonate with you. Add what supports your journey now—return anytime for more.
           </p>
 
@@ -39,7 +28,7 @@ const CoursesPage = () => {
             {growthCourses.map(course => (
               <div
                 key={course.id}
-                className="group rounded-3xl overflow-hidden bg-white shadow-soft hover:shadow-glow transition-gentle flex flex-col border border-border cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40"
+                className="group rounded-3xl overflow-hidden bg-white shadow-soft hover:shadow-glow transition-gentle flex flex-col border border-border cursor-pointer focus:outline-none focus:ring-2 focus:ring-sky-300/40"
                 onClick={() => navigate(`/growth/${course.id}`)}
                 role="button"
                 tabIndex={0}

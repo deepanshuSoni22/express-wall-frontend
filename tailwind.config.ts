@@ -22,9 +22,8 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          glow: "hsl(var(--primary-glow))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe)",
+          foreground: "#ffffff", // White text color
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
