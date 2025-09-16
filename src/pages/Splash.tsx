@@ -40,11 +40,11 @@ const Splash = () => {
         {/* Top keywords - fixed position at top */}
         <div className="pt-8 sm:pt-12 pb-4 text-center">
           <div className="inline-flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-            <span className="text-foreground text-lg font-bold shadow-sm uppercase">Express</span>
+            <span className="text-foreground text-lg font-bold shadow-sm uppercase tracking-widest">Express</span>
             <span className="text-foreground font-semibold">|</span>
-            <span className="text-foreground text-lg font-bold shadow-sm uppercase">Release</span>
+            <span className="text-foreground text-lg font-bold shadow-sm uppercase tracking-widest">Release</span>
             <span className="text-foreground font-semibold">|</span>
-            <span className="text-foreground text-lg font-bold shadow-sm uppercase">Balance</span>
+            <span className="text-foreground text-lg font-bold shadow-sm uppercase tracking-widest">Balance</span>
           </div>
         </div>
 

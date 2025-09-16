@@ -50,11 +50,12 @@
     --gradient-primary: linear-gradient(135deg, #0ea5e5, #38bdf2, #7dd3fa);
     --gradient-secondary: linear-gradient(135deg, #38bdf8, #60a5fa, #93c5fd);
     --gradient-healing: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);
-    --gradient-calm: linear-gradient(135deg, #FADADD, #FFF4E6);
+    --gradient-calm: linear-gradient(135deg, #bfdbfe, #93c5fd, #60a5fa); /* deeper calm for buttons */
     --gradient-warm: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);
 
-    --gradient-breathe-in: linear-gradient(135deg, #FADADD, #EAD9F5);
-    --gradient-breathe-out: linear-gradient(135deg, #EAD9F5, #FADADD);
+    --gradient-breathe-in: linear-gradient(135deg, #93c5fd, #bfdbfe, #dbeafe);   /* lighter blue flow in */
+    --gradient-breathe-out: linear-gradient(135deg, #60a5fa, #3b82f6, #2563eb); /* deeper blue flow out */
+
 
     --gradient-icon-blue: linear-gradient(135deg, #93c5fd, #bfdbfe, #dbeafe);
     --gradient-icon-sky: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);

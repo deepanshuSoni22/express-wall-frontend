@@ -130,9 +130,9 @@ export const BreathingExercise = ({ technique, onContinue }: BreathingExercisePr
 
   const phaseColors: Record<Phase, string> = {
     ready: 'bg-gradient-calm',
-    inhale: 'bg-gradient-breathe-in',
-    hold: 'bg-gradient-secondary',
-    exhale: 'bg-gradient-breathe-out',
+    inhale: 'bg-gradient-secondary',
+    hold: 'bg-gradient-breathe-out',
+    exhale: 'bg-gradient-breathe-in',
   };
 
   // Begin the exercise

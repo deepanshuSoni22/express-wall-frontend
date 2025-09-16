@@ -75,7 +75,7 @@ const Balance = () => {
           <div className="page-header mb-14">
             <h2 className="display-section mb-4 text-primary-foreground-dark">
               <span className="block text-xl font-semibold tracking-tight mb-1">Your Journey</span>
-              <span className="block text-4xl sm:text-5xl md:text-6xl font-extrabold leading-none">Your Balance.</span>
+              <span className="block text-4xl sm:text-5xl md:text-6xl font-extrabold leading-none">Rebuild</span>
             </h2>
             <p className="max-w-xl mx-auto font-semibold text-primary-foreground-dark">
               You've expressed and released. Now rebuild your inner peace and ground yourself in this moment.
