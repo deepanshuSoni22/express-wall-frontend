@@ -48,13 +48,19 @@
 
     /* Updated gradients using palette */
     --gradient-primary: linear-gradient(135deg, #FFF4E6, #FADADD, #EAD9F5);
-    --gradient-secondary: linear-gradient(135deg, #EAD9F5, #FADADD);
-    --gradient-healing: linear-gradient(135deg, #D9C2E9, #EAD9F5);
+    --gradient-secondary: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);
+    --gradient-healing: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);
     --gradient-calm: linear-gradient(135deg, #FADADD, #FFF4E6);
-    --gradient-warm: linear-gradient(135deg, #FF9A8B, #FADADD 60%, #EAD9F5);
+    --gradient-warm: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);
 
     --gradient-breathe-in: linear-gradient(135deg, #FADADD, #EAD9F5);
     --gradient-breathe-out: linear-gradient(135deg, #EAD9F5, #FADADD);
+
+    --gradient-icon-blue: linear-gradient(135deg, #93c5fd, #bfdbfe, #dbeafe);
+    --gradient-icon-sky: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);
+    --gradient-icon-indigo: linear-gradient(135deg, #a5b4fc, #c7d2fe, #e0e7ff);
+    
+    --gradient-card-bg: linear-gradient(135deg, #f0f9ff, #e0f2fe, #eff6ff);
 
     --shadow-soft: 0 4px 14px -2px rgba(0,0,0,0.08);
     --shadow-warm: 0 8px 28px -4px rgba(0,0,0,0.10);
@@ -110,6 +116,15 @@
     --border: 277 25% 30%;
     --input: 277 25% 30%;
     --ring: 8 100% 65%;
+    
+    /* Dark mode gradients for icon backgrounds */
+    --gradient-icon-blue: linear-gradient(135deg, #2563eb, #3b82f6, #60a5fa);
+    --gradient-icon-sky: linear-gradient(135deg, #0284c7, #0ea5e9, #38bdf8);
+    --gradient-icon-indigo: linear-gradient(135deg, #4f46e5, #6366f1, #818cf8);
+    
+    /* Dark mode card background */
+    --gradient-card-bg: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+    
     --gradient-primary: linear-gradient(135deg, #4e2f37, #5a3955, #46305d);
     --gradient-secondary: linear-gradient(135deg, #46305d, #5a3955);
     --gradient-healing: linear-gradient(135deg, #5a3955, #46305d);
@@ -174,6 +189,14 @@
   .option-card-title { @apply font-semibold text-foreground text-lg mb-1; }
   .option-card-desc { @apply text-sm text-muted-foreground; }
   .option-card-meta { @apply text-xs text-muted-foreground/70 mt-1; }
+
+  /* Icon gradient classes */
+  .icon-gradient-blue { background: var(--gradient-icon-blue); }
+  .icon-gradient-sky { background: var(--gradient-icon-sky); }
+  .icon-gradient-indigo { background: var(--gradient-icon-indigo); }
+
+  /* Card background */
+  .card-gradient-bg { @apply bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 backdrop-blur-sm text-gray-700 border-blue-200/50; }
 
   /* Elevated emphasis block */
   .elevated-panel { @apply rounded-3xl bg-card/95 backdrop-blur-sm border border-border shadow-soft px-6 py-8; }
@@ -261,7 +284,8 @@
   }
 
   .option-page-prompt {
-    @apply text-base sm:text-lg font-semibold text-primary-foreground-dark/90 text-center;
+    @apply text-base sm:text-lg font-semibold text-primary-foreground-dark text-center;
+    opacity: 0.9;
   }
 
   /* Additional button styles */

@@ -13,21 +13,21 @@ const balanceOptions = [
     title: 'Inspiring Words',
     description: 'Find wisdom in calming thoughts',
     icon: <Quote className="w-8 h-8" />,
-    gradient: 'bg-gradient-to-br from-purple-300 via-purple-200 to-purple-100'
+    gradient: 'icon-gradient-blue'
   },
   {
     id: 'reflection' as const,
     title: 'Personal Reflection',
     description: 'Capture your journey insights',
     icon: <PenTool className="w-8 h-8" />,
-    gradient: 'bg-gradient-to-br from-pink-300 via-pink-200 to-pink-100'
+    gradient: 'icon-gradient-sky'
   },
   {
     id: 'music' as const,
     title: 'Calming Sounds',
     description: 'Soothing melodies for peace',
     icon: <Music className="w-8 h-8" />,
-    gradient: 'bg-gradient-to-br from-emerald-300 via-emerald-200 to-emerald-100'
+    gradient: 'icon-gradient-indigo'
   }
 ];
 
@@ -57,9 +57,9 @@ const Balance = () => {
   }
 
   return (
-    <div className="page-shell relative overflow-hidden">
+    <div className="page-with-video">
       <video
-        className="absolute inset-0 w-full h-full object-cover"
+        className="page-video-bg"
         autoPlay
         muted
         loop
@@ -82,7 +82,7 @@ const Balance = () => {
             </p>
           </div>
 
-          <p className="text-base sm:text-lg font-semibold text-primary-foreground-dark/90 mb-6 text-center">
+          <p className="option-page-prompt mb-6">
             How would you like to Rebuild yourself? <span className="font-normal">Choose your path.</span>
           </p>
 
@@ -92,7 +92,7 @@ const Balance = () => {
                 key={option.id}
                 type="button"
                 onClick={() => handleOptionSelect(option.id)}
-                className="group option-card bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 backdrop-blur-sm text-gray-700 border-blue-200/50 hover:shadow-lg shadow-md transition-all duration-300"
+                className="group option-card card-gradient-bg hover:shadow-lg shadow-md transition-all duration-300"
               >
                 <div className="flex items-center gap-5 pt-1.5">
                   <div className={`option-card-icon ${option.gradient} text-white shadow-sm`}>{option.icon}</div>

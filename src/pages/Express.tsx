@@ -5,7 +5,7 @@ import { useSession } from '@/contexts/SessionContext';
 import { JournalView } from '@/components/JournalView';
 import { VoiceView } from '@/components/VoiceView';
 import { DrawingView } from '@/components/DrawingView';
-import expressBgVideo from '@/assets/white-curtain.mp4'; // Updated to use the new video file
+import expressBgVideo from '@/assets/white-curtain.mp4';
 
 const expressOptions = [
   {
@@ -13,21 +13,21 @@ const expressOptions = [
     title: 'Text Wall',
     description: 'Pour your heart out into words',
     icon: <PenTool className="w-8 h-8" />,
-    gradient: 'bg-gradient-to-br from-blue-300 via-blue-200 to-blue-100' // Darker blue gradient
+    gradient: 'icon-gradient-blue'
   },
   {
     id: 'speak' as const,
     title: 'Voice Wall',
     description: 'Let your voice carry the weight away', 
     icon: <Mic className="w-8 h-8" />,
-    gradient: 'bg-gradient-to-br from-sky-300 via-sky-200 to-sky-100' // Darker sky gradient
+    gradient: 'icon-gradient-sky'
   },
   {
     id: 'draw' as const,
     title: 'Doodle Wall',
-    description: 'Sketch what your heart can’t say',
+    description: "Sketch what your heart can't say",
     icon: <Paintbrush className="w-8 h-8" />,
-    gradient: 'bg-gradient-to-br from-indigo-300 via-indigo-200 to-indigo-100' // Darker indigo gradient
+    gradient: 'icon-gradient-indigo'
   }
 ];
 
@@ -57,10 +57,9 @@ const Express = () => {
   }
 
   return (
-    <div className="page-shell relative overflow-hidden">
-      {/* Video background */}
+    <div className="page-with-video">
       <video
-        className="absolute inset-0 w-full h-full object-cover"
+        className="page-video-bg"
         autoPlay
         muted
         loop
@@ -71,35 +70,29 @@ const Express = () => {
         Your browser does not support the background video.
       </video>
 
-      {/* Teal-tinted overlay for readability */}
-      {/* <div className="absolute inset-0 bg-gradient-to-br from-[#1AAEAC40] via-[#1AAEAC30] to-[#EAD9F520] backdrop-blur-sm" /> */}
-
       <div className="page-inner relative z-10">
         <div className="mx-auto max-w-2xl">
           <div className="page-header mb-14">
-            {/* Updated heading & descriptive copy (layout preserved) */}
             <h2 className="display-section mb-4 text-primary-foreground-dark">
               <span className="block text-xl font-semibold tracking-tight mb-1">Your Space</span>
               <span className="block text-4xl sm:text-5xl md:text-6xl font-extrabold leading-none">Your Story.</span>
             </h2>
             <p className="max-w-xl mx-auto font-semibold text-primary-foreground-dark">
-              What’s weighing on your heart today? Share it anonymously on your EXPRESS WALL. 
+              What's weighing on your heart today? Share it anonymously on your EXPRESS WALL. 
             </p>
           </div>
 
-          {/* Section prompt before options */}
-          <p className="text-base sm:text-lg font-semibold text-primary-foreground-dark/90 mb-6 text-center">
+          <p className="option-page-prompt mb-6">
             How would you like to express? <span className="font-normal">Select one below.</span>
           </p>
 
-          {/* Options grid with soft blue gradients */}
           <div className="option-grid">
             {expressOptions.map((option) => (
               <button
                 key={option.id}
                 type="button"
                 onClick={() => handleOptionSelect(option.id)}
-                className="group option-card bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 backdrop-blur-sm text-gray-700 border-blue-200/50 hover:shadow-lg shadow-md transition-all duration-300"
+                className="group option-card card-gradient-bg hover:shadow-lg shadow-md transition-all duration-300"
               >
                 <div className="flex items-center gap-5 pt-1.5">
                   <div className={`option-card-icon ${option.gradient} text-white shadow-sm`}>{option.icon}</div>
