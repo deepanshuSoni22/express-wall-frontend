@@ -11,6 +11,10 @@ const Ending = () => {
   useEffect(() => { setIsVisible(true); }, []);
 
   const goToWall = () => {
+    navigate('/express');
+  };
+
+  const endSession = () => {
     navigate('/');
   };
 
@@ -27,12 +31,20 @@ const Ending = () => {
         <h1 className="text-4xl md:text-5xl font-bold text-white tracking-wide mb-10 uppercase drop-shadow-lg">
           your wall is always here
         </h1>
-        <Button
-          onClick={goToWall}
-          className="wellness-button text-base font-semibold px-8 py-6"
-        >
-          Go to My Wall
-        </Button>
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+          <Button
+            onClick={goToWall}
+            className="wellness-button text-base font-semibold px-8 py-6"
+          >
+            Go to My Wall
+          </Button>
+          <Button
+            onClick={endSession}
+            className="wellness-button text-base font-semibold px-8 py-6"
+          >
+            End Session
+          </Button>
+        </div>
       </div>
     </div>
   );

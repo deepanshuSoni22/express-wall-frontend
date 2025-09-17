@@ -48,8 +48,8 @@ const Onboarding = () => {
     if (currentStep < onboardingSteps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Updated flow: go directly to Express
-      navigate('/express');
+      // Updated flow: go to Register page after onboarding
+      navigate('/register');
     }
   };
 

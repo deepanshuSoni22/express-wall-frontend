@@ -27,7 +27,7 @@ const expressOptions = [
     title: 'Doodle Wall',
     description: "Sketch what your heart can't say",
     icon: <Paintbrush className="w-8 h-8" />,
-    gradient: 'icon-gradient-indigo'
+    gradient: 'icon-gradient-blue'
   }
 ];
 

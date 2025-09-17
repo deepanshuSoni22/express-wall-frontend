@@ -89,8 +89,8 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  html { font-size: 17px; }
-  @media (min-width: 640px) { html { font-size: 18px; } }
+  html { font-size: 16px; }
+  @media (min-width: 640px) { html { font-size: 17px; } }
 
   .dark {
     /* Dark variant mapped gently to same palette for consistency */
@@ -173,10 +173,10 @@
 @layer components {
   /* New global typography / layout helpers */
   .page-shell { @apply min-h-screen relative bg-background overflow-hidden; }
-  .page-inner { @apply relative p-6 md:flex md:min-h-screen md:items-center; }
+  .page-inner { @apply relative p-6 pt-10 pb-12 sm:pt-12 sm:pb-16 md:flex md:min-h-screen md:items-center; }
   .page-header { @apply text-center mb-12 max-w-2xl mx-auto; }
-  .page-title { @apply font-extrabold tracking-tight text-4xl sm:text-5xl leading-tight; }
-  .page-subtitle { @apply text-lg sm:text-xl text-muted-foreground leading-relaxed; }
+  .page-title { @apply font-extrabold tracking-tight text-3xl sm:text-4xl leading-tight; }
+  .page-subtitle { @apply text-base sm:text-lg text-muted-foreground leading-relaxed; }
   .section-heading { @apply font-semibold text-xl sm:text-2xl tracking-tight; }
 
   /* Larger readable body text utility */
@@ -231,8 +231,8 @@
   .option-page-image { @apply w-28 h-28 sm:w-36 sm:h-36 object-cover rounded-2xl mx-auto mb-8 shadow-soft ring-1 ring-border/50; }
 
   /* Additional display typography */
-  .display-hero { @apply font-extrabold tracking-tight text-5xl sm:text-6xl leading-[1.05]; }
-  .display-section { @apply font-bold tracking-tight text-3xl sm:text-4xl; }
+  .display-hero { @apply font-extrabold tracking-tight text-4xl sm:text-5xl leading-[1.05]; }
+  .display-section { @apply font-bold tracking-tight text-2xl sm:text-3xl; }
 
   /* Reusable header icon classes and variant color helpers */
   .header-icon { @apply inline-flex items-center justify-center w-20 h-20 rounded-full shadow-glow mb-8 bg-primary; }

@@ -10,6 +10,7 @@ const LottieAnimation = lazy(() => import('./components/LottieAnimation'));
 // Pages
 import Splash from "./pages/Splash";
 import Onboarding from "./pages/Onboarding";
+import Register from "./pages/Register";
 import Express from "./pages/Express";
 import Release from "./pages/Release";
 import Balance from "./pages/Balance";
@@ -84,6 +85,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Splash />} />
             <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/express" element={<Express />} />
             <Route path="/release" element={<Release />} />
             <Route path="/balance" element={<Balance />} />

@@ -27,7 +27,7 @@ const balanceOptions = [
     title: 'Calming Sounds',
     description: 'Soothing melodies for peace',
     icon: <Music className="w-8 h-8" />,
-    gradient: 'icon-gradient-indigo'
+    gradient: 'icon-gradient-blue'
   }
 ];
 
