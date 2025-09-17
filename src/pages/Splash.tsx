@@ -87,7 +87,7 @@ const Splash = () => {
           <div className="pt-2">
             <Button
               onClick={handleStart}
-              className="bg-gradient-secondary text-primary-foreground tracking-wider uppercase text-xl sm:text-lg md:text-lg lg:text-xl px-10 sm:px-8 md:px-10 lg:px-12 py-3 rounded-full shadow-md hover:shadow-lg hover:opacity-90 transition-all duration-300"
+              className="bg-white text-[#3a9dbb] tracking-wider uppercase text-xl sm:text-lg md:text-lg lg:text-xl px-10 sm:px-8 md:px-10 lg:px-12 py-3 rounded-full shadow-md hover:shadow-lg button-glow transition-all duration-300"
             >
               Enter
             </Button>

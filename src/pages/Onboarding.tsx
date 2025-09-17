@@ -114,7 +114,7 @@ const Onboarding = () => {
 
           <Button
             onClick={handleNext}
-            className={`clean-button w-full sm:w-auto text-base px-8 py-5 ${currentStep === 0 ? 'sm:ml-auto' : 'sm:ml-6'}`}
+            className={`clean-button w-full sm:w-auto text-base px-8 py-5 !text-[#3a9dbb] ${currentStep === 0 ? 'sm:ml-auto' : 'sm:ml-6'}`}
           >
             {currentStep === onboardingSteps.length - 1 ? 'Continue' : 'Next'}
             <ChevronRight className="w-5 h-5 ml-2" />

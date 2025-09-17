@@ -208,7 +208,7 @@
   }
 
   .wellness-button {
-    @apply bg-[var(--gradient-warm)] text-primary-foreground shadow-soft hover:shadow-glow;
+    @apply bg-white text-[#3a9dbb] shadow-soft hover:shadow-lg rounded-full;
   }
 
   .breathing-circle {
@@ -291,13 +291,13 @@
 
   /* Additional button styles */
   .clean-button {
-    @apply bg-white text-primary font-semibold uppercase rounded-full shadow-md hover:shadow-lg transition-all duration-300;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    @apply bg-white text-[#3a9dbb] font-semibold uppercase rounded-full shadow-md hover:shadow-lg transition-all duration-300;
+    box-shadow: 0 4px 16px rgba(58, 157, 187, 0.15);
   }
   
   .clean-button:hover {
-    color: white;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    color: #3a9dbb; /* Keep text color consistent */
+    box-shadow: 0 4px 20px rgba(58, 157, 187, 0.25);
     transform: translateY(-1px);
   }
   
@@ -418,4 +418,9 @@
   /* Viewport-safe full height helpers for mobile */
   .h-full-viewport { height: 100vh; height: 100svh; height: 100dvh; }
   .min-h-full-viewport { min-height: 100vh; min-height: 100svh; min-height: 100dvh; }
+
+  /* Additional glow effect for the buttons to match screenshot */
+  .button-glow {
+    box-shadow: 0 2px 16px rgba(58, 157, 187, 0.2);
+  }
 }
