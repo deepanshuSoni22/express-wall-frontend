@@ -61,7 +61,7 @@ const Onboarding = () => {
 
   return (
     <div
-      className={`page-shell ${currentContent.gradient} flex flex-col items-center justify-center p-6 text-center transition-all duration-500 relative overflow-hidden`}
+      className={`page-shell min-h-full-viewport ${currentContent.gradient} flex flex-col items-center justify-center p-6 text-center transition-all duration-500 relative overflow-hidden`}
     >
       {/* Background video (falls back to existing gradient if error / disabled) */}
       {enableVideo && !videoError && (

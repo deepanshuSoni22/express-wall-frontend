@@ -3,11 +3,15 @@ import { Button } from '@/components/ui/button';
 import { Sparkles, Leaf } from 'lucide-react';
 import whiteCurtainVideo from '@/assets/white-curtain.mp4';
 import { useEffect, useState } from 'react';
+import { useScrollReset } from '@/hooks/useScrollReset';
 
 const GrowthOnboarding = () => {
   const navigate = useNavigate();
   const [videoError, setVideoError] = useState(false);
   const [enableVideo, setEnableVideo] = useState(true);
+
+  // Reset scroll position when component mounts
+  useScrollReset();
 
   useEffect(() => {
     try { const mq = window.matchMedia('(prefers-reduced-motion: reduce)'); if (mq.matches) setEnableVideo(false); } catch {}

@@ -4,6 +4,7 @@ import { Paintbrush, Eraser, ArrowRight, RotateCcw, ChevronRight, ChevronDown } 
 import { useSession } from '@/contexts/SessionContext';
 import { HoldButton } from '@/components/ui/hold-button';
 import wallBg from '@/assets/wallBG.jpg';
+import { useScrollReset } from '@/hooks/useScrollReset';
 
 interface DrawingViewProps {
   onContinue: () => void;
@@ -24,6 +25,9 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
   const [brushSize, setBrushSize] = useState<number>(6);
   const [showMobileHint, setShowMobileHint] = useState(true);
   const { updateSession } = useSession();
+  
+  // Reset scroll position when component mounts
+  useScrollReset();
 
   // Compute responsive canvas size and scale for DPI
   const resizeCanvas = () => {

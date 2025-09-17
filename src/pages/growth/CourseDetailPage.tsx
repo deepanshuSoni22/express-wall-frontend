@@ -1,11 +1,15 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { growthCourses } from './courseData';
 import { X, ArrowLeft } from 'lucide-react';
+import { useScrollReset } from '@/hooks/useScrollReset';
 
 const CourseDetailPage = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
   const course = growthCourses.find(c => c.id === courseId);
+  
+  // Reset scroll position when component mounts
+  useScrollReset();
 
   if (!course) {
     return (

@@ -4,6 +4,7 @@ import { useSession } from '@/contexts/SessionContext';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import { HoldButton } from '@/components/ui/hold-button';
 import wallBg from '@/assets/wallBG.jpg';
+import { useScrollReset } from '@/hooks/useScrollReset';
 
 interface JournalViewProps {
   onContinue: () => void;
@@ -12,6 +13,9 @@ interface JournalViewProps {
 export const JournalView = ({ onContinue }: JournalViewProps) => {
   const [content, setContent] = useState('');
   const { updateSession } = useSession();
+  
+  // Reset scroll position when component mounts
+  useScrollReset();
 
   const handleContinue = () => {
     updateSession({ expressContent: content });

@@ -2,9 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import { growthCourses } from './courseData';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
+import { useScrollReset } from '@/hooks/useScrollReset';
 
 const CoursesPage = () => {
   const navigate = useNavigate();
+  
+  // Reset scroll position when component mounts
+  useScrollReset();
 
   return (
     <div className="page-shell bg-gradient-healing p-6 flex flex-col transition-all duration-700">

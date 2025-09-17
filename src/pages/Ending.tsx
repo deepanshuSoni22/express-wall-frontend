@@ -16,7 +16,7 @@ const Ending = () => {
 
   return (
     <div
-      className="min-h-screen relative flex items-center justify-center p-6"
+      className="min-h-full-viewport relative flex items-center justify-center p-6"
       style={{
         backgroundImage: `url(${wallBg})`,
         backgroundSize: 'cover',

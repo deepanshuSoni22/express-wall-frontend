@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { useSession } from '@/contexts/SessionContext';
+import { useScrollReset } from '@/hooks/useScrollReset';
 
 interface ReflectionViewProps {
   onContinue: () => void;
@@ -11,6 +12,9 @@ interface ReflectionViewProps {
 export const ReflectionView = ({ onContinue }: ReflectionViewProps) => {
   const [reflection, setReflection] = useState('');
   const { updateSession } = useSession();
+  
+  // Reset scroll position when component mounts
+  useScrollReset();
 
   const handleContinue = () => {
     updateSession({ balanceContent: reflection });

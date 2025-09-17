@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Play, Pause, ArrowRight, Volume2 } from 'lucide-react';
+import { useScrollReset } from '@/hooks/useScrollReset';
 
 interface MusicViewProps {
   onContinue: () => void;
@@ -43,6 +44,9 @@ export const MusicView = ({ onContinue }: MusicViewProps) => {
   const [duration, setDuration] = useState(0);
   const [hasListened, setHasListened] = useState(false);
   const [durations, setDurations] = useState<Record<string, number>>({});
+
+  // Reset scroll position when component mounts
+  useScrollReset();
 
   // Create a single Audio element once, and attach listeners
   useEffect(() => {

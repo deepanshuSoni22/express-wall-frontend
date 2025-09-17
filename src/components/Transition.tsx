@@ -66,7 +66,7 @@ export const Transition = ({ onContinue }: TransitionProps) => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-full-viewport w-full flex items-center justify-center relative overflow-hidden">
       {/* Liquid Chrome Background (calmer palette) */}
       <div className="absolute inset-0 z-0">
         <LiquidChrome
