@@ -53,7 +53,7 @@ export const QuoteView = ({ onContinue }: QuoteViewProps) => {
   };
 
   return (
-    <div className="page-shell bg-gradient-healing p-6 flex flex-col">
+    <div className="page-shell bg-gradient-healing p-6 flex flex-col min-h-full-viewport">
       <div className="max-w-2xl w-full mx-auto flex-1 flex flex-col text-center">
         <div className="mb-12">
           <div className="header-icon-sm bg-gradient-secondary">

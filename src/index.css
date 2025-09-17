@@ -248,8 +248,9 @@
   .page-simple-bg { background-color: hsl(220 18% 14%); }
 
   .action-bar-mobile {
-    @apply fixed bottom-0 left-0 right-0 z-40 px-4 pt-3 pb-4 bg-gradient-to-t from-background/95 to-background/40 backdrop-blur-md border-t border-border/40;
+    @apply fixed bottom-0 left-0 right-0 z-40 px-4 pt-3 pb-4 bg-transparent backdrop-blur-lg border-t border-white/20;
     padding-bottom: calc(env(safe-area-inset-bottom,0px) + 1rem);
+    box-shadow: 0 -10px 30px rgba(255, 255, 255, 0.08);
   }
 
   .home-shell { /* wrapper for new home page */ }

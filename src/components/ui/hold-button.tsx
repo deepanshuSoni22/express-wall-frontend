@@ -143,7 +143,7 @@ export function HoldButton({
       {/* Progress bar overlay */}
       <span
         className={cn(
-          "absolute left-0 top-0 bottom-0 bg-primary-foreground/20 transition-transform",
+          "absolute left-0 top-0 bottom-0 bg-gradient-calm opacity-60 transition-transform",
           progressClassName
         )}
         style={{

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Play, Pause, ArrowRight, Volume2, VolumeX } from 'lucide-react';
+import { useScrollReset } from '@/hooks/useScrollReset';
 
 interface BreathingPattern {
   inhale: number;
@@ -31,6 +32,9 @@ export const BreathingExercise = ({ technique, onContinue }: BreathingExercisePr
   const [progress, setProgress] = useState(0); // 0..1 within a full cycle
   const [voiceOn, setVoiceOn] = useState(true);
   const voiceReadyRef = useRef(false);
+  
+  // Reset scroll position when component mounts
+  useScrollReset();
 
   // Timing refs for smooth RAF engine
   const rafIdRef = useRef<number | null>(null);
@@ -277,7 +281,7 @@ export const BreathingExercise = ({ technique, onContinue }: BreathingExercisePr
   const progressDeg = Math.max(0, Math.min(360, Math.round(progress * 360)));
 
   return (
-    <div className={`page-shell ${technique.gradient} p-6 flex flex-col transition-all duration-700`}> 
+    <div className={`page-shell ${technique.gradient} p-6 flex flex-col transition-all duration-700 min-h-full-viewport`}> 
       <div className="max-w-2xl w-full mx-auto flex-1 flex flex-col text-center">
         <div className="mb-10">
           <h2 className="header-title text-primary-foreground mb-3">{technique.title}</h2>

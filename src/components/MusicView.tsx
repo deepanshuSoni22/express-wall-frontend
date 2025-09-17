@@ -202,7 +202,7 @@ export const MusicView = ({ onContinue }: MusicViewProps) => {
           <div className="mb-6">
             <div className="w-full bg-border/30 rounded-full h-2 mb-2 overflow-hidden">
               <div
-                className="bg-primary h-2 rounded-full transition-all duration-500"
+                className="bg-gradient-secondary h-2 rounded-full transition-all duration-500"
                 style={{ width: `${progress}%` }}
               />
             </div>

@@ -2,9 +2,10 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import Lottie from "lottie-react";
-import loadingAnimation from "@/assets/Loading.json";
+import { useEffect, useRef, useState, lazy, Suspense } from "react";
+
+// Lazy load Lottie component and animation
+const LottieAnimation = lazy(() => import('./components/LottieAnimation'));
 
 // Pages
 import Splash from "./pages/Splash";
@@ -52,8 +53,10 @@ function RouteChangeLoader() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
+  // Don't render anything if loader shouldn't be visible
   if (skipLoader || !visible) return null;
 
+  // Only load and render the Lottie animation when the loader is actually visible
   return (
     <div
       className="fixed inset-0 z-[9999] bg-black/30 flex items-center justify-center"
@@ -61,11 +64,9 @@ function RouteChangeLoader() {
       aria-live="polite"
     >
       <div className="w-40 h-40">
-        <Lottie
-          animationData={loadingAnimation as unknown as object}
-          loop
-          autoplay
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <LottieAnimation />
+        </Suspense>
       </div>
     </div>
   );

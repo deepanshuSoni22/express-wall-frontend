@@ -383,7 +383,6 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
         <HoldButton 
           onComplete={onContinue}
           disabled={!hasRecorded}
-          progressClassName="bg-primary-foreground/30"
         >
           <span className="flex items-center justify-center">
             <span className="mr-2">Hold to Release</span>
