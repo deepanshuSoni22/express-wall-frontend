@@ -9,7 +9,19 @@ const Register = () => {
 
   useEffect(() => { setIsVisible(true); }, []);
 
-  const handleContinue = () => navigate('/express');
+  const handleContinue = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const nameInput = document.getElementById('name') as HTMLInputElement | null;
+    const mobileInput = document.getElementById('mobile') as HTMLInputElement | null;
+
+    const name = nameInput?.value.trim() ?? '';
+    const number = mobileInput?.value.trim() ?? '';
+
+    console.log(`name: ${name}`);
+    console.log(`number: ${number}`);
+
+    navigate('/express');
+  };
 
   return (
     <div className="h-full-viewport w-full relative overflow-hidden">

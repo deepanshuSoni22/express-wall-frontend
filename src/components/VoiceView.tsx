@@ -4,6 +4,7 @@ import { Mic, Square, Play, Pause, ArrowRight, RefreshCw } from 'lucide-react';
 import { useSession } from '@/contexts/SessionContext';
 import { HoldButton } from '@/components/ui/hold-button';
 import wallBg from '@/assets/wallBG.jpg';
+import { useTextCues } from '@/utils/useTextCues';
 
 interface VoiceViewProps {
   onContinue: () => void;
@@ -17,6 +18,15 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [recordingDuration, setRecordingDuration] = useState(0);
   const [vizLevel, setVizLevel] = useState(0); // 0..1 smoothed mic level
+  const [transcript, setTranscript] = useState(''); // NEW live transcript
+
+  const cues = useTextCues(transcript); // NEW analyze transcript continuously
+
+  // Keep freshest values for async callbacks (avoid stale closures)
+  const transcriptRef = useRef(transcript);
+  const cuesRef = useRef(cues);
+  useEffect(() => { transcriptRef.current = transcript; }, [transcript]);
+  useEffect(() => { cuesRef.current = cues; }, [cues]);
 
   const { updateSession } = useSession();
 
@@ -29,6 +39,7 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
   const audioCtxRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const rafRef = useRef<number | null>(null);
+  const recognitionRef = useRef<any>(null); // NEW: SpeechRecognition instance
 
   const STORAGE_KEY_AUDIO = 'expressWell_voiceRecording_tmp';
   const STORAGE_KEY_DURATION = 'expressWell_voiceRecording_duration_tmp';
@@ -82,6 +93,7 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
       }
       sessionStorage.removeItem(STORAGE_KEY_AUDIO);
       sessionStorage.removeItem(STORAGE_KEY_DURATION);
+      stopSpeechRecognition(); // NEW
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -133,6 +145,47 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
     }
   };
 
+  // NEW: start/stop speech recognition for live transcription
+  const startSpeechRecognition = () => {
+    const SR: any = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SR) {
+      console.warn('SpeechRecognition is not supported in this browser.');
+      return;
+    }
+    try {
+      const rec = new SR();
+      rec.continuous = true;
+      rec.interimResults = true;
+      rec.lang = 'en-US';
+
+      let finalText = '';
+      rec.onresult = (e: any) => {
+        let interim = '';
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          const piece = e.results[i][0].transcript;
+          if (e.results[i].isFinal) finalText += piece + ' ';
+          else interim += piece;
+        }
+        setTranscript((finalText + interim).trim());
+      };
+      rec.onerror = (err: any) => console.warn('SpeechRecognition error:', err?.error || err);
+      rec.onend = () => { recognitionRef.current = null; };
+
+      recognitionRef.current = rec;
+      rec.start();
+    } catch (err) {
+      console.warn('Failed to start SpeechRecognition:', err);
+    }
+  };
+
+  const stopSpeechRecognition = () => {
+    const rec = recognitionRef.current;
+    if (rec) {
+      try { rec.stop(); } catch {}
+      recognitionRef.current = null;
+    }
+  };
+
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -143,6 +196,9 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
 
       // Start reactive visualization
       startViz(stream);
+
+      // NEW: start live transcription
+      startSpeechRecognition();
 
       recorder.ondataavailable = (e) => {
         if (e.data && e.data.size > 0) audioChunksRef.current.push(e.data);
@@ -167,7 +223,9 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
           // Stop visualization
           stopViz();
 
-          updateSession({ expressContent: 'Voice recording completed' });
+          // Finalize transcript, but do NOT log or update session here
+          const latestText = (transcriptRef.current || '').trim();
+          setTranscript(latestText);
         } catch (err) {
           console.error('Failed to finalize recording', err);
         }
@@ -188,10 +246,14 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
       setPermissionDenied(true);
       setIsRecording(false);
       stopViz();
+      stopSpeechRecognition(); // NEW
     }
   };
 
   const stopRecording = () => {
+    // NEW: stop STT when user stops recording
+    stopSpeechRecognition();
+
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
@@ -254,6 +316,17 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
     sessionStorage.removeItem(STORAGE_KEY_DURATION);
     setHasRecorded(false);
     setRecordingDuration(0);
+  };
+
+  const handleContinue = () => {
+    // Single place to log and update session
+    console.log('Voice transcript (continue):', transcript);
+    console.log('Voice transcript analysis (continue):', cues);
+
+    updateSession({
+      expressContent: transcript || 'Voice recording completed',
+    });
+    onContinue();
   };
 
   // Helpers
@@ -381,7 +454,7 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
         )}
 
         <HoldButton 
-          onComplete={onContinue}
+          onComplete={handleContinue}
           disabled={!hasRecorded}
         >
           <span className="flex items-center justify-center">
