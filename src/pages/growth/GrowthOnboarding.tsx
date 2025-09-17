@@ -53,8 +53,7 @@ const GrowthOnboarding = () => {
         </Button>
         <Button
           onClick={() => navigate('/ending')}
-          className="clean-button px-10 py-5 text-base mt-4"
-          variant="outline"
+          className="clean-button px-10 py-5 mx-4 text-base mt-4"
         >
           End Session
         </Button>

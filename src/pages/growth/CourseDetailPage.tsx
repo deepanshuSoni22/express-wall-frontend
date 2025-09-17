@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { growthCourses } from './courseData';
 import { X, ArrowLeft } from 'lucide-react';
 import { useScrollReset } from '@/hooks/useScrollReset';
+import whiteCurtainVideo from '@/assets/white-curtain.mp4';
 
 const CourseDetailPage = () => {
   const { courseId } = useParams();
@@ -31,112 +32,128 @@ const CourseDetailPage = () => {
   const restDescription = course.description.split('\n').slice(1).join('\n').trim();
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-calm text-foreground">
-      {/* Top bar */}
-      <div className="flex items-center justify-between px-4 py-4 sm:px-8 bg-white border-b border-border shadow-soft">
-        <button
-          onClick={() => navigate('/growth/courses')}
-          className="inline-flex items-center gap-2 text-foreground hover:text-primary text-sm font-medium rounded-full px-4 py-2 bg-muted/40 hover:bg-muted transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span className="hidden xs:inline">Back</span>
-        </button>
-        <button
-          onClick={() => navigate('/growth/courses')}
-          className="p-2 rounded-full text-foreground hover:text-primary hover:bg-muted transition-colors"
-          aria-label="Close"
-        >
-          <X className="w-5 h-5" />
-        </button>
-      </div>
+    <div className="page-with-video">
+      <video
+        className="page-video-bg"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+      >
+        <source src={whiteCurtainVideo} type="video/mp4" />
+      </video>
+      <div className="page-video-overlay" />
 
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto px-4 pb-16 sm:px-8">
-        <div className="max-w-6xl mx-auto pt-6">
-          {/* Hero */}
-          <div className="rounded-3xl overflow-hidden shadow-soft border border-border bg-white mb-10">
-            <div className="h-[340px] sm:h-[420px] w-full relative">
-              <img src={course.image} alt={course.title} className="absolute inset-0 w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/25 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6 sm:bottom-10 sm:left-10 sm:right-10">
-                <h1 className="text-3xl sm:text-5xl font-extrabold text-white drop-shadow mb-4 leading-tight">
-                  {course.title}
-                </h1>
-                <p className="text-white/90 text-sm sm:text-lg max-w-3xl leading-relaxed font-medium whitespace-pre-line">
-                  {firstParagraph}
-                </p>
+      <div className="page-inner relative z-10 w-full flex flex-col text-foreground">
+        {/* Top bar */}
+        <div className="flex items-center justify-between px-4 py-4 sm:px-8 bg-white/70 backdrop-blur-sm border-b border-white/40 shadow-soft">
+          <button
+            onClick={() => navigate('/growth/courses')}
+            className="clean-button px-4 py-2 flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span className="hidden xs:inline">Back</span>
+          </button>
+          <button
+            onClick={() => navigate('/growth/courses')}
+            className="clean-button p-2"
+            aria-label="Close"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto px-4 pb-16 sm:px-8">
+          <div className="max-w-6xl mx-auto pt-6">
+            <div className="elevated-panel">
+              {/* Hero */}
+              <div className="rounded-3xl overflow-hidden shadow-soft border border-border bg-white mb-10">
+                <div className="h-[340px] sm:h-[420px] w-full relative">
+                  <img src={course.image} alt={course.title} className="absolute inset-0 w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/25 to-transparent" />
+                  <div className="absolute bottom-6 left-6 right-6 sm:bottom-10 sm:left-10 sm:right-10">
+                    <h1 className="text-3xl sm:text-5xl font-extrabold text-white drop-shadow mb-4 leading-tight">
+                      {course.title}
+                    </h1>
+                    <p className="text-white/90 text-sm sm:text-lg max-w-3xl leading-relaxed font-medium whitespace-pre-line">
+                      {firstParagraph}
+                    </p>
+                  </div>
+                </div>
               </div>
+
+              <div className="grid gap-10 md:grid-cols-3">
+                {/* Main Sections */}
+                <div className="md:col-span-2 space-y-10">
+                  {!!restDescription && (
+                    <section className="bg-white rounded-2xl p-8 shadow-soft border border-border">
+                      <h2 className="text-xl font-semibold mb-4 tracking-tight">Course Overview</h2>
+                      <div className="text-foreground/80 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                        {restDescription}
+                      </div>
+                    </section>
+                  )}
+
+                  <section className="bg-white rounded-2xl p-8 shadow-soft border border-border">
+                    <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground/70 mb-3">Structure</h3>
+                    <p className="text-foreground/80 text-sm sm:text-base font-medium leading-relaxed">
+                      {course.details}
+                    </p>
+                  </section>
+
+                  <section className="bg-white rounded-2xl p-8 shadow-soft border border-border">
+                    <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground/70 mb-3">What You'll Gain</h3>
+                    <ul className="list-disc pl-5 space-y-1 text-foreground/80 text-sm leading-relaxed">
+                      <li>Foundational understanding through guided modules</li>
+                      <li>Progressive skill-building & reflective integration</li>
+                      <li>Confidence in expressive & interpersonal communication</li>
+                      <li>Meaningful application in real-world contexts</li>
+                    </ul>
+                  </section>
+
+                  <section className="bg-white rounded-2xl p-8 shadow-soft border border-border">
+                    <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground/70 mb-3">Notes</h3>
+                    <p className="text-foreground/70 text-sm leading-relaxed">
+                      Future iterations will include dynamic module progression, saved milestones, journaling prompts, and activity tracking to deepen engagement and reinforce applied learning.
+                    </p>
+                  </section>
+                </div>
+
+                {/* Side / Meta */}
+                <div className="md:col-span-1 space-y-8">
+                  {course.tags && (
+                    <section className="rounded-2xl bg-white border border-border p-6 shadow-soft">
+                      <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground/70 mb-4">At a Glance</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {course.tags.map(tag => (
+                          <span
+                            key={tag}
+                            className="px-3 py-1.5 rounded-full text-[11px] bg-primary/10 text-primary font-medium border border-primary/25"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </section>
+                  )}
+
+                  <section className="rounded-2xl bg-white border border-border p-6 shadow-soft">
+                    <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground/70 mb-4">Format</h3>
+                    <ul className="space-y-3 text-foreground/80 text-sm leading-relaxed">
+                      <li className="flex gap-2"><span className="text-foreground/50">•</span> Modular micro-learning blocks</li>
+                      <li className="flex gap-2"><span className="text-foreground/50">•</span> Activity-based reinforcement</li>
+                      <li className="flex gap-2"><span className="text-foreground/50">•</span> Multi-modal media (audio / visual)</li>
+                      <li className="flex gap-2"><span className="text-foreground/50">•</span> Reflective integration prompts (coming soon)</li>
+                    </ul>
+                  </section>
+                </div>
+              </div>
+
+              <div className="h-10" />
             </div>
           </div>
-
-          <div className="grid gap-10 md:grid-cols-3">
-            {/* Main Sections */}
-            <div className="md:col-span-2 space-y-10">
-              {!!restDescription && (
-                <section className="bg-white rounded-2xl p-8 shadow-soft border border-border">
-                  <h2 className="text-xl font-semibold mb-4 tracking-tight">Course Overview</h2>
-                  <div className="text-foreground/80 text-sm sm:text-base leading-relaxed whitespace-pre-line">
-                    {restDescription}
-                  </div>
-                </section>
-              )}
-
-              <section className="bg-white rounded-2xl p-8 shadow-soft border border-border">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground/70 mb-3">Structure</h3>
-                <p className="text-foreground/80 text-sm sm:text-base font-medium leading-relaxed">
-                  {course.details}
-                </p>
-              </section>
-
-              <section className="bg-white rounded-2xl p-8 shadow-soft border border-border">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground/70 mb-3">What You'll Gain</h3>
-                <ul className="list-disc pl-5 space-y-1 text-foreground/80 text-sm leading-relaxed">
-                  <li>Foundational understanding through guided modules</li>
-                  <li>Progressive skill-building & reflective integration</li>
-                  <li>Confidence in expressive & interpersonal communication</li>
-                  <li>Meaningful application in real-world contexts</li>
-                </ul>
-              </section>
-
-              <section className="bg-white rounded-2xl p-8 shadow-soft border border-border">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground/70 mb-3">Notes</h3>
-                <p className="text-foreground/70 text-sm leading-relaxed">
-                  Future iterations will include dynamic module progression, saved milestones, journaling prompts, and activity tracking to deepen engagement and reinforce applied learning.
-                </p>
-              </section>
-            </div>
-
-            {/* Side / Meta */}
-            <div className="md:col-span-1 space-y-8">
-              {course.tags && (
-                <section className="rounded-2xl bg-white border border-border p-6 shadow-soft">
-                  <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground/70 mb-4">At a Glance</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {course.tags.map(tag => (
-                      <span
-                        key={tag}
-                        className="px-3 py-1.5 rounded-full text-[11px] bg-primary/10 text-primary font-medium border border-primary/25"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              <section className="rounded-2xl bg-white border border-border p-6 shadow-soft">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground/70 mb-4">Format</h3>
-                <ul className="space-y-3 text-foreground/80 text-sm leading-relaxed">
-                  <li className="flex gap-2"><span className="text-foreground/50">•</span> Modular micro-learning blocks</li>
-                  <li className="flex gap-2"><span className="text-foreground/50">•</span> Activity-based reinforcement</li>
-                  <li className="flex gap-2"><span className="text-foreground/50">•</span> Multi-modal media (audio / visual)</li>
-                  <li className="flex gap-2"><span className="text-foreground/50">•</span> Reflective integration prompts (coming soon)</li>
-                </ul>
-              </section>
-            </div>
-          </div>
-
-          <div className="h-10" />
         </div>
       </div>
     </div>
