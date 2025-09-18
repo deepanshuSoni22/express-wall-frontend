@@ -7,6 +7,8 @@ import { VoiceView } from '@/components/VoiceView';
 import { DrawingView } from '@/components/DrawingView';
 import expressBgVideo from '@/assets/white-curtain.mp4';
 
+type ExpressOption = 'write' | 'speak' | 'draw';
+
 const expressOptions = [
   {
     id: 'write' as const,
@@ -34,15 +36,15 @@ const expressOptions = [
 const Express = () => {
   const navigate = useNavigate();
   const { updateSession } = useSession();
-  const [selectedOption, setSelectedOption] = useState<'write' | 'speak' | 'draw' | null>(null);
+  const [selectedOption, setSelectedOption] = useState<ExpressOption | null>(null);
 
-  const handleOptionSelect = (option: 'write' | 'speak' | 'draw') => {
+  const handleOptionSelect = (option: ExpressOption) => {
     setSelectedOption(option);
     updateSession({ expressChoice: option, startTime: new Date() });
   };
 
   const handleContinue = () => {
-    window.scrollTo(0, 0); // Ensure scroll position reset
+    window.scrollTo(0, 0);
     navigate('/release', { state: { fromExpress: true } });
   };
 

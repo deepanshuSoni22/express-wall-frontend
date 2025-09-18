@@ -6,9 +6,26 @@ import { BreathingExercise } from '@/components/BreathingExercise';
 import { Transition } from '@/components/Transition';
 import releaseBgVideo from '@/assets/white-curtain.mp4';
 
-const breathingTechniques = [
+type BreathingTechniqueId = 'relaxation' | 'focus' | 'stress-release' | 'energy';
+
+interface BreathingPattern {
+  inhale: number;
+  hold: number;
+  exhale: number;
+}
+
+interface BreathingTechnique {
+  id: BreathingTechniqueId;
+  title: string;
+  description: string;
+  icon: JSX.Element;
+  gradient: string;
+  pattern: BreathingPattern;
+}
+
+const breathingTechniques: BreathingTechnique[] = [
   {
-    id: 'relaxation' as const,
+    id: 'relaxation',
     title: 'Deep Relaxation',
     description: 'Slow, calming breaths for peace',
     icon: <Heart className="w-6 h-6" />,
@@ -16,7 +33,7 @@ const breathingTechniques = [
     pattern: { inhale: 4, hold: 4, exhale: 6 }
   },
   {
-    id: 'focus' as const,
+    id: 'focus',
     title: 'Mindful Focus',
     description: 'Centered breathing for clarity',
     icon: <Brain className="w-6 h-6" />,
@@ -24,7 +41,7 @@ const breathingTechniques = [
     pattern: { inhale: 4, hold: 2, exhale: 4 }
   },
   {
-    id: 'stress-release' as const,
+    id: 'stress-release',
     title: 'Stress Release',
     description: 'Release tension and worry',
     icon: <Wind className="w-6 h-6" />,
@@ -32,7 +49,7 @@ const breathingTechniques = [
     pattern: { inhale: 3, hold: 1, exhale: 5 }
   },
   {
-    id: 'energy' as const,
+    id: 'energy',
     title: 'Gentle Energy',
     description: 'Revitalizing breath for vitality',
     icon: <Zap className="w-6 h-6" />,
@@ -44,17 +61,17 @@ const breathingTechniques = [
 const Release = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const fromExpress = (location.state as any)?.fromExpress === true;
+  const fromExpress = (location.state as { fromExpress?: boolean })?.fromExpress === true;
 
   const { updateSession } = useSession();
-  const [selectedTechnique, setSelectedTechnique] = useState<typeof breathingTechniques[0] | null>(null);
+  const [selectedTechnique, setSelectedTechnique] = useState<BreathingTechnique | null>(null);
   const [showTransition, setShowTransition] = useState<boolean>(fromExpress);
 
   if (showTransition) {
     return <Transition onContinue={() => setShowTransition(false)} />;
   }
 
-  const handleTechniqueSelect = (technique: typeof breathingTechniques[0]) => {
+  const handleTechniqueSelect = (technique: BreathingTechnique) => {
     setSelectedTechnique(technique);
     updateSession({ releaseChoice: technique.id });
   };

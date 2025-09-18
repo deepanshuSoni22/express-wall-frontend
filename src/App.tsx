@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState, lazy, Suspense } from "react";
 
-// Lazy load Lottie component and animation
+// Lazy load Lottie component for performance
 const LottieAnimation = lazy(() => import('./components/LottieAnimation'));
 
 // Pages
@@ -26,10 +26,10 @@ import { SessionProvider } from "./contexts/SessionContext";
 
 const queryClient = new QueryClient();
 
-// Route-change loading overlay (1s on initial load and on each navigation)
+// Route-change loading overlay
 function RouteChangeLoader() {
   const location = useLocation();
-  const [visible, setVisible] = useState(true); // show on first mount
+  const [visible, setVisible] = useState(true);
   const timerRef = useRef<number | null>(null);
   const firstRouteRef = useRef(true);
   const DURATION_MS = 1000;
@@ -38,26 +38,37 @@ function RouteChangeLoader() {
 
   // Initial mount handler
   useEffect(() => {
-    if (skipLoader) { setVisible(false); return; }
+    if (skipLoader) { 
+      setVisible(false); 
+      return; 
+    }
+    
     timerRef.current = window.setTimeout(() => setVisible(false), DURATION_MS);
-    return () => { if (timerRef.current) window.clearTimeout(timerRef.current); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return () => { 
+      if (timerRef.current) window.clearTimeout(timerRef.current); 
+    };
+  }, [skipLoader]);
 
   // Route change handler
   useEffect(() => {
-    if (firstRouteRef.current) { firstRouteRef.current = false; return; }
-    if (skipLoader) { setVisible(false); return; }
+    if (firstRouteRef.current) { 
+      firstRouteRef.current = false; 
+      return; 
+    }
+    
+    if (skipLoader) { 
+      setVisible(false); 
+      return; 
+    }
+    
     setVisible(true);
     if (timerRef.current) window.clearTimeout(timerRef.current);
     timerRef.current = window.setTimeout(() => setVisible(false), DURATION_MS);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
+  }, [location.pathname, skipLoader]);
 
   // Don't render anything if loader shouldn't be visible
-  if (skipLoader || !visible) return null;
+  if (!visible) return null;
 
-  // Only load and render the Lottie animation when the loader is actually visible
   return (
     <div
       className="fixed inset-0 z-[9999] bg-black/30 flex items-center justify-center"
@@ -78,9 +89,7 @@ const App = () => (
     <TooltipProvider>
       <SessionProvider>
         <BrowserRouter>
-          {/* Scroll restoration component */}
           <ScrollToTop />
-          {/* Global 1s loader on mount and on every route change */}
           <RouteChangeLoader />
           <Routes>
             <Route path="/" element={<Splash />} />

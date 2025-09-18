@@ -7,7 +7,9 @@ const Splash = () => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => { setIsVisible(true); }, []);
+  useEffect(() => { 
+    setIsVisible(true); 
+  }, []);
 
   const handleStart = () => navigate('/onboarding');
 
@@ -46,25 +48,23 @@ const Splash = () => {
           <div className="relative w-80 h-40 sm:w-96 sm:h-48 md:w-[440px] md:h-52 lg:w-[520px] lg:h-60 mx-auto">
             <div className="absolute top-0 left-7 sm:left-14 md:left-14 lg:left-16">
               <span className="text-5xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-foreground drop-shadow-sm tracking-tight splash-logo-the">
-          T H E
+                T H E
               </span>
             </div>
             <div className="absolute top-[30%] left-1/2 -translate-x-1/2">
               <span
-              className="text-6xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-widest splash-logo-express"
-              style={{
-          color: 'oklch(0.65 0.1 222)',
-          textShadow: '0 1px 3px rgba(0,0,0,0.15), 0 6px 14px rgba(0,0,0,0.1)'
-              }}
+                className="text-6xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-widest splash-logo-express"
+                style={{
+                  color: 'oklch(0.65 0.1 222)',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.15), 0 6px 14px rgba(0,0,0,0.1)'
+                }}
               >
-              EXPRESS
+                EXPRESS
               </span>
             </div>
             <div className="absolute bottom-0 right-12 sm:right-14 md:right-14 lg:right-20">
-              <span
-          className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-foreground drop-shadow-sm tracking-tight italic splash-logo-wall"
-              >
-          Wall
+              <span className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-foreground drop-shadow-sm tracking-tight italic splash-logo-wall">
+                Wall
               </span>
             </div>
           </div>

@@ -7,6 +7,8 @@ import { ReflectionView } from '@/components/ReflectionView';
 import { MusicView } from '@/components/MusicView';
 import balanceBgVideo from '@/assets/white-curtain.mp4';
 
+type BalanceOption = 'quote' | 'reflection' | 'music';
+
 const balanceOptions = [
   {
     id: 'quote' as const,
@@ -34,15 +36,15 @@ const balanceOptions = [
 const Balance = () => {
   const navigate = useNavigate();
   const { updateSession } = useSession();
-  const [selectedOption, setSelectedOption] = useState<'quote' | 'reflection' | 'music' | null>(null);
+  const [selectedOption, setSelectedOption] = useState<BalanceOption | null>(null);
 
-  const handleOptionSelect = (option: 'quote' | 'reflection' | 'music') => {
+  const handleOptionSelect = (option: BalanceOption) => {
     setSelectedOption(option);
     updateSession({ balanceChoice: option });
   };
 
   const handleContinue = () => {
-    window.scrollTo(0, 0); // Ensure scroll position reset
+    window.scrollTo(0, 0);
     navigate('/growth');
   };
 

@@ -7,8 +7,8 @@
 @layer base {
   :root {
     /* Sunset Glow Palette */
-    --background: white; /* #FFF4E6 34 100% 95% */
-    --foreground: 0 0% 17%; /* #2B2B2B */
+    --background: white;
+    --foreground: 0 0% 17%;
 
     --card: 0 0% 100%;
     --card-foreground: 0 0% 17%;
@@ -20,24 +20,24 @@
     --primary: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);
     --primary-glow: 178 75% 37%;
     --primary-foreground: #ffffff;
-    --primary-foreground-dark: 0 0% 17%; /* #2B2B2B - same as foreground for consistency */
+    --primary-foreground-dark: 0 0% 17%;
 
     /* Secondary – tranquil indigo */
-    --secondary: 277 59% 90%; /* #EAD9F5 */
+    --secondary: 277 59% 90%;
     --secondary-foreground: 0 0% 17%;
 
     /* Muted – subtle slate */
-    --muted: 354 76% 92%; /* #FADADD */
+    --muted: 354 76% 92%;
     --muted-foreground: 0 0% 32%;
 
     /* Accent – soothing emerald */
-    --accent: 275 47% 84%; /* #D9C2E9 */
+    --accent: 275 47% 84%;
     --accent-foreground: 0 0% 17%;
 
-    /* Support tones - updated to bluish gradient family (#38bdf8, #60a5fa, #93c5fd) */
-    --healing: 212 96% 78%; /* #93c5fd */
-    --calm: 214 94% 67%;    /* #60a5fa */
-    --warm: 198 93% 60%;    /* #38bdf8 */
+    /* Support tones - updated to bluish gradient family */
+    --healing: 212 96% 78%;
+    --calm: 214 94% 67%;
+    --warm: 198 93% 60%;
 
     --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 100%;
@@ -46,16 +46,15 @@
     --input: 15 35% 90%;
     --ring: 8 100% 65%;
 
-    /* Updated gradients using palette */
+    /* Gradients using palette */
     --gradient-primary: linear-gradient(135deg, #0ea5e5, #38bdf2, #7dd3fa);
     --gradient-secondary: linear-gradient(135deg, #38bdf8, #60a5fa, #93c5fd);
     --gradient-healing: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);
-    --gradient-calm: linear-gradient(135deg, #bfdbfe, #93c5fd, #60a5fa); /* deeper calm for buttons */
+    --gradient-calm: linear-gradient(135deg, #bfdbfe, #93c5fd, #60a5fa);
     --gradient-warm: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);
 
-    --gradient-breathe-in: linear-gradient(135deg, #93c5fd, #bfdbfe, #dbeafe);   /* lighter blue flow in */
-    --gradient-breathe-out: linear-gradient(135deg, #60a5fa, #3b82f6, #2563eb); /* deeper blue flow out */
-
+    --gradient-breathe-in: linear-gradient(135deg, #93c5fd, #bfdbfe, #dbeafe);
+    --gradient-breathe-out: linear-gradient(135deg, #60a5fa, #3b82f6, #2563eb);
 
     --gradient-icon-blue: linear-gradient(135deg, #93c5fd, #bfdbfe, #dbeafe);
     --gradient-icon-sky: linear-gradient(135deg, #7dd3fc, #bae6fd, #e0f2fe);
@@ -73,19 +72,12 @@
     --radius: 0.65rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -148,7 +140,7 @@
     @apply bg-background text-foreground font-sans antialiased;
   }
 
-  /* Global wellness app styles */
+  /* Global wellness app animations */
   .breathe-animation {
     animation: breathe 4s ease-in-out infinite;
   }
@@ -171,18 +163,16 @@
 }
 
 @layer components {
-  /* New global typography / layout helpers */
+  /* Typography / layout helpers */
   .page-shell { @apply min-h-screen relative bg-background overflow-hidden; }
   .page-inner { @apply relative p-6 pt-10 pb-12 sm:pt-12 sm:pb-16 md:flex md:min-h-screen md:items-center; }
   .page-header { @apply text-center mb-12 max-w-2xl mx-auto; }
   .page-title { @apply font-extrabold tracking-tight text-3xl sm:text-4xl leading-tight; }
   .page-subtitle { @apply text-base sm:text-lg text-muted-foreground leading-relaxed; }
   .section-heading { @apply font-semibold text-xl sm:text-2xl tracking-tight; }
-
-  /* Larger readable body text utility */
   .body-lg { @apply text-base sm:text-lg leading-relaxed; }
 
-  /* Option grid & cards (used on Express / Release / Balance) */
+  /* Option grid & cards */
   .option-grid { @apply grid grid-cols-1 sm:grid-cols-2 gap-5; }
   .option-card { @apply relative rounded-3xl border border-border bg-card/95 backdrop-blur-sm p-5 text-left shadow-soft hover:shadow-warm transition-gentle focus:outline-none focus:ring-2 focus:ring-sky-300/40; }
   .option-card-stripe { @apply absolute inset-x-0 top-0 h-1.5 rounded-t-3xl opacity-90; }
@@ -223,6 +213,7 @@
     @apply bg-[var(--gradient-healing)] rounded-2xl p-4 text-center shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-warm)] transition-[var(--transition-gentle)] cursor-pointer;
   }
 
+  /* Layout helpers */
   .center-flex { @apply flex flex-col items-center justify-center; }
   .step-dots { @apply flex justify-center items-center space-x-3; }
   .step-dot { @apply w-3 h-3 rounded-full transition-all duration-300 bg-primary-foreground/30; }
@@ -230,11 +221,11 @@
   .page-illustration { @apply w-32 h-32 object-cover rounded-3xl mx-auto mb-8 shadow-soft ring-1 ring-border/50; }
   .option-page-image { @apply w-28 h-28 sm:w-36 sm:h-36 object-cover rounded-2xl mx-auto mb-8 shadow-soft ring-1 ring-border/50; }
 
-  /* Additional display typography */
+  /* Display typography */
   .display-hero { @apply font-extrabold tracking-tight text-4xl sm:text-5xl leading-[1.05]; }
   .display-section { @apply font-bold tracking-tight text-2xl sm:text-3xl; }
 
-  /* Reusable header icon classes and variant color helpers */
+  /* Header icon classes and variants */
   .header-icon { @apply inline-flex items-center justify-center w-20 h-20 rounded-full shadow-glow mb-8 bg-primary; }
   .header-icon-sm { @apply inline-flex items-center justify-center w-16 h-16 rounded-full shadow-glow mb-6 bg-primary; }
   .header-icon-on-card { @apply w-16 h-16 rounded-2xl shadow-glow mb-8 flex items-center justify-center bg-gradient-primary text-primary-foreground; }
@@ -244,6 +235,7 @@
   .header-title { @apply display-section mb-4; }
   .header-subtitle { @apply page-subtitle; }
 
+  /* Page background styles */
   .app-splash-bg { background: transparent; }
   .page-simple-bg { background-color: hsl(220 18% 14%); }
 
@@ -253,13 +245,14 @@
     box-shadow: 0 -10px 30px rgba(255, 255, 255, 0.08);
   }
 
-  .home-shell { /* wrapper for new home page */ }
+  /* Parallax effects */
+  .home-shell { /* wrapper for home page */ }
   .parallax-layer { position: absolute; inset: 0; will-change: transform; pointer-events: none; z-index: -1; }
   .parallax-layer:nth-child(1) { filter: blur(40px); }
   .parallax-layer:nth-child(2) { filter: blur(60px); }
   .parallax-layer:nth-child(3) { filter: blur(80px); }
 
-  /* Global video background page styling */
+  /* Video background styling */
   .page-with-video {
     @apply page-shell relative overflow-hidden;
   }
@@ -272,7 +265,7 @@
     @apply absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-white/0 backdrop-blur-[0.5px];
   }
 
-  /* Consistent option page styling */
+  /* Option page styling */
   .option-page-card {
     @apply bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 backdrop-blur-sm text-gray-700 border-blue-200/50 hover:shadow-lg shadow-md transition-all duration-300;
   }
@@ -286,18 +279,17 @@
   }
 
   .option-page-prompt {
-    @apply text-base sm:text-lg font-semibold text-primary-foreground-dark text-center;
-    opacity: 0.9;
+    @apply text-base sm:text-lg font-semibold text-primary-foreground-dark text-center opacity-90;
   }
 
-  /* Additional button styles */
+  /* Button styles */
   .clean-button {
     @apply bg-white text-[#3a9dbb] font-semibold uppercase rounded-full shadow-md hover:shadow-lg transition-all duration-300;
     box-shadow: 0 4px 16px rgba(58, 157, 187, 0.15);
   }
   
   .clean-button:hover {
-    color: #3a9dbb; /* Keep text color consistent */
+    color: #3a9dbb;
     box-shadow: 0 4px 20px rgba(58, 157, 187, 0.25);
     transform: translateY(-1px);
   }
@@ -306,7 +298,7 @@
     transform: translateY(1px);
   }
 
-  /* Fog / mist overlay */
+  /* Fog / mist overlay effects */
   .fog-overlay {
     @apply absolute inset-0 pointer-events-none overflow-hidden;
   }
@@ -331,21 +323,18 @@
     mix-blend-mode: multiply;
   }
 
-  /* Balanced contrast veil: soft white lift center + darker bottom */
+  /* Contrast veil with white lift center + darker bottom */
   .contrast-mist {
     @apply absolute inset-0 pointer-events-none;
     background:
-      /* bottom dark fade for white tagline */
       linear-gradient(to bottom, rgba(0 0 0 / 0) 0%, rgba(0 0 0 / .20) 55%, rgba(0 0 0 / .42) 100%),
-      /* subtle top dark to frame */
       linear-gradient(to top, rgba(0 0 0 / .25), rgba(0 0 0 / 0) 40%),
-      /* white radial glow behind central logo */
       radial-gradient(circle at 50% 38%, rgba(255 255 255 / .55) 0%, rgba(255 255 255 / .40) 32%, rgba(255 255 255 / .18) 55%, rgba(255 255 255 / 0) 70%);
     mix-blend-mode: normal;
     backdrop-filter: blur(2px) saturate(110%);
   }
 
-  /* Optional subtle dark vignette to ground edges */
+  /* Subtle dark vignette */
   .fog-vignette {
     @apply absolute inset-0 pointer-events-none;
     background:
@@ -354,19 +343,10 @@
     opacity: .85;
   }
 
-  /* Splash page specific font classes */
-  .splash-font {
-    font-family: 'Bebas Neue', sans-serif;
-  }
-  
-  .splash-keywords {
-    font-family: 'Bebas Neue', sans-serif;
-  }
-  
-  .splash-logo-the {
-    font-family: 'Bebas Neue', sans-serif;
-  }
-  
+  /* Splash page font classes */
+  .splash-font,
+  .splash-keywords,
+  .splash-logo-the,
   .splash-logo-express {
     font-family: 'Bebas Neue', sans-serif;
   }
@@ -377,7 +357,7 @@
 }
 
 @layer utilities {
-  /* Custom keyframes for wellness animations */
+  /* Animation keyframes */
   @keyframes breathe {
     0%, 100% { transform: scale(1); opacity: 0.8; }
     50% { transform: scale(1.1); opacity: 1; }
@@ -409,18 +389,19 @@
     100% { transform: translate3d(-6%, -4%, 0) scale(1); }
   }
 
+  /* Background gradient */
   .page-radial-soft { background: radial-gradient(circle at 50% 35%, #FFF4E6 0%, #FADADD 60%, #EAD9F5 120%); }
 
-  /* Add utility for primary-foreground-dark */
+  /* Text color utility */
   .text-primary-foreground-dark {
     color: hsl(var(--primary-foreground-dark));
   }
 
-  /* Viewport-safe full height helpers for mobile */
+  /* Viewport-safe height helpers */
   .h-full-viewport { height: 100vh; height: 100svh; height: 100dvh; }
   .min-h-full-viewport { min-height: 100vh; min-height: 100svh; min-height: 100dvh; }
 
-  /* Additional glow effect for the buttons to match screenshot */
+  /* Button glow effect */
   .button-glow {
     box-shadow: 0 2px 16px rgba(58, 157, 187, 0.2);
   }

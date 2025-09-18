@@ -1,10 +1,15 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
+// Type definitions for the various user choices
+type ExpressChoice = 'write' | 'speak' | 'draw';
+type ReleaseChoice = 'relaxation' | 'focus' | 'stress-release' | 'energy';
+type BalanceChoice = 'quote' | 'reflection' | 'music';
+
 interface SessionData {
-  expressChoice?: 'write' | 'speak' | 'draw';
+  expressChoice?: ExpressChoice;
   expressContent?: string;
-  releaseChoice?: 'relaxation' | 'focus' | 'stress-release' | 'energy';
-  balanceChoice?: 'quote' | 'reflection' | 'music';
+  releaseChoice?: ReleaseChoice;
+  balanceChoice?: BalanceChoice;
   balanceContent?: string;
   startTime?: Date;
   endTime?: Date;

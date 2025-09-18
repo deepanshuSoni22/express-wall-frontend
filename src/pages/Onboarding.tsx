@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronLeft, Heart, Wind, Sparkles } from 'lucide-react';
-import whiteCurtainVideo from '@/assets/white-curtain.mp4'; // added
+import whiteCurtainVideo from '@/assets/white-curtain.mp4';
 
 const onboardingSteps = [
   {
@@ -13,8 +13,8 @@ const onboardingSteps = [
     showTitle: true
   },
   {
-    title: "Here, you don’t need to hide what you feel.", // kept for semantics (not shown)
-    description: "Here, you don’t need to hide what you feel. The Express Wall is where you can let your emotions flow without judgment, while the Growth Zones offer guided modules to help you reflect, heal, and rebuild.",
+    title: "Here, you don't need to hide what you feel.",
+    description: "Here, you don't need to hide what you feel. The Express Wall is where you can let your emotions flow without judgment, while the Growth Zones offer guided modules to help you reflect, heal, and rebuild.",
     icon: <Wind className="w-16 h-16 text-calm animate-breathe" />,
     gradient: "bg-gradient-calm",
     showTitle: false
@@ -31,13 +31,11 @@ const onboardingSteps = [
 const Onboarding = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
-
-  // Video fallback handling (no structural / color changes)
   const [videoError, setVideoError] = useState(false);
   const [enableVideo, setEnableVideo] = useState(true);
 
   useEffect(() => {
-    // Respect reduced motion
+    // Respect user's reduced motion preference
     try {
       const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
       if (mq.matches) setEnableVideo(false);
@@ -48,7 +46,6 @@ const Onboarding = () => {
     if (currentStep < onboardingSteps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Updated flow: go to Register page after onboarding
       navigate('/register');
     }
   };
@@ -63,7 +60,6 @@ const Onboarding = () => {
     <div
       className={`page-shell min-h-full-viewport bg-white flex flex-col items-center justify-center p-6 text-center transition-all duration-500 relative overflow-hidden`}
     >
-      {/* Background video (falls back to existing gradient if error / disabled) */}
       {enableVideo && !videoError && (
         <video
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
@@ -78,7 +74,6 @@ const Onboarding = () => {
         </video>
       )}
 
-      {/* Content wrapper kept identical (just elevated above video) */}
       <div className="relative z-10 max-w-2xl mx-auto">
         <div className="mb-10">
           {currentContent.icon}
