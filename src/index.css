@@ -7,7 +7,7 @@
 @layer base {
   :root {
     /* Sunset Glow Palette */
-    --background: 34 100% 95%; /* #FFF4E6 */
+    --background: white; /* #FFF4E6 34 100% 95% */
     --foreground: 0 0% 17%; /* #2B2B2B */
 
     --card: 0 0% 100%;
