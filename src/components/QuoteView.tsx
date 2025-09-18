@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, RefreshCw, Heart } from 'lucide-react';
-
-interface QuoteViewProps {
-  onContinue: () => void;
-}
+import type { WithContinueProps } from '@/types';
 
 const inspiringQuotes = [
   {
@@ -33,7 +30,7 @@ const inspiringQuotes = [
   }
 ];
 
-export const QuoteView = ({ onContinue }: QuoteViewProps) => {
+export const QuoteView = ({ onContinue }: WithContinueProps) => {
   const [currentQuote, setCurrentQuote] = useState(inspiringQuotes[0]);
   const [isVisible, setIsVisible] = useState(false);
 

@@ -4,24 +4,8 @@ import { Wind, Heart, Zap, Brain, ArrowRight } from 'lucide-react';
 import { useSession } from '@/contexts/SessionContext';
 import { BreathingExercise } from '@/components/BreathingExercise';
 import { Transition } from '@/components/Transition';
+import type { BreathingTechnique } from '@/types';
 import releaseBgVideo from '@/assets/white-curtain.mp4';
-
-type BreathingTechniqueId = 'relaxation' | 'focus' | 'stress-release' | 'energy';
-
-interface BreathingPattern {
-  inhale: number;
-  hold: number;
-  exhale: number;
-}
-
-interface BreathingTechnique {
-  id: BreathingTechniqueId;
-  title: string;
-  description: string;
-  icon: JSX.Element;
-  gradient: string;
-  pattern: BreathingPattern;
-}
 
 const breathingTechniques: BreathingTechnique[] = [
   {
@@ -77,16 +61,14 @@ const Release = () => {
   };
 
   const handleContinue = () => {
-    window.scrollTo(0, 0); // Ensure scroll position reset
-    navigate('/balance');
+    window.scrollTo(0, 0);
+    navigate('/rebuild');
   };
 
+  // Render the selected breathing exercise or techniques list
   if (selectedTechnique) {
     return (
-      <BreathingExercise 
-        technique={selectedTechnique} 
-        onContinue={handleContinue} 
-      />
+      <BreathingExercise technique={selectedTechnique} onContinue={handleContinue} />
     );
   }
 
@@ -105,10 +87,10 @@ const Release = () => {
       </video>
 
       <div className="page-inner relative z-10">
-        <div className="max-w-2xl mx-auto">
+        <div className="mx-auto max-w-2xl">
           <div className="page-header mb-14">
             <h2 className="display-section mb-4 text-primary-foreground-dark">
-              <span className="block text-xl font-semibold tracking-tight mb-1">Your Release</span>
+              <span className="block text-xl font-semibold tracking-tight mb-1">Your Moment</span>
               <span className="block text-4xl sm:text-5xl md:text-6xl font-extrabold leading-none">Your Breath.</span>
             </h2>
             <p className="max-w-xl mx-auto font-semibold text-primary-foreground-dark">

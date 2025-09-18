@@ -4,12 +4,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { useSession } from '@/contexts/SessionContext';
 import { useScrollReset } from '@/hooks/useScrollReset';
+import type { WithContinueProps } from '@/types';
 
-interface ReflectionViewProps {
-  onContinue: () => void;
-}
-
-export const ReflectionView = ({ onContinue }: ReflectionViewProps) => {
+export const ReflectionView = ({ onContinue }: WithContinueProps) => {
   const [reflection, setReflection] = useState('');
   const { updateSession } = useSession();
   
@@ -17,7 +14,7 @@ export const ReflectionView = ({ onContinue }: ReflectionViewProps) => {
   useScrollReset();
 
   const handleContinue = () => {
-    updateSession({ balanceContent: reflection });
+    updateSession({ rebuildContent: reflection });
     onContinue();
   };
 

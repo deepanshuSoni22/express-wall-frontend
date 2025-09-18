@@ -2,10 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Play, Pause, ArrowRight, Volume2 } from 'lucide-react';
 import { useScrollReset } from '@/hooks/useScrollReset';
+import type { WithContinueProps } from '@/types';
 
-interface MusicViewProps {
-  onContinue: () => void;
-}
+interface MusicViewProps extends WithContinueProps {}
 
 type Track = {
   id: 'rain' | 'forest' | 'ocean';

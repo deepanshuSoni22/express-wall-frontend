@@ -1,25 +1,6 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
-
-// Type definitions for the various user choices
-type ExpressChoice = 'write' | 'speak' | 'draw';
-type ReleaseChoice = 'relaxation' | 'focus' | 'stress-release' | 'energy';
-type BalanceChoice = 'quote' | 'reflection' | 'music';
-
-interface SessionData {
-  expressChoice?: ExpressChoice;
-  expressContent?: string;
-  releaseChoice?: ReleaseChoice;
-  balanceChoice?: BalanceChoice;
-  balanceContent?: string;
-  startTime?: Date;
-  endTime?: Date;
-}
-
-interface SessionContextType {
-  sessionData: SessionData;
-  updateSession: (data: Partial<SessionData>) => void;
-  resetSession: () => void;
-}
+import { createContext, useContext, useState } from 'react';
+import type { ReactNode } from 'react';
+import type { SessionData, SessionContextType } from '@/types';
 
 const SessionContext = createContext<SessionContextType | undefined>(undefined);
 

@@ -1,27 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Play, Pause, ArrowRight, Volume2, VolumeX } from 'lucide-react';
 import { useScrollReset } from '@/hooks/useScrollReset';
 import { useSpeechSynthesis } from '@/hooks/useSpeechSynthesis';
 import { useAnimationFrame } from '@/hooks/useAnimationFrame';
-
-interface BreathingPattern {
-  inhale: number;
-  hold: number;
-  exhale: number;
-}
-
-interface Technique {
-  id: string;
-  title: string;
-  gradient: string;
-  pattern: BreathingPattern;
-}
-
-interface BreathingExerciseProps {
-  technique: Technique;
-  onContinue: () => void;
-}
+import type { BreathingTechnique, WithContinueProps } from '@/types';
 
 type Phase = 'inhale' | 'hold' | 'exhale' | 'ready';
 
@@ -39,6 +22,10 @@ const phaseColors: Record<Phase, string> = {
   hold: 'bg-gradient-breathe-out',
   exhale: 'bg-gradient-breathe-in',
 };
+
+interface BreathingExerciseProps extends WithContinueProps {
+  technique: BreathingTechnique;
+}
 
 export const BreathingExercise = ({ technique, onContinue }: BreathingExerciseProps) => {
   const [isActive, setIsActive] = useState(false);
@@ -287,7 +274,7 @@ export const BreathingExercise = ({ technique, onContinue }: BreathingExercisePr
 
         {cycleCount >= 1 && (
           <Button onClick={onContinue} className="wellness-button w-full text-base py-5">
-            Continue to Balance
+            Continue to Rebuild
             <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
         )}

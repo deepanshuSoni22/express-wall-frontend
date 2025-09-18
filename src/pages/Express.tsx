@@ -5,27 +5,26 @@ import { useSession } from '@/contexts/SessionContext';
 import { JournalView } from '@/components/JournalView';
 import { VoiceView } from '@/components/VoiceView';
 import { DrawingView } from '@/components/DrawingView';
+import type { ExpressChoice, ExpressOption } from '@/types';
 import expressBgVideo from '@/assets/white-curtain.mp4';
 
-type ExpressOption = 'write' | 'speak' | 'draw';
-
-const expressOptions = [
+const expressOptions: ExpressOption[] = [
   {
-    id: 'write' as const,
+    id: 'write',
     title: 'Text Wall',
     description: 'Pour your heart out into words',
     icon: <PenTool className="w-8 h-8" />,
     gradient: 'icon-gradient-blue'
   },
   {
-    id: 'speak' as const,
+    id: 'speak',
     title: 'Voice Wall',
     description: 'Let your voice carry the weight away', 
     icon: <Mic className="w-8 h-8" />,
     gradient: 'icon-gradient-sky'
   },
   {
-    id: 'draw' as const,
+    id: 'draw',
     title: 'Doodle Wall',
     description: "Sketch what your heart can't say",
     icon: <Paintbrush className="w-8 h-8" />,
@@ -36,9 +35,9 @@ const expressOptions = [
 const Express = () => {
   const navigate = useNavigate();
   const { updateSession } = useSession();
-  const [selectedOption, setSelectedOption] = useState<ExpressOption | null>(null);
+  const [selectedOption, setSelectedOption] = useState<ExpressChoice | null>(null);
 
-  const handleOptionSelect = (option: ExpressOption) => {
+  const handleOptionSelect = (option: ExpressChoice) => {
     setSelectedOption(option);
     updateSession({ expressChoice: option, startTime: new Date() });
   };
@@ -48,6 +47,7 @@ const Express = () => {
     navigate('/release', { state: { fromExpress: true } });
   };
 
+  // Render the selected view or options screen
   if (selectedOption) {
     return (
       <div className="min-h-screen bg-background">
@@ -93,7 +93,7 @@ const Express = () => {
               <button
                 key={option.id}
                 type="button"
-                onClick={() => handleOptionSelect(option.id)}
+                onClick={() => handleOptionSelect(option.id as ExpressChoice)}
                 className="group option-card card-gradient-bg hover:shadow-lg shadow-md transition-all duration-300"
               >
                 <div className="flex items-center gap-5 pt-1.5">

@@ -8,12 +8,12 @@ import { useEffect, useRef, useState, lazy, Suspense } from "react";
 const LottieAnimation = lazy(() => import('./components/LottieAnimation'));
 
 // Pages
-import Splash from "./pages/Splash";
+import Home from "./pages/Home";
 import Onboarding from "./pages/Onboarding";
 import Register from "./pages/Register";
 import Express from "./pages/Express";
 import Release from "./pages/Release";
-import Balance from "./pages/Balance";
+import Rebuild from "./pages/Rebuild";
 import Ending from "./pages/Ending";
 import NotFound from "./pages/NotFound";
 import GrowthOnboarding from './pages/growth/GrowthOnboarding';
@@ -92,12 +92,12 @@ const App = () => (
           <ScrollToTop />
           <RouteChangeLoader />
           <Routes>
-            <Route path="/" element={<Splash />} />
+            <Route path="/" element={<Home />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/register" element={<Register />} />
             <Route path="/express" element={<Express />} />
             <Route path="/release" element={<Release />} />
-            <Route path="/balance" element={<Balance />} />
+            <Route path="/rebuild" element={<Rebuild />} />
             <Route path="/growth" element={<GrowthOnboarding />} />
             <Route path="/growth/courses" element={<CoursesPage />} />
             <Route path="/growth/:courseId" element={<CourseDetailPage />} />
