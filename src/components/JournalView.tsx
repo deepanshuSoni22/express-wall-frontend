@@ -23,6 +23,7 @@ export const JournalView = ({ onContinue }: JournalViewProps) => {
   const cues = useTextCues(content);
 
   const handleContinue = () => {
+    console.log("Input:", content);
     console.log("Analysis Result:", cues);  
 
     updateSession({ expressContent: content });
