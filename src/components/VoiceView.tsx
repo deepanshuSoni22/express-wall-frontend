@@ -404,7 +404,7 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
                 }}
               />
               <div
-                className={`breathing-circle transition-all duration-150 ${isRecording ? 'scale-105' : ''}`}
+                className={`breathing-circle rounded-full w-28 h-28 flex items-center justify-center transition-all duration-150 ${isRecording ? 'scale-105' : ''}`}
                 style={{
                   transform: `scale(${scale})`,
                   background: 'conic-gradient(from 180deg at 50% 50%, rgba(210,230,255,1), rgba(160,200,255,0.9), rgba(210,230,255,1))',
