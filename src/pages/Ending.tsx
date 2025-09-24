@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-// Adjust the extension (.jpg / .png / .webp) to match the actual file
 import wallBg from '@/assets/wallBG.jpg';
+import { useSession } from '@/contexts/SessionContext';
 
 const Ending = () => {
   const navigate = useNavigate();
@@ -14,8 +14,13 @@ const Ending = () => {
     navigate('/express');
   };
 
-  const endSession = () => {
-    navigate('/');
+  const endSession = async () => {
+    try {
+      // Keep the session active but redirect to home
+      navigate('/');
+    } catch (error) {
+      console.error('Error ending session:', error);
+    }
   };
 
   return (

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Mic, Square, Play, Pause, ArrowRight, RefreshCw } from 'lucide-react';
+import { Mic, Square, Play, Pause, ArrowRight, RefreshCw, AlertCircle } from 'lucide-react';
 import { useSession } from '@/contexts/SessionContext';
 import { HoldButton } from '@/components/ui/hold-button';
 import wallBg from '@/assets/wallBG.jpg';
@@ -468,7 +468,13 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
           </div>
         )}
 
-        {/* Removed live transcript display - transcription is only for backend processing */}
+        {/* Show error message when user tries to continue without recording */}
+        {!hasRecorded && !isRecording && (
+          <div className="mb-6 p-3 bg-red-50/70 border border-red-300/80 rounded text-sm text-red-700 flex items-center">
+            <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0" />
+            <span>Please record your voice to continue</span>
+          </div>
+        )}
 
         <HoldButton 
           onComplete={handleContinue}

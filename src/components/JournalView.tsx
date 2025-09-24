@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { useSession } from '@/contexts/SessionContext';
-import { ArrowRight, BookOpen } from 'lucide-react';
+import { ArrowRight, BookOpen, AlertCircle } from 'lucide-react';
 import { HoldButton } from '@/components/ui/hold-button';
 import wallBg from '@/assets/wallBG.jpg';
 import { useScrollReset } from '@/hooks/useScrollReset';
@@ -14,10 +14,24 @@ interface JournalViewProps {
 
 export const JournalView = ({ onContinue }: JournalViewProps) => {
   const [content, setContent] = useState('');
+  const [showLengthError, setShowLengthError] = useState(false);
   const { updateSession } = useSession();
   
   // Reset scroll position when component mounts
   useScrollReset();
+
+  // Check content length when it changes
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newContent = e.target.value;
+    setContent(newContent);
+    
+    // Show error if user has started typing but content is still too short
+    if (newContent.length > 0 && newContent.length < 10) {
+      setShowLengthError(true);
+    } else {
+      setShowLengthError(false);
+    }
+  };
 
   const handleContinue = async () => {
     try {
@@ -33,6 +47,8 @@ export const JournalView = ({ onContinue }: JournalViewProps) => {
     }
   };
 
+  const isContentTooShort = content.trim().length < 10;
+
   return (
     <div className="page-shell relative overflow-hidden flex flex-col p-6">
       <img src={wallBg} alt="Calming wall background" className="absolute inset-0 w-full h-full object-cover" />
@@ -45,11 +61,11 @@ export const JournalView = ({ onContinue }: JournalViewProps) => {
           <p className="header-subtitle text-primary-foreground-dark/80">Pour your heart out into words</p>
         </div>
 
-        <div className="flex-1 mb-10">
+        <div className="flex-1 mb-4">
           <Textarea
             placeholder="Dear wall, today I feel... What's in your heart right now?"
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={handleContentChange}
             autoFocus
             className="
               min-h-[55vh]
@@ -74,10 +90,17 @@ export const JournalView = ({ onContinue }: JournalViewProps) => {
             "
           />
         </div>
+        
+        {showLengthError && (
+          <div className="mb-6 p-3 bg-red-50/70 border border-red-300/80 rounded text-sm text-red-700 flex items-center">
+            <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0" />
+            <span>Please express with at least 10 characters to continue</span>
+          </div>
+        )}
 
         <HoldButton 
           onComplete={handleContinue}
-          disabled={content.trim().length < 10}
+          disabled={isContentTooShort}
         >
           <span className="flex items-center justify-center">
             <span className="mr-2">Hold to Release</span>

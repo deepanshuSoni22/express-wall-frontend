@@ -4,36 +4,88 @@ import { Button } from '@/components/ui/button';
 import treesVideo from '@/assets/trees-bg.mp4';
 import { authService } from '@/services/authService';
 import { handleAuthError } from '@/services/apiClient';
+import { useSession } from '@/contexts/SessionContext';
 
 const Register = () => {
   const navigate = useNavigate();
+  const { updateSession } = useSession();
   const [isVisible, setIsVisible] = useState(false);
+  const [errors, setErrors] = useState<{
+    name?: string;
+    mobile?: string;
+    general?: string;
+  }>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => { setIsVisible(true); }, []);
 
+  // Validate mobile number format (accepts common formats with optional country codes)
+  const isValidMobileNumber = (mobile: string): boolean => {
+    // Allow digits, +, spaces, dashes, parentheses
+    // This allows formats like: +1 (123) 456-7890, 1234567890, +91 98765 43210
+    const mobilePattern = /^[\d\s()+\-]{7,15}$/;
+    return mobilePattern.test(mobile);
+  };
+
+  const validateForm = (name: string, mobile: string): boolean => {
+    const newErrors: {name?: string; mobile?: string} = {};
+    let isValid = true;
+
+    // Validate name
+    if (!name.trim()) {
+      newErrors.name = "Please enter your name";
+      isValid = false;
+    }
+
+    // Validate mobile number
+    if (!mobile.trim()) {
+      newErrors.mobile = "Please enter your mobile number";
+      isValid = false;
+    } else if (!isValidMobileNumber(mobile)) {
+      newErrors.mobile = "Please enter a valid mobile number";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleContinue = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    
     const nameInput = document.getElementById('name') as HTMLInputElement | null;
     const mobileInput = document.getElementById('mobile') as HTMLInputElement | null;
 
     const name = nameInput?.value.trim() ?? '';
     const mobile = mobileInput?.value.trim() ?? '';
 
-    if (!name || !mobile) {
-      // Show validation error
+    if (!validateForm(name, mobile)) {
+      setIsSubmitting(false);
       return;
     }
 
     try {
       const result = await authService.register(name, mobile);
       if (result.status === 'success') {
+        // Store user data in session context
+        if (result.user) {
+          updateSession({ user: result.user });
+        }
         navigate('/express');
       } else {
-        // Handle error
-        console.error('Registration failed:', result.error);
+        // Handle API error response
+        setErrors({
+          general: result.error || "Registration failed. Please try again."
+        });
       }
     } catch (error) {
+      setErrors({
+        general: "Connection error. Please check your internet connection and try again."
+      });
       handleAuthError(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -70,6 +122,12 @@ const Register = () => {
           
           {/* Registration Form */}
           <form className="space-y-6 text-left">
+            {errors.general && (
+              <div className="p-3 bg-red-50 border border-red-300 text-red-800 rounded-md text-sm">
+                {errors.general}
+              </div>
+            )}
+            
             <div className="space-y-1">
               <label htmlFor="name" className="block uppercase text-sm sm:text-sm font-semibold text-black">
                 NAME
@@ -80,9 +138,13 @@ const Register = () => {
               <input
                 type="text"
                 id="name"
-                className="w-full px-4 py-2.5 bg-white/20 border border-[#3a9dbb] focus:outline-none focus:ring-2 focus:ring-[#3a9dbb]/40 transition-all text-black placeholder-black/50"
+                className={`w-full px-4 py-2.5 bg-white/20 border ${errors.name ? 'border-red-500 focus:ring-red-500/40' : 'border-[#3a9dbb] focus:ring-[#3a9dbb]/40'} focus:outline-none focus:ring-2 transition-all text-black placeholder-black/50`}
                 placeholder=""
+                onChange={() => errors.name && setErrors(prev => ({...prev, name: undefined}))}
               />
+              {errors.name && (
+                <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+              )}
             </div>
 
             <div className="space-y-1">
@@ -95,9 +157,13 @@ const Register = () => {
               <input
                 type="tel"
                 id="mobile"
-                className="w-full px-4 py-2.5 bg-white/20 border border-[#3a9dbb] focus:outline-none focus:ring-2 focus:ring-[#3a9dbb]/40 transition-all text-black placeholder-black/50"
-                placeholder=""
+                className={`w-full px-4 py-2.5 bg-white/20 border ${errors.mobile ? 'border-red-500 focus:ring-red-500/40' : 'border-[#3a9dbb] focus:ring-[#3a9dbb]/40'} focus:outline-none focus:ring-2 transition-all text-black placeholder-black/50`}
+                placeholder="e.g. +91 98765 43210"
+                onChange={() => errors.mobile && setErrors(prev => ({...prev, mobile: undefined}))}
               />
+              {errors.mobile && (
+                <p className="mt-1 text-sm text-red-600">{errors.mobile}</p>
+              )}
             </div>
 
             <div className="py-6">
@@ -110,9 +176,12 @@ const Register = () => {
               
               <Button
                 onClick={handleContinue}
-                className="clean-button w-full py-4 text-sm sm:text-base font-bold"
+                disabled={isSubmitting}
+                className="clean-button w-full py-4 text-sm sm:text-base font-bold relative"
               >
-                <span className="tracking-wide">STEP INTO MY SPACE</span>
+                <span className="tracking-wide">
+                  {isSubmitting ? 'PLEASE WAIT...' : 'STEP INTO MY SPACE'}
+                </span>
               </Button>
             </div>
           </form>

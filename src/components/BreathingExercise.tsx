@@ -129,11 +129,16 @@ export const BreathingExercise = ({ technique, onContinue }: BreathingExercisePr
 
   // Start the breathing exercise
   const startExercise = () => {
+    // Initialize voice system first
     warmUpVoice();
-
+    
     const now = performance.now();
     setIsActive(true);
-    speak('Breathe in');
+    
+    // Set a small delay before speaking the first instruction to ensure voice is ready
+    setTimeout(() => {
+      speak('Breathe in');
+    }, 300);
 
     setCurrentPhase('inhale');
     setPhaseDuration(pattern.inhale);

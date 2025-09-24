@@ -51,6 +51,11 @@ export interface SessionData {
   rebuildContent?: string;
   startTime?: Date;
   endTime?: Date;
+  user?: {
+    id: number;
+    name: string;
+    mobile_number: string;
+  };
 }
 
 export interface SessionContextType {
