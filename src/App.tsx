@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import Lottie from 'lottie-react';
 import loadingAnimation from './assets/Loading.json';
+import { authService } from './services/authService';
+import { handleAuthError } from '@/services/apiClient';
 
 // Lazy load Lottie component for performance
 const LottieAnimation = lazy(() => import('./components/LottieAnimation'));
@@ -20,7 +22,6 @@ const Ending = lazy(() => import("./pages/Ending"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const GrowthOnboarding = lazy(() => import('./pages/growth/GrowthOnboarding'));
 const CoursesPage = lazy(() => import('./pages/growth/CoursesPage'));
-const CourseDetailPage = lazy(() => import('./pages/growth/CourseDetailPage'));
 import { ScrollToTop } from './components/ScrollToTop';
 
 // Session Context
@@ -41,6 +42,32 @@ function LoaderOverlay() {
       </div>
     </div>
   );
+}
+
+// Add session check component
+function SessionChecker({ children }: { children: React.ReactNode }) {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
+
+  const checkAuthStatus = async () => {
+    try {
+      const result = await authService.checkSession();
+      setIsAuthenticated(result.authenticated);
+    } catch (error) {
+      // For session check, don't redirect immediately - just set as not authenticated
+      console.error('Session check failed:', error);
+      setIsAuthenticated(false);
+    }
+  };
+
+  if (isAuthenticated === null) {
+    return <LoaderOverlay />;
+  }
+
+  return <>{children}</>;
 }
 
 // Show overlay only for real loading (queries in-flight), with debounce and min visible duration
@@ -104,27 +131,28 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <SessionProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          {/* Global loader driven by real network activity */}
-          <GlobalLoader />
-          {/* Suspense fallback shows overlay only while route chunks load */}
-          <Suspense fallback={<LoaderOverlay />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/onboarding" element={<Onboarding />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/express" element={<Express />} />
-              <Route path="/release" element={<Release />} />
-              <Route path="/rebuild" element={<Rebuild />} />
-              <Route path="/growth" element={<GrowthOnboarding />} />
-              <Route path="/growth/courses" element={<CoursesPage />} />
-              <Route path="/growth/:courseId" element={<CourseDetailPage />} />
-              <Route path="/ending" element={<Ending />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
+        <SessionChecker>
+          <BrowserRouter>
+            <ScrollToTop />
+            {/* Global loader driven by real network activity */}
+            <GlobalLoader />
+            {/* Suspense fallback shows overlay only while route chunks load */}
+            <Suspense fallback={<LoaderOverlay />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/onboarding" element={<Onboarding />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/express" element={<Express />} />
+                <Route path="/release" element={<Release />} />
+                <Route path="/rebuild" element={<Rebuild />} />
+                <Route path="/growth" element={<GrowthOnboarding />} />
+                <Route path="/growth/courses" element={<CoursesPage />} />
+                <Route path="/ending" element={<Ending />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
+        </SessionChecker>
         <Toaster />
       </SessionProvider>
     </TooltipProvider>

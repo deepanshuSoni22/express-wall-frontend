@@ -5,8 +5,8 @@ import { ArrowRight, BookOpen } from 'lucide-react';
 import { HoldButton } from '@/components/ui/hold-button';
 import wallBg from '@/assets/wallBG.jpg';
 import { useScrollReset } from '@/hooks/useScrollReset';
-import { useTextCues } from "@/utils/useTextCues"; // fix
-
+import { recommendationService } from '@/services/recommendationService';
+import { handleAuthError } from '@/services/apiClient';
 
 interface JournalViewProps {
   onContinue: () => void;
@@ -19,15 +19,18 @@ export const JournalView = ({ onContinue }: JournalViewProps) => {
   // Reset scroll position when component mounts
   useScrollReset();
 
-  // compute cues from current content
-  const cues = useTextCues(content);
-
-  const handleContinue = () => {
-    console.log("Input:", content);
-    console.log("Analysis Result:", cues);  
-
-    updateSession({ expressContent: content });
-    onContinue();
+  const handleContinue = async () => {
+    try {
+      // Start async recommendation preparation
+      await recommendationService.prepareRecommendations(content);
+      updateSession({ expressContent: content });
+      onContinue();
+    } catch (error) {
+      handleAuthError(error);
+      // Still allow continuation even if prep fails
+      updateSession({ expressContent: content });
+      onContinue();
+    }
   };
 
   return (

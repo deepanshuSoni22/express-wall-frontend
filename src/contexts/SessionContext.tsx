@@ -29,3 +29,18 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
     </SessionContext.Provider>
   );
 };
+
+interface SessionData {
+  expressChoice?: ExpressChoice;
+  expressContent?: string;
+  releaseChoice?: ReleaseChoice;
+  rebuildChoice?: RebuildChoice;
+  rebuildContent?: string;
+  startTime?: Date;
+  endTime?: Date;
+  user?: {
+    id: number;
+    name: string;
+    mobile_number: string;
+  };
+}

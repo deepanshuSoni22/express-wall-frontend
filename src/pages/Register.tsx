@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import treesVideo from '@/assets/trees-bg.mp4';
+import { authService } from '@/services/authService';
+import { handleAuthError } from '@/services/apiClient';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -9,18 +11,30 @@ const Register = () => {
 
   useEffect(() => { setIsVisible(true); }, []);
 
-  const handleContinue = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleContinue = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const nameInput = document.getElementById('name') as HTMLInputElement | null;
     const mobileInput = document.getElementById('mobile') as HTMLInputElement | null;
 
     const name = nameInput?.value.trim() ?? '';
-    const number = mobileInput?.value.trim() ?? '';
+    const mobile = mobileInput?.value.trim() ?? '';
 
-    console.log(`name: ${name}`);
-    console.log(`number: ${number}`);
+    if (!name || !mobile) {
+      // Show validation error
+      return;
+    }
 
-    navigate('/express');
+    try {
+      const result = await authService.register(name, mobile);
+      if (result.status === 'success') {
+        navigate('/express');
+      } else {
+        // Handle error
+        console.error('Registration failed:', result.error);
+      }
+    } catch (error) {
+      handleAuthError(error);
+    }
   };
 
   return (

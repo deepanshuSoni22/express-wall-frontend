@@ -4,7 +4,9 @@ import { Mic, Square, Play, Pause, ArrowRight, RefreshCw } from 'lucide-react';
 import { useSession } from '@/contexts/SessionContext';
 import { HoldButton } from '@/components/ui/hold-button';
 import wallBg from '@/assets/wallBG.jpg';
-import { useTextCues } from '@/utils/useTextCues';
+import { audioService } from '@/services/audioService';
+import { recommendationService } from '@/services/recommendationService';
+import { handleAuthError } from '@/services/apiClient';
 
 interface VoiceViewProps {
   onContinue: () => void;
@@ -18,15 +20,11 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [recordingDuration, setRecordingDuration] = useState(0);
   const [vizLevel, setVizLevel] = useState(0); // 0..1 smoothed mic level
-  const [transcript, setTranscript] = useState(''); // NEW live transcript
-
-  const cues = useTextCues(transcript); // NEW analyze transcript continuously
+  const [transcript, setTranscript] = useState(''); // Live transcript
 
   // Keep freshest values for async callbacks (avoid stale closures)
   const transcriptRef = useRef(transcript);
-  const cuesRef = useRef(cues);
   useEffect(() => { transcriptRef.current = transcript; }, [transcript]);
-  useEffect(() => { cuesRef.current = cues; }, [cues]);
 
   const { updateSession } = useSession();
 
@@ -39,7 +37,7 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
   const audioCtxRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const rafRef = useRef<number | null>(null);
-  const recognitionRef = useRef<any>(null); // NEW: SpeechRecognition instance
+  const recognitionRef = useRef<any>(null); // SpeechRecognition instance
 
   const STORAGE_KEY_AUDIO = 'expressWell_voiceRecording_tmp';
   const STORAGE_KEY_DURATION = 'expressWell_voiceRecording_duration_tmp';
@@ -93,7 +91,7 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
       }
       sessionStorage.removeItem(STORAGE_KEY_AUDIO);
       sessionStorage.removeItem(STORAGE_KEY_DURATION);
-      stopSpeechRecognition(); // NEW
+      stopSpeechRecognition();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -145,7 +143,7 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
     }
   };
 
-  // NEW: start/stop speech recognition for live transcription
+  // start/stop speech recognition for live transcription
   const startSpeechRecognition = () => {
     const SR: any = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SR) {
@@ -197,7 +195,7 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
       // Start reactive visualization
       startViz(stream);
 
-      // NEW: start live transcription
+      // start live transcription
       startSpeechRecognition();
 
       recorder.ondataavailable = (e) => {
@@ -246,12 +244,12 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
       setPermissionDenied(true);
       setIsRecording(false);
       stopViz();
-      stopSpeechRecognition(); // NEW
+      stopSpeechRecognition();
     }
   };
 
   const stopRecording = () => {
-    // NEW: stop STT when user stops recording
+    // stop STT when user stops recording
     stopSpeechRecognition();
 
     if (mediaRecorderRef.current && isRecording) {
@@ -318,15 +316,32 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
     setRecordingDuration(0);
   };
 
-  const handleContinue = () => {
-    // Single place to log and update session
-    console.log('Voice transcript (continue):', transcript);
-    console.log('Voice transcript analysis (continue):', cues);
-
-    updateSession({
-      expressContent: transcript || 'Voice recording completed',
-    });
-    onContinue();
+  const handleContinue = async () => {
+    try {
+      let expressContent = transcript || 'Voice recording completed';
+      
+      // If we have audio but no transcript, transcribe it first
+      if (!transcript && audioUrl) {
+        const audioBlob = await fetch(audioUrl).then(r => r.blob());
+        const transcribeResult = await audioService.transcribeAudio(audioBlob);
+        if (transcribeResult.status === 'success') {
+          expressContent = transcribeResult.transcript;
+          setTranscript(expressContent);
+        }
+      }
+      
+      // Prepare recommendations with the content
+      if (expressContent && expressContent !== 'Voice recording completed') {
+        await recommendationService.prepareRecommendations(expressContent);
+      }
+      
+      updateSession({ expressContent });
+      onContinue();
+    } catch (error) {
+      handleAuthError(error);
+      updateSession({ expressContent: transcript || 'Voice recording completed' });
+      onContinue();
+    }
   };
 
   // Helpers
@@ -452,6 +467,8 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
             </div>
           </div>
         )}
+
+        {/* Removed live transcript display - transcription is only for backend processing */}
 
         <HoldButton 
           onComplete={handleContinue}

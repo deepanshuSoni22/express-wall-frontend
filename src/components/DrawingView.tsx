@@ -5,6 +5,7 @@ import { useSession } from '@/contexts/SessionContext';
 import { HoldButton } from '@/components/ui/hold-button';
 import wallBg from '@/assets/wallBG.jpg';
 import { useScrollReset } from '@/hooks/useScrollReset';
+import { apiClient, handleAuthError } from '@/services/apiClient';
 
 interface DrawingViewProps {
   onContinue: () => void;
@@ -174,9 +175,28 @@ export const DrawingView = ({ onContinue }: DrawingViewProps) => {
     setHasDrawn(false);
   };
 
-  const handleContinue = () => {
-    updateSession({ expressContent: 'Drawing created' });
-    onContinue();
+  const handleContinue = async () => {
+    try {
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const imageData = canvas.toDataURL();
+        
+        // Send to backend
+        const result = await apiClient('/api/process-drawing/', {
+          method: 'POST',
+          body: JSON.stringify({ imageData })
+        });
+        
+        if (result.status === 'success') {
+          updateSession({ expressContent: 'Drawing completed' });
+          onContinue();
+        }
+      }
+    } catch (error) {
+      handleAuthError(error);
+      updateSession({ expressContent: 'Drawing completed' });
+      onContinue();
+    }
   };
 
   const brushSizes = [3, 6, 10, 16];
