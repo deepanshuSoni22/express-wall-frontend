@@ -1,16 +1,17 @@
 import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Play, Pause, ArrowRight, Volume2, VolumeX } from 'lucide-react';
+import { Play, Pause, ArrowRight, Volume2, VolumeX, Loader2 } from 'lucide-react';
 import { useScrollReset } from '@/hooks/useScrollReset';
 import { useSpeechSynthesis } from '@/hooks/useSpeechSynthesis';
 import { useAnimationFrame } from '@/hooks/useAnimationFrame';
 import type { BreathingTechnique, WithContinueProps } from '@/types';
 
-type Phase = 'inhale' | 'hold' | 'exhale' | 'ready';
+type Phase = 'inhale' | 'hold' | 'exhale' | 'ready' | 'preparing';
 
 // Phase configuration data
 const phaseTexts: Record<Phase, string> = {
   ready: 'Ready to begin?',
+  preparing: 'Preparing your voice guide...',
   inhale: 'Breathe In',
   hold: 'Hold',
   exhale: 'Breathe Out',
@@ -18,6 +19,7 @@ const phaseTexts: Record<Phase, string> = {
 
 const phaseColors: Record<Phase, string> = {
   ready: 'bg-gradient-calm',
+  preparing: 'bg-gradient-calm',
   inhale: 'bg-gradient-secondary',
   hold: 'bg-gradient-breathe-out',
   exhale: 'bg-gradient-breathe-in',
@@ -35,15 +37,16 @@ export const BreathingExercise = ({ technique, onContinue }: BreathingExercisePr
   const [phaseDuration, setPhaseDuration] = useState(0);
   const [progress, setProgress] = useState(0);
   
-  // Use our custom speech synthesis hook
+  // Use our enhanced speech synthesis hook
   const {
     isVoiceOn,
+    isInitializing,
     toggleVoice,
     speak,
     pauseSpeech,
     resumeSpeech,
     cancelSpeech,
-    warmUpVoice
+    initializeVoice
   } = useSpeechSynthesis();
   
   // Refs for animation timing
@@ -82,8 +85,11 @@ export const BreathingExercise = ({ technique, onContinue }: BreathingExercisePr
     }
   };
 
-  // Use our custom animation frame hook
-  const { start, stop } = useAnimationFrame(animationCallback, isActive && currentPhase !== 'ready');
+  // Use our custom animation frame hook - exclude 'preparing' phase from animation
+  const { start, stop } = useAnimationFrame(
+    animationCallback, 
+    isActive && currentPhase !== 'ready' && currentPhase !== 'preparing'
+  );
 
   // Progress to the next breathing phase
   const nextPhase = (from: Phase) => {
@@ -127,33 +133,57 @@ export const BreathingExercise = ({ technique, onContinue }: BreathingExercisePr
     }
   };
 
-  // Start the breathing exercise
-  const startExercise = () => {
-    // Initialize voice system first
-    warmUpVoice();
+  // Start the breathing exercise with proper voice synchronization
+  const startExercise = async () => {
+    // Show preparing state
+    setCurrentPhase('preparing');
     
-    const now = performance.now();
-    setIsActive(true);
-    
-    // Set a small delay before speaking the first instruction to ensure voice is ready
-    setTimeout(() => {
+    try {
+      // Initialize voice system and wait for it to be ready
+      await initializeVoice();
+      
+      // Small delay to ensure everything is settled
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      // Now start the synchronized exercise
+      const now = performance.now();
+      setIsActive(true);
+      
+      // Speak the first instruction
       speak('Breathe in');
-    }, 300);
 
-    setCurrentPhase('inhale');
-    setPhaseDuration(pattern.inhale);
-    setTimeLeft(pattern.inhale);
-    setCycleCount(0);
-    
-    phaseStartRef.current = now;
-    cycleStartRef.current = now;
-    elapsedPhaseRef.current = 0;
-    elapsedCycleRef.current = 0;
+      setCurrentPhase('inhale');
+      setPhaseDuration(pattern.inhale);
+      setTimeLeft(pattern.inhale);
+      setCycleCount(0);
+      
+      phaseStartRef.current = now;
+      cycleStartRef.current = now;
+      elapsedPhaseRef.current = 0;
+      elapsedCycleRef.current = 0;
+      
+    } catch (error) {
+      // If voice initialization fails, start without voice
+      console.debug('Voice initialization failed, starting without voice:', error);
+      
+      const now = performance.now();
+      setIsActive(true);
+
+      setCurrentPhase('inhale');
+      setPhaseDuration(pattern.inhale);
+      setTimeLeft(pattern.inhale);
+      setCycleCount(0);
+      
+      phaseStartRef.current = now;
+      cycleStartRef.current = now;
+      elapsedPhaseRef.current = 0;
+      elapsedCycleRef.current = 0;
+    }
   };
 
   // Pause or resume the exercise
   const togglePause = () => {
-    if (currentPhase === 'ready') return;
+    if (currentPhase === 'ready' || currentPhase === 'preparing') return;
     
     if (isActive) {
       setIsActive(false);
@@ -181,12 +211,16 @@ export const BreathingExercise = ({ technique, onContinue }: BreathingExercisePr
   };
 
   // Calculate visual dynamics
-  const scaleTarget = currentPhase === 'exhale' ? 1.0 : currentPhase === 'ready' ? 1.0 : 1.25;
+  const scaleTarget = currentPhase === 'exhale' ? 1.0 : 
+                    (currentPhase === 'ready' || currentPhase === 'preparing') ? 1.0 : 1.25;
   const transitionDuration = currentPhase === 'hold' ? 0 : phaseDuration;
   const easing = 'cubic-bezier(0.22, 1, 0.36, 1)';
   const glow = 0.25 + (scaleTarget - 1) * 0.9;
   const progressDeg = Math.max(0, Math.min(360, Math.round(progress * 360)));
 
+  // Show loading indicator when initializing voice
+  const showLoading = currentPhase === 'preparing' || isInitializing;
+  
   return (
     <div className={`page-shell ${technique.gradient} p-6 flex flex-col transition-all duration-700 min-h-full-viewport`}> 
       <div className="max-w-2xl w-full mx-auto flex-1 flex flex-col text-center">
@@ -199,7 +233,8 @@ export const BreathingExercise = ({ technique, onContinue }: BreathingExercisePr
             <button
               type="button"
               onClick={toggleVoice}
-              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium border border-primary-foreground/30 text-primary-foreground/90 hover:bg-primary-foreground/10 transition"
+              disabled={showLoading}
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium border border-primary-foreground/30 text-primary-foreground/90 hover:bg-primary-foreground/10 transition disabled:opacity-50 disabled:cursor-not-allowed"
               title="Toggle voice guide"
               aria-pressed={isVoiceOn}
             >
@@ -240,8 +275,12 @@ export const BreathingExercise = ({ technique, onContinue }: BreathingExercisePr
               }}
             >
               <div className={`px-8 py-5 rounded-full ${phaseColors[currentPhase]} bg-opacity-60`}>                
-                <div className="text-4xl font-bold text-primary-foreground mb-1 leading-none">
-                  {timeLeft > 0 && isActive ? timeLeft : ''}
+                <div className="text-4xl font-bold text-primary-foreground mb-1 leading-none flex items-center justify-center">
+                  {showLoading ? (
+                    <Loader2 className="w-8 h-8 animate-spin" />
+                  ) : (
+                    timeLeft > 0 && isActive ? timeLeft : ''
+                  )}
                 </div>
                 <div className="text-primary-foreground/90 font-medium tracking-wide uppercase text-sm">
                   {phaseTexts[currentPhase]}
@@ -253,9 +292,18 @@ export const BreathingExercise = ({ technique, onContinue }: BreathingExercisePr
 
         <div className="space-y-5 mb-6">
           {(!isActive && currentPhase === 'ready') ? (
-            <Button onClick={startExercise} className="wellness-button w-full text-base py-5">
+            <Button 
+              onClick={startExercise} 
+              disabled={showLoading}
+              className="wellness-button w-full text-base py-5"
+            >
               <Play className="w-5 h-5 mr-2" />
               Start Breathing
+            </Button>
+          ) : currentPhase === 'preparing' ? (
+            <Button disabled className="wellness-button w-full text-base py-5 opacity-50">
+              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+              Preparing...
             </Button>
           ) : (
             <div className="flex gap-4">
