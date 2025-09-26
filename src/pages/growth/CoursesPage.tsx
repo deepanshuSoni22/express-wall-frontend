@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Clock, Sparkles } from 'lucide-react';
 import { useScrollReset } from '@/hooks/useScrollReset';
 import whiteCurtainVideo from '@/assets/white-curtain.mp4';
 import { useState, useEffect } from 'react';
@@ -18,12 +18,27 @@ interface BackendCourse {
   reason?: string;
 }
 
+// Define interface for recommendation response
+interface RecommendationResponse {
+  status: string;
+  recommendations?: BackendCourse[];
+  analysis?: any;
+  is_new?: boolean;
+  source?: 'cache' | 'generated' | 'history';
+  input_text?: string;
+}
+
 const CoursesPage = () => {
   const navigate = useNavigate();
   const { sessionData } = useSession();
   const [courses, setCourses] = useState<BackendCourse[]>([]);
   const [loading, setLoading] = useState(true);
   const [isPolling, setIsPolling] = useState(false);
+  const [cacheStatus, setCacheStatus] = useState<{
+    isNew: boolean;
+    source: string;
+    inputText?: string;
+  } | null>(null);
   
   useScrollReset();
 
@@ -42,17 +57,24 @@ const CoursesPage = () => {
         setIsPolling(true);
         pollForRecommendations();
       } else {
-        // Get recommendations directly
-        const result = await recommendationService.getRecommendations(sessionData.expressContent);
+        // Get recommendations directly using POST method with user input
+        const result: RecommendationResponse = await recommendationService.getRecommendations(sessionData.expressContent);
         if (result.status === 'success') {
           setCourses(result.recommendations || []);
+          // Set cache status for UI indicators
+          setCacheStatus({
+            isNew: result.is_new ?? false,
+            source: result.source || 'unknown',
+            inputText: result.input_text
+          });
         }
         setLoading(false);
       }
     } catch (error) {
-      handleAuthError(error);
+      handleAuthError(error as Error);
       // No fallback to static data - show empty state instead
       setCourses([]);
+      setCacheStatus(null);
       setLoading(false);
     }
   };
@@ -66,17 +88,24 @@ const CoursesPage = () => {
           clearInterval(pollInterval);
           setIsPolling(false);
           
-          const result = await recommendationService.getRecommendations(sessionData.expressContent);
+          const result: RecommendationResponse = await recommendationService.getRecommendations(sessionData.expressContent);
           if (result.status === 'success') {
             setCourses(result.recommendations || []);
+            // Set cache status for UI indicators
+            setCacheStatus({
+              isNew: result.is_new ?? false,
+              source: result.source || 'unknown',
+              inputText: result.input_text
+            });
           }
           setLoading(false);
         }
       } catch (error) {
-        handleAuthError(error);
+        handleAuthError(error as Error);
         clearInterval(pollInterval);
         setIsPolling(false);
         setCourses([]);
+        setCacheStatus(null);
         setLoading(false);
       }
     }, 2000);
@@ -87,6 +116,7 @@ const CoursesPage = () => {
       setIsPolling(false);
       if (loading) {
         setCourses([]);
+        setCacheStatus(null);
         setLoading(false);
       }
     }, 30000);
@@ -133,7 +163,7 @@ const CoursesPage = () => {
       <div className="page-inner relative z-10">
         <div className="relative z-10 w-full">
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between mb-10">
+            <div className="flex items-center justify-between mb-6">
               <h1 className="display-section text-black text-3xl sm:text-5xl font-extrabold">Modules</h1>
               <Button
                 onClick={() => navigate('/growth')}
@@ -142,8 +172,35 @@ const CoursesPage = () => {
                 <ArrowLeft className="w-4 h-4 mr-2" /> Back
               </Button>
             </div>
+
+            {/* Cache Status Indicator */}
+            {cacheStatus && (
+              <div className="mb-6">
+                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${
+                  cacheStatus.isNew 
+                    ? 'bg-green-50 text-green-700 border border-green-200' 
+                    : 'bg-blue-50 text-blue-700 border border-blue-200'
+                }`}>
+                  {cacheStatus.isNew ? (
+                    <>
+                      <Sparkles className="w-4 h-4" />
+                      Fresh recommendations based on your expression
+                    </>
+                  ) : (
+                    <>
+                      <Clock className="w-4 h-4" />
+                      Previous recommendations for similar expression
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+
             <p className="page-subtitle text-black/90 max-w-2xl mb-12 font-medium">
-              Explore these modules that might help you on your wellness journey.
+              {cacheStatus?.isNew 
+                ? "Here are personalized modules based on your current emotional expression."
+                : "Here are modules we've previously curated for similar expressions."
+              }
             </p>
 
             {courses.length === 0 ? (
@@ -158,20 +215,6 @@ const CoursesPage = () => {
                     key={course.id}
                     className="group rounded-3xl overflow-hidden bg-white shadow-soft hover:shadow-glow transition-gentle flex flex-col border border-border"
                   >
-                    {/* Image Block - Commented out for future use when backend provides images
-                    <div className="relative h-72 w-full overflow-hidden md:h-80 xl:h-72">
-                      <img
-                        src={course.image || '/placeholder-course.jpg'}
-                        alt={course.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/20 to-transparent" />
-                      <div className="absolute bottom-4 left-5 right-5">
-                        <h3 className="font-semibold text-xl text-white drop-shadow mb-1">{course.title}</h3>
-                      </div>
-                    </div>
-                    */}
-
                     {/* Content */}
                     <div className="p-6 flex flex-col flex-1">
                       {/* Title at top when no image */}
@@ -180,6 +223,14 @@ const CoursesPage = () => {
                       <p className="text-sm text-gray-700 mb-4 line-clamp-4 leading-relaxed flex-1">
                         {course.description}
                       </p>
+
+                      {/* Reason for recommendation if available */}
+                      {course.reason && (
+                        <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                          <p className="text-xs text-blue-700 font-medium mb-1">Why this might help:</p>
+                          <p className="text-xs text-blue-600">{course.reason}</p>
+                        </div>
+                      )}
 
                       {/* Tags */}
                       {course.tags && course.tags.length > 0 && (

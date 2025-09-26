@@ -18,12 +18,12 @@ export const recommendationService = {
   },
 
   async getRecommendations(text?: string) {
-    const url = text 
-      ? `http://localhost:8000/api/recommendations/?text=${encodeURIComponent(text)}`
-      : 'http://localhost:8000/api/recommendations/';
-    
-    const response = await fetch(url, {
-      credentials: 'include'
+    // Always use POST method with JSON body for input-aware caching
+    const response = await fetch('http://localhost:8000/api/recommendations/', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text || '' })
     });
     return response.json();
   },
