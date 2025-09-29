@@ -320,24 +320,80 @@ export const VoiceView = ({ onContinue }: VoiceViewProps) => {
     try {
       let expressContent = transcript || 'Voice recording completed';
       
-      // If we have audio but no transcript, transcribe it first
-      if (!transcript && audioUrl) {
-        const audioBlob = await fetch(audioUrl).then(r => r.blob());
-        const transcribeResult = await audioService.transcribeAudio(audioBlob);
-        if (transcribeResult.status === 'success') {
-          expressContent = transcribeResult.transcript;
-          setTranscript(expressContent);
+      // Always try to send audio file if we have a recording
+      if (hasRecorded) {
+        let audioBlob: Blob | null = null;
+        
+        // Try to get audio blob from current audioUrl first
+        if (audioUrl) {
+          try {
+            audioBlob = await fetch(audioUrl).then(r => r.blob());
+          } catch (err) {
+            console.warn('Failed to get audio from URL:', err);
+          }
         }
-      }
-      
-      // Prepare recommendations with the content
-      if (expressContent && expressContent !== 'Voice recording completed') {
-        await recommendationService.prepareRecommendations(expressContent);
+        
+        // Fallback: try to get audio from sessionStorage
+        if (!audioBlob) {
+          const savedBase64 = sessionStorage.getItem(STORAGE_KEY_AUDIO);
+          if (savedBase64) {
+            try {
+              audioBlob = base64ToBlob(savedBase64, 'audio/webm');
+            } catch (err) {
+              console.warn('Failed to convert base64 to blob:', err);
+            }
+          }
+        }
+        
+        // If we have a valid audio blob, send it to the backend
+        if (audioBlob && audioBlob.size > 0) {
+          console.log('🎤 Sending audio to backend:', {
+            size: audioBlob.size,
+            type: audioBlob.type
+          });
+          
+          try {
+            // Send audio file to the backend for processing
+            const processResult = await recommendationService.processAudio(audioBlob);
+            console.log('✅ Backend response:', processResult);
+            
+            // Use the backend transcript if available
+            if (processResult.transcript) {
+              expressContent = processResult.transcript;
+              setTranscript(expressContent);
+              console.log('📄 Using backend transcript:', expressContent);
+            } else if (transcript) {
+              // Keep using local transcript if backend didn't return one
+              expressContent = transcript;
+              console.log('📄 Using local transcript:', expressContent);
+            }
+            
+            // Don't call prepareRecommendations here - the /api/process/ endpoint handles everything
+            
+          } catch (error) {
+            console.error('❌ Audio processing failed:', error);
+            // Show error to user instead of silently falling back
+            alert('Failed to process audio recording. Please try again or record a new message.');
+            return; // Don't continue if audio processing fails
+          }
+        } else {
+          console.error('⚠️ No valid audio blob found but hasRecorded is true');
+          alert('Audio recording not found. Please record your voice again.');
+          return;
+        }
+      } else {
+        console.log('ℹ️ No recording found, using default content');
+        // Only use text-based processing if no recording was made
+        if (transcript) {
+          expressContent = transcript;
+          await recommendationService.prepareRecommendations(expressContent);
+        }
       }
       
       updateSession({ expressContent });
       onContinue();
     } catch (error) {
+      console.error('❌ Continue handler error:', error);
       handleAuthError(error);
       updateSession({ expressContent: transcript || 'Voice recording completed' });
       onContinue();
