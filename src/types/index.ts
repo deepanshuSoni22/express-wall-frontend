@@ -63,3 +63,37 @@ export interface SessionContextType {
   updateSession: (data: Partial<SessionData>) => void;
   resetSession: () => void;
 }
+
+// Backend API Types for Recommendations
+export interface Course {
+  id: number;
+  course_name: string;
+  course_description: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Module {
+  id: number;
+  module_name: string;
+  module_description: string;
+  course: Course;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Session {
+  id: number;
+  session_name: string;
+  session_description: string;
+  tags: string[];
+  module: Module;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RecommendedSession {
+  session: Session;
+  match_score: number;
+  reason: string;
+}

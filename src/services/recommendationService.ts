@@ -43,33 +43,13 @@ export const recommendationService = {
     return response.json();
   },
 
-  async processAudio(audioBlob: Blob) {
-    const formData = new FormData();
-    
-    // Add the audio file with proper filename and extension
-    const filename = `recording_${Date.now()}.webm`;
-    formData.append('audio', audioBlob, filename);
-    
-    console.log('🔄 Sending FormData to /api/process/ with:', {
-      filename,
-      size: audioBlob.size,
-      type: audioBlob.type
-    });
-    
-    const response = await fetch('http://localhost:8000/api/process/', {
-      method: 'POST',
-      credentials: 'include',
-      body: formData // No Content-Type header for FormData
+  async getSessionById(sessionId: string) {
+    const response = await fetch(`http://localhost:8000/api/sessions/${sessionId}/`, {
+      credentials: 'include'
     });
     
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('❌ Backend error:', {
-        status: response.status,
-        statusText: response.statusText,
-        error: errorText
-      });
-      throw new Error(`Backend error ${response.status}: ${errorText}`);
+      throw new Error(`Failed to fetch session: ${response.statusText}`);
     }
     
     return response.json();

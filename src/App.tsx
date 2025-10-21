@@ -10,6 +10,7 @@ import { useSession } from './contexts/SessionContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { FlowProtectedRoute } from './components/FlowProtectedRoute';
 import { ScrollToTop } from './components/ScrollToTop';
+import SessionDetailPage from './pages/growth/SessionDetailPage';
 
 // Pages (lazy for code-splitting)
 const Home = lazy(() => import("./pages/Home"));
@@ -179,6 +180,7 @@ const App = () => (
                   <Route element={<FlowProtectedRoute stage={3} />}>
                     <Route path="/growth" element={<GrowthOnboarding />} />
                     <Route path="/growth/courses" element={<CoursesPage />} />
+                    <Route path="/growth/session/:sessionId" element={<SessionDetailPage />} />
                   </Route>
                   
                   {/* Flow Stage 4: Ending - requires all previous stages */}
